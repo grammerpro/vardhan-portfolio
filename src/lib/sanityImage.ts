@@ -3,6 +3,7 @@ import { sanityClient } from './sanity';
 
 const builder = imageUrlBuilder(sanityClient);
 
-export function urlFor(source: any) {
+export function urlFor(source: unknown) {
   return builder.image(source);
 }
+
