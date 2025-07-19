@@ -5,5 +5,10 @@ export interface Project {
   technologies: string[];
   github: string;
   liveDemo: string;
-  image: any;
+  image?: {
+  asset: {
+    _ref: string;
+    _type: string;
+  };
+};
 }
