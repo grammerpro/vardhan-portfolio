@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Project } from '@/types';
 import ProjectCard from '@/components/ProjectCard';
+import Reveal from '@/components/Reveal';
 import { motion, AnimatePresence } from 'framer-motion';
 
 
@@ -51,35 +52,41 @@ export default function ProjectsPage({ projects }: Props) {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold mb-6">Projects</h1>
+      <Reveal>
+        <h1 className="text-3xl font-bold mb-6 text-slate-900">Projects</h1>
+      </Reveal>
 
       {/* 🔍 Search Bar */}
-      <div className="mb-4">
-        <input
+      <Reveal>
+        <div className="mb-4">
+          <input
           type="text"
           placeholder="Search projects..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
+          className="w-full md:w-1/2 px-4 py-2 border border-slate-300 rounded-md bg-white text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+          />
+        </div>
+      </Reveal>
 
       {/* 🧩 Filter Buttons */}
-      <div className="flex flex-wrap gap-2 mb-8">
-        {techStacks.map((tech) => (
-          <button
+      <Reveal>
+        <div className="flex flex-wrap gap-2 mb-8">
+          {techStacks.map((tech) => (
+            <button
             key={tech}
             onClick={() => setActiveFilter(tech)}
             className={`px-4 py-2 rounded-full border transition ${
               activeFilter === tech
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-blue-100'
+                ? 'bg-sky-600 text-white border-sky-600'
+                : 'bg-slate-100 text-slate-700 hover:bg-sky-100 border-slate-200'
             }`}
-          >
-            {tech}
-          </button>
-        ))}
-      </div>
+            >
+              {tech}
+            </button>
+          ))}
+        </div>
+      </Reveal>
 
       {/* 🧱 Project Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

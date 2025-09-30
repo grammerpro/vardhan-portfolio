@@ -1,0 +1,14 @@
+/* Avatar Assistant - Phase 1 placeholder CSS
+   Core styles are injected inline by JS to simplify integration and theming.
+   This file is reserved for future extracted CSS if needed. */
+
+:root {
+  --aa-accent: #0ea5e9;
+  --aa-glow: rgba(14,165,233,0.35);
+  --aa-card-radius: 16px;
+  --aa-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root { --aa-glow: rgba(56,189,248,0.35); }
+}

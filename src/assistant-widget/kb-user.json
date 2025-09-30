@@ -1,0 +1,85 @@
+{
+  "profile": {
+    "fullName": "Vardhan",
+    "age": "27",
+    "location": "Cincinnati, Ohio",
+    "roles": ["Full Stack Developer", "AEM Specialist", "Creative Developer"]
+  },
+  "skills": ["React", "TypeScript", "Next.js", "AEM", "Node.js", "Java Spring Boot", "PostgreSQL", "AWS", "Docker", "Three.js"],
+  "strengths": ["Rapid prototyping", "Pixel perfect UI and UX", "Performance tuning", "Cross functional collaboration", "System thinking", "Authoring guides and documentation"],
+  "weaknesses": ["Perfectionism", "Taking on too much at once"],
+  "contact": {
+    "email": "vardhana1209@gmail.com",
+    "phone": "5135486916",
+    "location": "Cincinnati Ohio"
+  },
+  "experience": [
+    "AEM Full Stack Developer and Dev Lead at T Mobile (Jan 2025 - Present)",
+    "Software Engineer at Freddie Mac (Jan 2024 - Dec 2024)",
+    "Full Stack Developer at University of Cincinnati (Oct 2022 - Dec 2023)",
+    "Software Engineer at Tata Consultancy Services (Mar 2021 - Jul 2022)",
+    "Software Developer at Arisglobal (Sep 2019 - Feb 2021)"
+  ],
+  "education": [
+    "Master of Science in Information Technology from University of Cincinnati (GPA 4.0, Dec 2023)",
+    "Bachelor of Technology in Information Technology from JNTU Hyderabad (2013)"
+  ],
+  "projects": [
+    "Telemetry page at T Mobile with dynamic binding and reusable components",
+    "React UIs integrated with AEM at Freddie Mac",
+    "AEM backed portals with React at University of Cincinnati",
+    "Face Emotion Recognition CNN model",
+    "AI Attendance System with facial recognition",
+    "Blockchain Voting Platform"
+  ],
+  "faqs": [
+    {
+      "q": "About me",
+      "a": "Hi! I'm Vardhan, a Full Stack Developer and AEM Specialist with 5+ years of experience. I specialize in React, TypeScript, AEM, Node.js, and AWS. I'm passionate about creating high-performing digital experiences and mentoring teams."
+    },
+    {
+      "q": "What do you do",
+      "a": "I am a Full Stack Developer and AEM Specialist with 5+ years of experience building scalable web applications. I specialize in React, TypeScript, AEM, Node.js, and AWS."
+    },
+    {
+      "q": "What are your top technical skills",
+      "a": "My top technical skills span the full stack: Frontend with React, TypeScript, Next.js, and Three.js for 3D experiences; Backend with Node.js, Java Spring Boot, REST APIs, and GraphQL; CMS with Adobe Experience Manager (3+ years expertise); Cloud with AWS (EC2, Lambda, S3), Docker, and Kubernetes; Database with PostgreSQL, MySQL, and MongoDB; Tools with Git, Jest, Postman, and VS Code."
+    },
+    {
+      "q": "How can I contact you",
+      "a": "You can contact me at vardhana1209@gmail.com or call 5135486916. I'm located in Cincinnati, Ohio."
+    },
+    {
+      "q": "Where are you located",
+      "a": "I am located in Cincinnati, Ohio."
+    },
+    {
+      "q": "What are your strengths",
+      "a": "My strengths include rapid prototyping, pixel perfect UI/UX, performance tuning, cross-functional collaboration, system thinking, and authoring guides and documentation."
+    },
+    {
+      "q": "Tell me about your experience",
+      "a": "I have 5+ years of experience as a full stack developer, with 3+ years specializing in Adobe Experience Manager. I've worked at T Mobile, Freddie Mac, University of Cincinnati, Tata Consultancy Services, and Arisglobal."
+    },
+    {
+      "q": "What is your educational background",
+      "a": "I have a Master of Science in Information Technology from University of Cincinnati (GPA 4.0) and a Bachelor of Technology in Information Technology from JNTU Hyderabad."
+    },
+    {
+      "q": "What projects have you worked on",
+      "a": "Recent projects include a Telemetry page at T Mobile, React UIs with AEM at Freddie Mac, AEM backed portals at University of Cincinnati, and personal projects like Face Emotion Recognition and AI Attendance System."
+    },
+    {
+      "q": "What technologies do you work with",
+      "a": "I work with React, TypeScript, Next.js, AEM, Node.js, Java Spring Boot, PostgreSQL, MySQL, AWS, Docker, GitLab CI/CD, and various testing frameworks."
+    },
+    {
+      "q": "Do you have experience with cloud platforms",
+      "a": "Yes, I have extensive production experience with cloud platforms, particularly AWS: EC2 for deploying scalable web applications, Lambda for serverless functions, S3 for file storage and CDN solutions, and API Gateway for RESTful and GraphQL APIs. I've also worked with Docker containerization and Kubernetes orchestration for microservices."
+    },
+    {
+      "q": "Tell me about your leadership experience",
+      "a": "I have proven leadership experience as AEM Full Stack Developer and Dev Lead at T Mobile, leading a cross-functional team of 5 developers, authoring comprehensive authoring guides for business users, coordinating deployments across environments, mentoring junior developers, and driving secure coding practices with GGShield integration."
+    }
+  ]
+}

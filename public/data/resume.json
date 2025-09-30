@@ -1,0 +1,140 @@
+{
+  "profile": {
+    "fullName": "Vardhan",
+    "age": "27",
+    "title": "Full Stack Developer and AEM Specialist",
+    "summary": "Results driven engineer with 5 plus years building scalable, responsive web applications across enterprise, fintech, telecom, and healthcare. Deep experience with Adobe Experience Manager for 3 plus years, React, TypeScript, Java Spring Boot, Node.js, and AWS. Strong focus on performance, SEO, CMS, DevOps, and pixel perfect UI from Figma designs."
+  },
+  "contact": {
+    "phone": "5135486916",
+    "email": "vardhana1209@gmail.com",
+    "location": "Cincinnati Ohio"
+  },
+  "career_goals": "Leverage full stack and AEM expertise to deliver high performing digital experiences, mentor teams, and grow into leadership roles that drive innovation with AI, cloud, and enterprise scale systems.",
+  "skills": {
+    "frontend": ["React", "TypeScript", "Alpine.js", "JavaScript", "HTML5", "CSS3", "Bootstrap", "jQuery", "Jest", "Figma"],
+    "backend": ["Node.js", "Express.js", "REST APIs", "GraphQL", "Java Spring Boot", "Hibernate"],
+    "cms_frameworks": ["Adobe Experience Manager", "Phoenix platform at T Mobile", "Content Fragments", "Experience Fragments", "MSM", "AEM Components", "Dispatcher configs", "Sling Models"],
+    "cloud_devops": ["AWS EC2", "AWS Lambda", "S3", "Docker", "GitLab CI CD", "GitHub", "BitBucket", "Jenkins", "GGShield"],
+    "tools_testing": ["Postman", "VS Code", "Jest", "JUnit", "Mocha", "Jira", "Prometheus", "Grafana"],
+    "databases": ["PostgreSQL", "MySQL", "MongoDB", "Snowflake", "SQL Server", "Oracle"]
+  },
+  "strengths": [
+    "Rapid prototyping",
+    "Pixel perfect UI and UX",
+    "Performance tuning",
+    "Cross functional collaboration",
+    "System thinking",
+    "Authoring guides and documentation"
+  ],
+  "weaknesses": [
+    "Perfectionism",
+    "Taking on too much at once"
+  ],
+  "experience": [
+    {
+      "company": "T Mobile",
+      "role": "AEM Full Stack Developer and Dev Lead",
+      "period": "Jan 2025 to Present",
+      "highlights": [
+        "Authored AEM pages using client libraries and custom plus built in components",
+        "Integrated TypeScript controllers in the Phoenix platform for dynamic UI and backend interaction",
+        "Built and tested Node.js REST services and integrated via Phoenix Pub Sub",
+        "Designed SEO and analytics which improved visibility and insights",
+        "Built a Telemetry page with dynamic binding, reusable components, and shimmer loaders",
+        "Used Experience Fragments, Content Fragments, and CA configs for modular content",
+        "Managed dispatcher cache and led deployments across local, dev, and QLab",
+        "Wrote authoring guides for business users",
+        "Unit tests with Jest and collaboration with QA improved reliability",
+        "Implemented secure coding with GGShield and GitLab integrations",
+        "Maintained Linux based setup on Ubuntu through WSL"
+      ]
+    },
+    {
+      "company": "Freddie Mac",
+      "role": "Software Engineer",
+      "period": "Jan 2024 to Dec 2024",
+      "highlights": [
+        "Built responsive React UIs inside AEM templates and developed custom AEM components",
+        "Integrated AEM Content Services with Spring Boot APIs for dynamic delivery",
+        "Created and deployed Spring Boot microservices for React and AEM consumption",
+        "Containerized with Docker and deployed on AWS EC2 and Lambda",
+        "Set up CI CD with Jenkins and GitLab which reduced time to market",
+        "Integrated Grafana and Prometheus for monitoring and reduced downtime",
+        "Followed security best practices with role based access and token auth"
+      ]
+    },
+    {
+      "company": "University of Cincinnati",
+      "role": "Full Stack Developer",
+      "period": "Oct 2022 to Dec 2023",
+      "highlights": [
+        "Delivered React apps that consumed AEM Content Fragments which improved engagement",
+        "Integrated Spring Boot REST APIs for backend operations and better performance",
+        "Used GraphQL and REST for flexible data retrieval",
+        "Unit testing with Jest, Mocha, and JUnit increased reliability",
+        "Deployed Docker and Kubernetes workloads for scale",
+        "Worked in Agile sprints with Git and Bitbucket for collaboration"
+      ]
+    },
+    {
+      "company": "Tata Consultancy Services for Liberty Mutual",
+      "role": "Software Engineer",
+      "period": "Mar 2021 to Jul 2022",
+      "highlights": [
+        "Developed AEM components and templates integrating Spring Boot through Sling Models",
+        "Architected Spring Boot microservices for CMS driven frontends which improved scalability",
+        "Implemented IBM ODM decision logic and tested with JUnit to reduce logic errors",
+        "Created reusable services for AEM workflows and content rendering",
+        "Resolved Jira tickets and delivered on schedule with global teams"
+      ]
+    },
+    {
+      "company": "Arisglobal",
+      "role": "Software Developer",
+      "period": "Sep 2019 to Feb 2021",
+      "highlights": [
+        "Built Java modules for pharmacovigilance platforms and improved data processing speed",
+        "Designed PostgreSQL schemas for faster queries",
+        "Created D3.js visualizations for better insight",
+        "Maintained high uptime with thorough deployment testing using GitLab CI CD"
+      ]
+    }
+  ],
+  "projects_recent": [
+    "Telemetry page at T Mobile with dynamic binding, reusable components, and shimmer loaders",
+    "React UIs integrated with AEM at Freddie Mac for modular content delivery",
+    "AEM backed portals with React at University of Cincinnati using Content Fragments"
+  ],
+  "projects_portfolio": [
+    {"name": "Face Emotion Recognition", "summary": "CNN based Python model with improved live detection accuracy"},
+    {"name": "AI Attendance System", "summary": "Facial recognition app for automated employee check ins"},
+    {"name": "Geolocation Clustering", "summary": "K means clustering for faster location analytics"},
+    {"name": "Blockchain Voting Platform", "summary": "Decentralized voting solution targeting millions of users"},
+    {"name": "AI Colorization Model", "summary": "Colorizes grayscale images with improved accuracy"},
+    {"name": "Toxic Comment Classifier", "summary": "NLP model for toxicity detection"}
+  ],
+  "education": [
+    {
+      "degree": "Master of Science in Information Technology",
+      "institution": "University of Cincinnati Ohio",
+      "gpa": "4.0",
+      "completion": "Dec 2023"
+    },
+    {
+      "degree": "Bachelor of Technology in Information Technology",
+      "institution": "Jawaharlal Nehru Technological University Hyderabad",
+      "completion": "2013"
+    }
+  ],
+  "certifications": [
+    "Microsoft Certified Azure Data Engineer Associate DP 203 valid through Jul 2025",
+    "AWS Certified Solutions Architect Associate in progress"
+  ],
+  "faqs": [
+    {"q": "What are your career goals", "a": "I plan to use my AEM and full stack skills to deliver high performing digital experiences and mentor teams while growing into leadership that pushes innovation in AI and cloud."},
+    {"q": "Tell me about your leadership experience", "a": "I have led delivery at T Mobile by writing authoring guides, coordinating deployments across environments, mentoring teammates, and driving secure coding and testing practices."},
+    {"q": "What is your educational background", "a": "Master of Science in Information Technology from the University of Cincinnati with GPA 4.0 and a Bachelor of Technology in Information Technology from JNTU Hyderabad."},
+    {"q": "What projects have you worked on recently", "a": "Recent work includes a Telemetry page with reusable components and shimmer loaders at T Mobile, React plus AEM integrations at Freddie Mac, and AEM backed portals with React at the University of Cincinnati."}
+  ]
+}

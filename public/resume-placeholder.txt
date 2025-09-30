@@ -1,0 +1,16 @@
+# Resume PDF Placeholder
+
+This is a placeholder file. Please replace this with your actual resume PDF file.
+
+**Instructions:**
+1. Save your resume as a PDF file
+2. Name it `resume.pdf`
+3. Place it in the `public/` folder
+4. The file will be accessible at `/resume.pdf`
+
+**File path:** `public/resume.pdf`
+
+Once you place your resume PDF here, visitors will be able to:
+- Download your resume
+- View it in their browser
+- Access it from the Resume page at `/resume`

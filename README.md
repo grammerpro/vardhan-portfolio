@@ -1,36 +1,197 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vardhan's Portfolio
+
+A modern, light-themed portfolio website built with Next.js, featuring Three.js animations, smooth parallax effects, and optimized performance.
+
+## Features
+
+- **Light Theme**: Clean design with soft gradients and pastel colors
+- **Three.js Hero**: Interactive 3D keyboard model with smooth animations
+- **Parallax Effects**: Subtle background movements for depth
+- **Scroll Snap**: Magnetic section transitions
+- **Responsive Design**: Optimized for all devices
+- **Performance Optimized**: Fast loading with Core Web Vitals in mind
+- **Accessibility**: WCAG AA compliant with keyboard navigation
+- **SEO Ready**: Meta tags and structured data included
+
+## Tech Stack
+
+- **Framework**: Next.js 15
+- **Styling**: Tailwind CSS
+- **3D Graphics**: Three.js with React Three Fiber
+- **Animations**: Framer Motion
+- **Fonts**: Inter (Google Fonts)
+- **Deployment**: Vercel/Netlify ready
 
 ## Getting Started
 
-First, run the development server:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/portfolio.git
+   cd portfolio
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+
+4. **Open [http://localhost:3000](http://localhost:3000) in your browser**
+
+## Project Structure
+
+```
+my-portfolio/
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   └── globals.css
+│   ├── components/
+│   │   ├── HeroSection.tsx
+│   │   ├── ProjectsSection.tsx
+│   │   ├── AboutSection.tsx
+│   │   ├── ContactSection.tsx
+│   │   ├── Navbar.tsx
+│   │   └── ...
+│   └── lib/
+│       └── queries.ts
+├── public/
+│   ├── models/
+│   │   └── keyboard.glb
+│   └── images/
+└── package.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Customization
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Theme Configuration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Edit the color scheme in `src/app/globals.css` or create a config file:
 
-## Learn More
+```javascript
+// config/theme.js
+export const theme = {
+  colors: {
+    primary: '#3b82f6',
+    secondary: '#8b5cf6',
+    background: '#ffffff',
+    text: '#1f2937'
+  },
+  fonts: {
+    heading: 'Inter',
+    body: 'Inter'
+  }
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Adding Projects
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Update the projects array in `src/components/ProjectsSection.tsx`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```javascript
+const projects = [
+  {
+    id: 1,
+    title: 'Your Project',
+    category: 'Web',
+    description: 'Project description',
+    image: '/path/to/image.jpg',
+    tags: ['React', 'Next.js']
+  }
+  // Add more projects...
+]
+```
 
-## Deploy on Vercel
+### 3D Model Replacement
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Replace the keyboard model in `public/models/keyboard.glb` with your own glTF model. Update the import in `src/components/KeyboardModel.tsx` if needed.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+
+### Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Deploy automatically
+
+### Netlify
+
+1. Build the project: `npm run build`
+2. Upload the `.next` folder to Netlify
+3. Configure build settings if needed
+
+## Performance
+
+- Images are optimized with WebP/AVIF formats
+- Lazy loading implemented for images
+- Core Web Vitals optimized
+- Bundle size minimized
+
+## SEO
+
+- Meta tags configured in `layout.tsx`
+- Open Graph tags for social sharing
+- Structured data included
+- Sitemap generation ready
+
+## Accessibility
+
+- Semantic HTML structure
+- ARIA labels where needed
+- Keyboard navigation support
+- Focus management
+- Color contrast meets WCAG AA standards
+
+## Browser Support
+
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## Contact
+
+Vardhan - [your.email@example.com](mailto:your.email@example.com)
+
+Project Link: [https://github.com/yourusername/portfolio](https://github.com/yourusername/portfolio)
+
+## Avatar Assistant – Phase 1
+
+- Glassmorphism dock in bottom-right
+- Static avatar image (lazy-loaded)
+- Global init: `window.AvatarAssistant.init(options)`
+
+Files:
+- `src/avatar/index.ts` – core initializer
+- `src/config/avatar.config.ts` – defaults
+- `src/assistant/integration.ts` – chat bridge (Phase 2)
+- `public/assets/avatar-standing.svg` – avatar art
+
+Demo snippet (paste near end of body):
+```html
+<script>
+  window.AvatarAssistant && window.AvatarAssistant.init({
+    container: 'body',
+    theme: 'auto',
+    avatarUrl: '/assets/avatar-standing.svg',
+    position: { right: 24, bottom: 24 }
+  });
+</script>
+```

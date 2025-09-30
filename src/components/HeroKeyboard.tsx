@@ -1,18 +1,17 @@
 // src/components/KeyboardHero.tsx
 "use client";
-
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
 const buttons = [
-  { label: "HOME", top: "7%", left: "7.5%" },
-  { label: "PROJECTS", top: "7%", left: "30.5%" },
-  { label: "CV", top: "7%", left: "54.5%" },
-  { label: "GITHUB", top: "38%", left: "7.5%" },
-  { label: "CONTACT", top: "38%", left: "30.5%" },
-  { label: "HIRE ME", top: "69%", left: "7.5%" },
-  { label: "HOME", top: "69%", left: "30.5%" }
+  { label: "HOME", top: "12%", left: "10%" },
+  { label: "PROJECTS", top: "12%", left: "33%" },
+  { label: "CV", top: "12%", left: "56.5%" },
+  { label: "GITHUB", top: "42%", left: "10%" },
+  { label: "CONTACT", top: "42%", left: "33%" },
+  { label: "HIRE ME", top: "72%", left: "10%" },
+  { label: "HOME", top: "72%", left: "33%" },
 ];
 
 export default function KeyboardHero() {
@@ -26,8 +25,8 @@ export default function KeyboardHero() {
 
     const w = canvas.width;
     const h = canvas.height;
-
     let angle = 0;
+
     const loop = () => {
       ctx.clearRect(0, 0, w, h);
 
@@ -64,47 +63,37 @@ export default function KeyboardHero() {
   }, []);
 
   return (
-    <div className="bg-white py-12 px-4">
-      <div className="max-w-6xl mx-auto flex flex-col items-center justify-center gap-10">
-        <div className="relative w-[1000px] h-[340px] md:h-[360px]">
+    <div className="bg-white">
+      {/* Hero Container */}
+      <div className="w-full flex justify-center items-center py-16 bg-gradient-to-b from-white via-slate-100 to-gray-200">
+        <div className="relative w-[1000px] h-[350px]">
+          {/* Background Image */}
           <Image
             src="/images/keyboard-light-ui.png"
-            alt="Keyboard UI"
+            alt="Keyboard Background"
             fill
             className="object-contain"
             priority
           />
 
-          {/* Overlay Buttons */}
+          {/* Buttons Overlay */}
           {buttons.map((btn, idx) => (
             <motion.button
               key={idx}
-              whileTap={{ scale: 0.93 }}
-              className="absolute text-white font-bold text-xs md:text-sm px-2 md:px-3 py-1 md:py-2 rounded-md shadow-md border border-black bg-black/70"
+              whileTap={{ scale: 0.95 }}
+              className="absolute text-white font-semibold text-sm px-3 py-1 rounded shadow bg-black/80 hover:bg-black"
               style={{ top: btn.top, left: btn.left }}
             >
               {btn.label}
             </motion.button>
           ))}
 
-          {/* Radar Circle */}
-          <div className="absolute right-[3.8%] top-[18%] w-40 h-40 md:w-64 md:h-64 rounded-full border-2 border-green-500 bg-black overflow-hidden shadow-xl">
-            <canvas
-              ref={canvasRef}
-              width={256}
-              height={256}
-              className="w-full h-full"
-            />
+          {/* Radar */}
+          <div className="absolute right-[4.3%] top-[17%] w-32 h-32 md:w-52 md:h-52 rounded-full border-2 border-green-500 bg-black overflow-hidden shadow-md">
+            <canvas ref={canvasRef} width={256} height={256} className="w-full h-full" />
             <div className="absolute inset-0 flex items-center justify-center text-green-400 text-xl md:text-3xl font-bold">
               VA
             </div>
-          </div>
-        </div>
-
-        {/* Display */}
-        <div className="mt-8">
-          <div className="text-green-600 border border-green-800 px-4 py-2 rounded-md text-sm font-mono bg-white">
-            Available For Freelance
           </div>
         </div>
       </div>

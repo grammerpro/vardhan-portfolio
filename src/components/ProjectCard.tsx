@@ -1,10 +1,12 @@
+"use client";
 import Image from 'next/image';
 import { urlFor } from '@/lib/sanityImage';
 import { Project } from '@/types';
+import Magnetic from './Magnetic';
 
 export default function ProjectCard({ project }: { project: Project }) {
   return (
-    <div className="border rounded-lg p-4 shadow-md">
+    <div className="group border rounded-xl p-4 shadow-sm bg-white hover:shadow-md transition-shadow">
       {project.image && (
         <Image
           src={urlFor(project.image).url()}
@@ -15,8 +17,8 @@ export default function ProjectCard({ project }: { project: Project }) {
         />
       )}
 
-      <h2 className="text-xl font-semibold mt-2">{project.title}</h2>
-      <p className="text-sm text-gray-600">{project.description}</p>
+      <h2 className="text-xl font-semibold mt-2 text-slate-900">{project.title}</h2>
+      <p className="text-sm text-slate-600">{project.description}</p>
 
       <div className="flex flex-wrap gap-2 mt-2">
         {project.technologies?.map((tech) => {
@@ -45,8 +47,12 @@ export default function ProjectCard({ project }: { project: Project }) {
       </div>
 
       <div className="mt-4 space-x-4">
-        <a href={project.github} className="text-purple-600">GitHub</a>
-        <a href={project.liveDemo} className="text-purple-600">Live Demo</a>
+        <Magnetic strength={12}>
+          <a href={project.github} className="inline-block text-sky-700 hover:text-sky-900">GitHub</a>
+        </Magnetic>
+        <Magnetic strength={12}>
+          <a href={project.liveDemo} className="inline-block text-sky-700 hover:text-sky-900">Live Demo</a>
+        </Magnetic>
       </div>
     </div>
   );

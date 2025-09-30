@@ -1,0 +1,4 @@
+# This is a placeholder for your avatar image
+# Replace this file with your actual avatar PNG
+# Recommended size: 40x40 pixels or larger
+# The widget will automatically resize it
