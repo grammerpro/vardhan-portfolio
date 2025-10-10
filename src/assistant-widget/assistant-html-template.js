@@ -3,19 +3,24 @@
  */
 
 export const templates = {
-  floatingButton: (avatarUrl, agentName) => `
-    <button
-      class="assistant-widget__button"
-      aria-label="Open ${agentName} assistant"
-      type="button"
-    >
-      <img
-        src="${avatarUrl}"
-        alt="${agentName} avatar"
-        class="assistant-widget__avatar"
-        onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiM2MzY2RjEiLz4KPHBhdGggZD0iTTIwIDIwQzIyLjc2MTQgMjAgMjUgMTcuNzYxNCAyNSAxNUMyNSAxMi4yMzg2IDIyLjc2MTQgMTAgMjAgMTBDMTcuMjM4NiAxMCAxNSAxMi4yMzg2IDE1IDE1QzE1IDE3Ljc2MTQgMTcgMjAgMjBaIiBmaWxsPSIjZmZmZmZmIi8+Cjwvc3ZnPgo='"
-      />
-    </button>
+  floatingButton: (avatarUrl, agentName, launcherHint) => `
+    <div class="assistant-widget__launcher-shell">
+      <button
+        class="assistant-widget__button"
+        aria-label="Open ${agentName} assistant"
+        type="button"
+      >
+        <img
+          src="${avatarUrl}"
+          alt="${agentName} avatar"
+          class="assistant-widget__avatar"
+          onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiM2MzY2RjEiLz4KPHBhdGggZD0iTTIwIDIwQzIyLjc2MTQgMjAgMjUgMTcuNzYxNCAyNSAxNUMyNSAxMi4yMzg2IDIyLjc2MTQgMTAgMjAgMTBDMTcuMjM4NiAxMCAxNSAxMi4yMzg2IDE1IDE1QzE1IDE3Ljc2MTQgMTcgMjAgMjBaIiBmaWxsPSIjZmZmZmZmIi8+Cjwvc3ZnPgo='"
+        />
+      </button>
+      <div class="assistant-widget__launcher-hint" role="presentation">
+        ${launcherHint ?? 'Ask Vardhan anything'}
+      </div>
+    </div>
   `,
 
   chatPanel: (agentName, avatarUrl) => `

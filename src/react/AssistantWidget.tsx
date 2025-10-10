@@ -16,6 +16,7 @@ interface AssistantWidgetProps {
   kbUrl?: string;
   enableVoice?: boolean;
   showButton?: boolean;
+  launcherHint?: string;
 }
 
 interface AssistantWidgetInstance {
@@ -35,6 +36,7 @@ const AssistantWidget: React.FC<AssistantWidgetProps> = ({
   kbUrl = '/src/assistant-widget/kb-user.json',
   enableVoice = false,
   showButton = true,
+  launcherHint = 'Ask Vardhan anything',
 }) => {
   const widgetRef = useRef<AssistantWidgetInstance | null>(null);
   const containerRef = useRef<HTMLElement | null>(null);
@@ -63,6 +65,7 @@ const AssistantWidget: React.FC<AssistantWidgetProps> = ({
           kbUrl,
           enableVoice,
           showButton,
+          launcherHint,
         });
 
         // Expose instance globally so the AvatarAssistant can control it (open/close/isOpen)
@@ -86,7 +89,7 @@ const AssistantWidget: React.FC<AssistantWidgetProps> = ({
         (window as unknown as { assistantWidgetInstance?: AssistantWidgetInstance }).assistantWidgetInstance = undefined;
       } catch {}
     };
-  }, [container, position, avatarUrl, agentName, theme, kbUrl, enableVoice, showButton]);
+  }, [container, position, avatarUrl, agentName, theme, kbUrl, enableVoice, showButton, launcherHint]);
 
   // This component doesn't render anything itself - the widget handles its own DOM
   return null;

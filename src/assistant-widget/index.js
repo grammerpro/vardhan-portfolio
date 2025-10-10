@@ -15,7 +15,8 @@ class AssistantWidget {
       theme: 'auto',
       kbUrl: '/src/assistant-widget/kb-user.json',
       enableVoice: false,
-  showButton: true,
+      showButton: true,
+      launcherHint: 'Chat about Vardhan',
       ...options
     };
 
@@ -96,10 +97,21 @@ class AssistantWidget {
         }
       }
 
-      .assistant-widget__button {
+      .assistant-widget__launcher {
         position: fixed;
         bottom: ${this.options.position.bottom}px;
         right: ${this.options.position.right}px;
+        display: flex;
+        align-items: center;
+        flex-direction: row-reverse;
+        gap: 14px;
+        z-index: 10000;
+      }
+
+      .assistant-widget__button {
+        position: relative;
+        bottom: 0;
+        right: 0;
         width: 56px;
         height: 56px;
         border-radius: 50%;
@@ -113,11 +125,58 @@ class AssistantWidget {
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 10000;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        isolation: isolate;
       }
 
       .assistant-widget__button:hover {
         transform: scale(1.05);
         box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .assistant-widget__launcher-hint {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.95);
+        color: #312e81;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.3;
+        box-shadow: 0 10px 32px rgba(76, 29, 149, 0.15);
+        pointer-events: none;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        white-space: nowrap;
+      }
+
+      .assistant-widget__launcher-hint::after {
+        content: '';
+        position: absolute;
+        right: -6px;
+        top: 50%;
+        width: 12px;
+        height: 12px;
+        background: rgba(255, 255, 255, 0.95);
+        transform: translateY(-50%) rotate(45deg);
+        box-shadow: 0 10px 32px rgba(76, 29, 149, 0.1);
+      }
+
+      .assistant-widget--dark .assistant-widget__launcher-hint {
+        background: rgba(15, 23, 42, 0.9);
+        color: #e0e7ff;
+        box-shadow: 0 10px 32px rgba(14, 165, 233, 0.18);
+      }
+
+      .assistant-widget--dark .assistant-widget__launcher-hint::after {
+        background: rgba(15, 23, 42, 0.9);
+        box-shadow: 0 10px 32px rgba(14, 165, 233, 0.12);
+      }
+
+      .assistant-widget--open .assistant-widget__launcher-hint {
+        opacity: 0;
+        transform: translateX(8px);
       }
 
       .assistant-widget__button:focus {
@@ -354,9 +413,13 @@ class AssistantWidget {
           right: 16px;
         }
 
-        .assistant-widget__button {
+        .assistant-widget__launcher {
           bottom: 16px;
           right: 16px;
+        }
+
+        .assistant-widget__launcher-hint {
+          display: none;
         }
       }
 
@@ -394,8 +457,13 @@ class AssistantWidget {
     // Create button (optional)
     if (this.options.showButton) {
       this.button = document.createElement('div');
-      this.button.innerHTML = templates.floatingButton(this.options.avatarUrl, this.options.agentName);
+      this.button.innerHTML = templates.floatingButton(
+        this.options.avatarUrl,
+        this.options.agentName,
+        this.options.launcherHint
+      );
       this.buttonElement = this.button.querySelector('.assistant-widget__button');
+      this.launcherHintElement = this.button.querySelector('.assistant-widget__launcher-hint');
     }
 
     // Create panel
@@ -407,7 +475,28 @@ class AssistantWidget {
   this.sendButton = this.panelElement?.querySelector('.assistant-widget__send');
 
   // Add to DOM
-  if (this.buttonElement) this.wrapper.appendChild(this.buttonElement);
+    if (this.buttonElement) {
+      const launcherContainer = document.createElement('div');
+      launcherContainer.className = 'assistant-widget__launcher';
+      launcherContainer.appendChild(this.buttonElement);
+
+      if (!this.launcherHintElement) {
+        this.launcherHintElement = document.createElement('div');
+        this.launcherHintElement.className = 'assistant-widget__launcher-hint';
+        this.launcherHintElement.textContent = this.options.launcherHint;
+      }
+
+      const hintId = `assistant-widget-hint-${Math.random().toString(36).slice(2, 9)}`;
+      this.launcherHintElement.id = hintId;
+      this.buttonElement.setAttribute('aria-describedby', hintId);
+
+      this.buttonElement.style.pointerEvents = 'auto';
+      this.launcherHintElement.style.pointerEvents = 'none';
+
+      launcherContainer.appendChild(this.launcherHintElement);
+      this.wrapper.appendChild(launcherContainer);
+      this.launcherContainer = launcherContainer;
+    }
     if (this.panelElement) this.wrapper.appendChild(this.panelElement);
     container.appendChild(this.wrapper);
   }
@@ -528,7 +617,8 @@ class AssistantWidget {
 
   open() {
     this.isOpen = true;
-  if (this.panelElement) this.panelElement.classList.add('assistant-widget__panel--open');
+    if (this.panelElement) this.panelElement.classList.add('assistant-widget__panel--open');
+    if (this.wrapper) this.wrapper.classList.add('assistant-widget--open');
     this.saveState();
     this.input.focus();
 
@@ -548,7 +638,8 @@ class AssistantWidget {
 
   close() {
     this.isOpen = false;
-  if (this.panelElement) this.panelElement.classList.remove('assistant-widget__panel--open');
+    if (this.panelElement) this.panelElement.classList.remove('assistant-widget__panel--open');
+    if (this.wrapper) this.wrapper.classList.remove('assistant-widget--open');
     this.saveState();
   try { this.buttonElement?.focus?.(); } catch {}
 

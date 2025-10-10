@@ -136,57 +136,123 @@ function TileField() {
   );
 }
 
-function FloatingTile({ position, color }: { position: [number, number, number]; color: string }) {
+type AccentConfig = {
+  position: [number, number, number];
+  args: [number, number, number];
+  color: string;
+  speed: number;
+  floatIntensity: number;
+  rotation: [number, number, number];
+};
+
+function FloatingBackdrop() {
+  const accents = useMemo<AccentConfig[]>(
+    () => [
+      {
+        position: [-5.2, 2.6, -7.8],
+        args: [1.6, 0.46, 1.6],
+        color: '#c084fc',
+        speed: 0.95,
+        floatIntensity: 0.3,
+        rotation: [0.4, 0.8, 0.2],
+      },
+      {
+        position: [4.6, 2.1, -7.2],
+        args: [1.4, 0.52, 1.4],
+        color: '#a855f7',
+        speed: 1.1,
+        floatIntensity: 0.28,
+        rotation: [-0.35, 0.5, -0.2],
+      },
+      {
+        position: [-1.2, 1.2, -6],
+        args: [1.1, 0.38, 1.1],
+        color: '#60a5fa',
+        speed: 1.35,
+        floatIntensity: 0.35,
+        rotation: [0.2, -0.4, 0.3],
+      },
+    ],
+    []
+  );
+
   return (
-    <Float speed={1.2} floatIntensity={0.5} rotationIntensity={0.4}>
-      <group position={position}>
-        <RoundedBox args={[1.1, 0.18, 1.1]} radius={0.18} smoothness={5}>
-          <meshStandardMaterial
-            color={color}
-            metalness={0.65}
-            roughness={0.55}
-            emissive={color}
-            emissiveIntensity={0.35}
-          />
-        </RoundedBox>
-        <mesh position={[0, 0.12, 0]}>
-          <planeGeometry args={[0.78, 0.78]} />
-          <meshBasicMaterial
-            color="#ffffff"
-            opacity={0.7}
-            transparent
-          />
-        </mesh>
-      </group>
-    </Float>
+    <Canvas
+      className="absolute inset-0"
+      style={{ pointerEvents: 'none' }}
+      camera={{ position: [0, 0, 12], fov: 52 }}
+      gl={{ antialias: true, alpha: true }}
+    >
+      <ambientLight intensity={0.45} />
+      <directionalLight position={[6, 6, 5]} intensity={0.35} color="#f0abfc" />
+      <directionalLight position={[-6, -4, -3]} intensity={0.25} color="#60a5fa" />
+
+      {accents.map(({ position, args, color: tone, speed, floatIntensity, rotation }, index) => (
+        <Float key={index} speed={speed} rotationIntensity={0.28} floatIntensity={floatIntensity}>
+          <group position={position} rotation={rotation}>
+            <RoundedBox args={args} radius={Math.min(...args) * 0.28} smoothness={6}>
+              <meshStandardMaterial
+                color={tone}
+                metalness={0.32}
+                roughness={0.24}
+                emissive={tone}
+                emissiveIntensity={0.28}
+              />
+            </RoundedBox>
+          </group>
+        </Float>
+      ))}
+
+      <EffectComposer>
+        <Bloom intensity={0.25} luminanceThreshold={0.26} luminanceSmoothing={0.4} />
+      </EffectComposer>
+    </Canvas>
   );
 }
 
 export default function HeroSection() {
   const highlights = [
-    'Cinematic WebGL systems',
-    'Adaptive AI art direction',
-    'Premium product storytelling',
+    'Immersive WebGL storytelling',
+    'AI-assisted design workflows',
+    'Polished product launches',
   ];
 
   return (
     <section
       id="home"
-      className="relative flex min-h-screen flex-col justify-between overflow-hidden bg-gradient-to-b from-[#fdf3dc] via-[#f8f4ff] to-[#eef1ff] text-neutral-900 dark:from-[#140b24] dark:via-[#1b1530] dark:to-[#0f1628] dark:text-white"
+      className="relative flex min-h-dvh flex-col justify-center overflow-hidden bg-gradient-to-b from-[#fdf3dc] via-[#f8f4ff] to-[#eef1ff] text-neutral-900 dark:from-[#140b24] dark:via-[#1b1530] dark:to-[#0f1628] dark:text-white"
     >
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/20 to-white/60 dark:via-white/5 dark:to-white/5" />
         <HorizonGlow />
+        <FloatingBackdrop />
+        <div className="absolute inset-x-0 bottom-0 h-[60vh] min-h-[320px]">
+          <Canvas camera={{ position: [0, 5.8, 9.6], fov: 38 }} gl={{ antialias: true, alpha: true }}>
+            <ambientLight intensity={0.45} />
+            <directionalLight position={[6, 10, 6]} intensity={0.8} color="#fbcfe8" />
+            <directionalLight position={[-6, 5, -6]} intensity={0.4} color="#a855f7" />
+            <pointLight position={[0, 4.2, 4]} intensity={0.55} color="#f5d0fe" />
+            <pointLight position={[0, 3, -6]} intensity={0.35} color="#c4b5fd" />
+
+            <TileField />
+
+            <Environment preset="sunset" />
+            <EffectComposer>
+              <Bloom intensity={0.6} luminanceThreshold={0.1} luminanceSmoothing={0.4} />
+            </EffectComposer>
+          </Canvas>
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#fdf3dc] via-transparent to-transparent dark:from-[#140b24]" />
+        </div>
       </div>
 
-      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center px-6 pt-24 pb-16 text-center sm:pt-32 lg:pt-40">
+      <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center px-6 pt-24 pb-32 text-center sm:pt-28 lg:pt-32">
         <motion.div
           className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/80 px-6 py-3 text-xs font-semibold uppercase tracking-[0.35em] text-purple-500 shadow-[0_18px_46px_-24px_rgba(147,51,234,0.7)] backdrop-blur-xl dark:border-white/10 dark:bg-white/10 dark:text-purple-200"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: 'easeOut' }}
         >
-          Future Surface Studio
+          Vardhan — Creative Developer
         </motion.div>
 
         <motion.h1
@@ -195,7 +261,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.1, ease: 'easeOut' }}
         >
-          The experiential web your next launch deserves
+          Designing immersive web moments with purpose
         </motion.h1>
 
         <motion.p
@@ -204,8 +270,8 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2, ease: 'easeOut' }}
         >
-          I orchestrate AI, realtime 3D and narrative UX to build luminous launchpads for visionary products. Human-first,
-          tactile and tuned for brand impact.
+          Hi, I&apos;m Vardhan. I blend realtime 3D, thoughtful UX, and dependable engineering to shape personal, high-impact
+          digital experiences. I help teams launch ideas that feel tactile, human, and unforgettable.
         </motion.p>
 
         <motion.div
@@ -220,7 +286,7 @@ export default function HeroSection() {
             whileTap={{ scale: 0.98 }}
             className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-500 px-10 py-4 text-lg font-semibold text-white shadow-[0_25px_70px_-25px_rgba(147,51,234,0.75)] transition-all duration-300"
           >
-            Start a project
+            Let&apos;s collaborate
           </motion.a>
           <motion.a
             href="#projects"
@@ -228,12 +294,12 @@ export default function HeroSection() {
             whileTap={{ scale: 0.98 }}
             className="inline-flex items-center justify-center rounded-full border border-purple-200/70 bg-white/60 px-10 py-4 text-lg font-semibold text-purple-600 backdrop-blur-xl transition-all duration-300 hover:border-purple-300 hover:bg-white/80 dark:border-white/20 dark:bg-white/10 dark:text-purple-200 dark:hover:border-purple-200/40"
           >
-            See recent work
+            See my work
           </motion.a>
         </motion.div>
 
         <motion.ul
-          className="mt-16 grid w-full max-w-3xl gap-4 sm:grid-cols-3"
+          className="mt-12 grid w-full max-w-3xl gap-4 sm:grid-cols-3"
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.55, ease: 'easeOut' }}
@@ -247,26 +313,6 @@ export default function HeroSection() {
             </li>
           ))}
         </motion.ul>
-      </div>
-
-      <div className="relative z-[1] h-[52vh] min-h-[320px] w-full">
-        <Canvas camera={{ position: [0, 5.2, 9.8], fov: 40 }} gl={{ antialias: true, alpha: true }}>
-          <ambientLight intensity={0.45} />
-          <directionalLight position={[6, 10, 6]} intensity={0.8} color="#fbcfe8" />
-          <directionalLight position={[-6, 5, -6]} intensity={0.4} color="#a855f7" />
-          <pointLight position={[0, 4.2, 4]} intensity={0.55} color="#f5d0fe" />
-          <pointLight position={[0, 3, -6]} intensity={0.35} color="#c4b5fd" />
-
-          <TileField />
-          <FloatingTile position={[-3, 1.8, -2]} color="#c084fc" />
-          <FloatingTile position={[2.5, 2.3, -3.5]} color="#a855f7" />
-          <FloatingTile position={[0.8, 1.6, -1.2]} color="#6366f1" />
-
-          <Environment preset="sunset" />
-          <EffectComposer>
-            <Bloom intensity={0.6} luminanceThreshold={0.1} luminanceSmoothing={0.4} />
-          </EffectComposer>
-        </Canvas>
       </div>
     </section>
   );
