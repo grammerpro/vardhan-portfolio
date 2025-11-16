@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 export default function Error({
   error,
@@ -65,12 +66,12 @@ export default function Error({
             Try again
           </button>
           
-          <a
+          <Link
             href="/"
             className="inline-flex items-center justify-center rounded-full border border-purple-200 bg-white px-8 py-3 font-semibold text-purple-600 backdrop-blur-xl transition-all hover:border-purple-300 hover:bg-white/80 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 dark:border-white/20 dark:bg-white/10 dark:text-purple-200"
           >
             Go home
-          </a>
+          </Link>
         </div>
       </motion.div>
     </div>
