@@ -74,10 +74,7 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
     toggle: () => setTheme((t) => (t === "auto" ? "light" : t === "light" ? "dark" : "auto"))
   }), [theme, resolvedTheme]);
 
-  if (!mounted) {
-    return <div style={{ visibility: 'hidden' }}>{children}</div>;
-  }
-
+  // Don't hide content, just return children wrapped in provider
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
