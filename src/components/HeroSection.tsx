@@ -1,10 +1,13 @@
-﻿'use client';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Environment, Float, RoundedBox } from '@react-three/drei';
-import { EffectComposer, Bloom } from '@react-three/postprocessing';
+'use client';
+import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
-import { useEffect, useMemo, useRef } from 'react';
-import * as THREE from 'three';
+
+const FloatingBackdrop = dynamic(() => import('./FloatingBackdrop'), {
+  ssr: false,
+  loading: () => (
+    <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-fuchsia-500/5 to-sky-500/10" />
+  ),
+});
 
 function HorizonGlow() {
   return (
@@ -29,187 +32,6 @@ function HorizonGlow() {
   );
 }
 
-function TileField() {
-  const meshRef = useRef<THREE.InstancedMesh>(null);
-  const dummy = useMemo(() => new THREE.Object3D(), []);
-  const color = useMemo(() => new THREE.Color(), []);
-
-  const tiles = useMemo(() => {
-    const cols = 36;
-    const rows = 38;
-    const spacing = 0.48;
-    const offsetX = ((cols - 1) * spacing) / 2;
-    const offsetZ = rows * spacing * 0.55;
-
-    return Array.from({ length: cols * rows }, (_, index) => {
-      const x = index % cols;
-      const z = Math.floor(index / cols);
-      const position = new THREE.Vector3(x * spacing - offsetX, 0, -z * spacing + offsetZ);
-      const radial = Math.hypot(position.x, position.z + 6);
-      const depth = z / rows;
-      return {
-        position,
-        noise: Math.random() * Math.PI * 2,
-        radial,
-        depth,
-      };
-    });
-  }, []);
-
-  useEffect(() => {
-    const mesh = meshRef.current;
-    if (!mesh) {
-      return;
-    }
-
-    tiles.forEach((tile, index) => {
-      const hue = THREE.MathUtils.lerp(0.78, 0.68, tile.depth);
-      const lightness = THREE.MathUtils.lerp(0.72, 0.55, tile.depth);
-      const base = new THREE.Color().setHSL(hue, 0.72, lightness);
-      mesh.setColorAt(index, base);
-      dummy.position.copy(tile.position);
-      dummy.scale.set(0.92, 0.92, 0.92);
-      dummy.updateMatrix();
-      mesh.setMatrixAt(index, dummy.matrix);
-    });
-
-    mesh.instanceMatrix.needsUpdate = true;
-    if (mesh.instanceColor) {
-      mesh.instanceColor.needsUpdate = true;
-    }
-  }, [tiles, dummy]);
-
-  useFrame(({ clock, pointer }) => {
-    const mesh = meshRef.current;
-    if (!mesh) {
-      return;
-    }
-
-    const t = clock.getElapsedTime();
-    const pointerX = pointer.x * 7.2;
-    const pointerZ = -pointer.y * 9 - 4;
-
-    tiles.forEach((tile, index) => {
-      const wave = Math.sin(tile.position.x * 1.25 + t * 1.05 + tile.noise) * 0.08;
-      const wave2 = Math.cos(tile.position.z * 0.75 + t * 0.9 + tile.noise) * 0.07;
-      const distance = Math.hypot(tile.position.x - pointerX, tile.position.z - pointerZ);
-      const pointerLift = Math.exp(-distance * 0.38) * 0.55;
-      const walkway = Math.exp(-(tile.position.x ** 2) * 0.6) * Math.exp(-tile.depth * 2) * 0.6;
-      const baseLift = THREE.MathUtils.lerp(0.04, 0.32, 1 - tile.depth);
-      const height = baseLift + walkway + wave + wave2 + pointerLift;
-
-      dummy.position.set(tile.position.x, height * 0.48, tile.position.z);
-      const yScale = 0.65 + height * 1.35;
-      dummy.scale.setScalar(0.92);
-      dummy.scale.y = yScale;
-      dummy.rotation.set(-0.1 + height * 0.05, 0, 0);
-      dummy.updateMatrix();
-      mesh.setMatrixAt(index, dummy.matrix);
-
-      const intensity = THREE.MathUtils.clamp(0.4 + height * 0.9, 0.2, 1);
-      color.setHSL(THREE.MathUtils.lerp(0.78, 0.68, intensity), 0.8, THREE.MathUtils.lerp(0.55, 0.75, intensity));
-      mesh.setColorAt(index, color);
-    });
-
-    mesh.instanceMatrix.needsUpdate = true;
-    if (mesh.instanceColor) {
-      mesh.instanceColor.needsUpdate = true;
-    }
-  });
-
-  return (
-    <group rotation={[-0.35, 0, 0]} position={[0, -1.8, -3.2]}>
-      <instancedMesh ref={meshRef} args={[undefined, undefined, tiles.length]} castShadow receiveShadow>
-        <boxGeometry args={[0.46, 0.24, 0.46]} />
-        <meshStandardMaterial
-          vertexColors
-          emissive="#a855f7"
-          emissiveIntensity={0.25}
-          roughness={0.55}
-          metalness={0.25}
-          envMapIntensity={0.8}
-          transparent
-          opacity={0.93}
-        />
-      </instancedMesh>
-    </group>
-  );
-}
-
-type AccentConfig = {
-  position: [number, number, number];
-  args: [number, number, number];
-  color: string;
-  speed: number;
-  floatIntensity: number;
-  rotation: [number, number, number];
-};
-
-function FloatingBackdrop() {
-  const accents = useMemo<AccentConfig[]>(
-    () => [
-      {
-        position: [-5.2, 2.6, -7.8],
-        args: [1.6, 0.46, 1.6],
-        color: '#c084fc',
-        speed: 0.95,
-        floatIntensity: 0.3,
-        rotation: [0.4, 0.8, 0.2],
-      },
-      {
-        position: [4.6, 2.1, -7.2],
-        args: [1.4, 0.52, 1.4],
-        color: '#a855f7',
-        speed: 1.1,
-        floatIntensity: 0.28,
-        rotation: [-0.35, 0.5, -0.2],
-      },
-      {
-        position: [-1.2, 1.2, -6],
-        args: [1.1, 0.38, 1.1],
-        color: '#60a5fa',
-        speed: 1.35,
-        floatIntensity: 0.35,
-        rotation: [0.2, -0.4, 0.3],
-      },
-    ],
-    []
-  );
-
-  return (
-    <Canvas
-      className="absolute inset-0"
-      style={{ pointerEvents: 'none' }}
-      camera={{ position: [0, 0, 12], fov: 52 }}
-      gl={{ antialias: true, alpha: true }}
-    >
-      <ambientLight intensity={0.45} />
-      <directionalLight position={[6, 6, 5]} intensity={0.35} color="#f0abfc" />
-      <directionalLight position={[-6, -4, -3]} intensity={0.25} color="#60a5fa" />
-
-      {accents.map(({ position, args, color: tone, speed, floatIntensity, rotation }, index) => (
-        <Float key={index} speed={speed} rotationIntensity={0.28} floatIntensity={floatIntensity}>
-          <group position={position} rotation={rotation}>
-            <RoundedBox args={args} radius={Math.min(...args) * 0.28} smoothness={6}>
-              <meshStandardMaterial
-                color={tone}
-                metalness={0.32}
-                roughness={0.24}
-                emissive={tone}
-                emissiveIntensity={0.28}
-              />
-            </RoundedBox>
-          </group>
-        </Float>
-      ))}
-
-      <EffectComposer>
-        <Bloom intensity={0.25} luminanceThreshold={0.26} luminanceSmoothing={0.4} />
-      </EffectComposer>
-    </Canvas>
-  );
-}
-
 export default function HeroSection() {
   const highlights = [
     'Immersive WebGL storytelling',
@@ -220,27 +42,13 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="relative flex min-h-dvh flex-col justify-center overflow-hidden bg-gradient-to-b from-[#fdf3dc] via-[#f8f4ff] to-[#eef1ff] text-neutral-900 dark:from-[#140b24] dark:via-[#1b1530] dark:to-[#0f1628] dark:text-white"
+      className="relative flex min-h-dvh supports-[height:100dvh]:min-h-dvh flex-col justify-center overflow-hidden bg-gradient-to-b from-[#fdf3dc] via-[#f8f4ff] to-[#eef1ff] text-neutral-900 dark:from-[#140b24] dark:via-[#1b1530] dark:to-[#0f1628] dark:text-white"
     >
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/20 to-white/60 dark:via-white/5 dark:to-white/5" />
         <HorizonGlow />
-        <FloatingBackdrop />
         <div className="absolute inset-x-0 bottom-0 h-[60vh] min-h-[320px]">
-          <Canvas camera={{ position: [0, 5.8, 9.6], fov: 38 }} gl={{ antialias: true, alpha: true }}>
-            <ambientLight intensity={0.45} />
-            <directionalLight position={[6, 10, 6]} intensity={0.8} color="#fbcfe8" />
-            <directionalLight position={[-6, 5, -6]} intensity={0.4} color="#a855f7" />
-            <pointLight position={[0, 4.2, 4]} intensity={0.55} color="#f5d0fe" />
-            <pointLight position={[0, 3, -6]} intensity={0.35} color="#c4b5fd" />
-
-            <TileField />
-
-            <Environment preset="sunset" />
-            <EffectComposer>
-              <Bloom intensity={0.6} luminanceThreshold={0.1} luminanceSmoothing={0.4} />
-            </EffectComposer>
-          </Canvas>
+          <FloatingBackdrop />
           <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#fdf3dc] via-transparent to-transparent dark:from-[#140b24]" />
         </div>
       </div>
@@ -252,7 +60,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: 'easeOut' }}
         >
-          Vardhan — Creative Developer
+          Vardhan  Creative Developer
         </motion.div>
 
         <motion.h1
@@ -270,8 +78,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2, ease: 'easeOut' }}
         >
-          Hi, I&apos;m Vardhan. I blend realtime 3D, thoughtful UX, and dependable engineering to shape personal, high-impact
-          digital experiences. I help teams launch ideas that feel tactile, human, and unforgettable.
+          Hi, I&apos;m Vardhan. I blend realtime 3D, thoughtful UX, and dependable engineering to shape personal, high-impact digital experiences. I help teams launch ideas that feel tactile, human, and unforgettable.
         </motion.p>
 
         <motion.div
@@ -284,7 +91,8 @@ export default function HeroSection() {
             href="#contact"
             whileHover={{ scale: 1.04, y: -2 }}
             whileTap={{ scale: 0.98 }}
-            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-500 px-10 py-4 text-lg font-semibold text-white shadow-[0_25px_70px_-25px_rgba(147,51,234,0.75)] transition-all duration-300"
+            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-500 px-10 py-4 text-lg font-semibold text-white shadow-[0_25px_70px_-25px_rgba(147,51,234,0.75)] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 dark:focus:ring-fuchsia-400"
+            aria-label="Navigate to contact section"
           >
             Let&apos;s collaborate
           </motion.a>
@@ -292,7 +100,8 @@ export default function HeroSection() {
             href="#projects"
             whileHover={{ scale: 1.04, y: -2 }}
             whileTap={{ scale: 0.98 }}
-            className="inline-flex items-center justify-center rounded-full border border-purple-200/70 bg-white/60 px-10 py-4 text-lg font-semibold text-purple-600 backdrop-blur-xl transition-all duration-300 hover:border-purple-300 hover:bg-white/80 dark:border-white/20 dark:bg-white/10 dark:text-purple-200 dark:hover:border-purple-200/40"
+            className="inline-flex items-center justify-center rounded-full border border-purple-200/70 bg-white/60 px-10 py-4 text-lg font-semibold text-purple-600 backdrop-blur-xl transition-all duration-300 hover:border-purple-300 hover:bg-white/80 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 dark:border-white/20 dark:bg-white/10 dark:text-purple-200 dark:hover:border-purple-200/40 dark:focus:ring-fuchsia-400"
+            aria-label="Navigate to projects section"
           >
             See my work
           </motion.a>
@@ -317,19 +126,3 @@ export default function HeroSection() {
     </section>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

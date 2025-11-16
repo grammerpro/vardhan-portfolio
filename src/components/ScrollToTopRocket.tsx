@@ -77,7 +77,7 @@ export default function ScrollToTopRocket({
     <button
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      className={`fixed z-50 overflow-visible rounded-[28px] border border-white/70 bg-white/80 shadow-[0_20px_45px_-18px_rgba(56,189,248,0.55)] backdrop-blur-md transition-transform duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2 ${ringClass} ${animClass} px-5 pt-5 pb-4 dark:border-slate-700/80 dark:bg-slate-900/80 dark:shadow-[0_24px_48px_-20px_rgba(12,74,110,0.7)] focus:ring-offset-white dark:focus:ring-offset-slate-900`}
+      className={`fixed z-[9999] overflow-visible rounded-[28px] border border-white/70 bg-white/80 shadow-[0_20px_45px_-18px_rgba(56,189,248,0.55)] backdrop-blur-md transition-transform duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2 ${ringClass} ${animClass} px-5 pt-5 pb-4 dark:border-slate-700/80 dark:bg-slate-900/80 dark:shadow-[0_24px_48px_-20px_rgba(12,74,110,0.7)] focus:ring-offset-white dark:focus:ring-offset-slate-900`}
       style={{
         bottom: `calc(${offset.bottom}px + env(safe-area-inset-bottom, 0px))`,
         left: `${offset.left}px`,

@@ -11,21 +11,25 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Vardhan - Creative Developer | 3D Web Experiences & AI Integration",
-  description: "Creative developer crafting sleek web experiences with AI, 3D & creativity. Specializing in Next.js, Three.js, React, and modern web technologies.",
+  title: {
+    default: "Vardhan - Creative Developer | WebGL & AI Design",
+    template: "%s | Vardhan"
+  },
+  description: "Portfolio of Vardhan - Frontend engineer specializing in immersive 3D web experiences, AI-assisted workflows, and polished product launches. Expert in WebGL, Three.js, React, and Next.js.",
   keywords: [
-    "creative developer",
-    "web developer",
-    "frontend developer",
-    "3D web development",
+    "WebGL",
     "Three.js",
-    "Next.js",
+    "Frontend Developer",
     "React",
+    "Next.js",
+    "creative developer",
+    "3D web development",
     "AI integration",
+    "immersive web experiences",
     "portfolio",
     "Vardhan"
   ],
-  authors: [{ name: "Vardhan", url: "https://vardhan-portfolio.com" }],
+  authors: [{ name: "Vardhan", url: "https://vardhansudo.me" }],
   creator: "Vardhan",
   publisher: "Vardhan",
   formatDetection: {
@@ -33,21 +37,21 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://vardhan-portfolio.com'),
+  metadataBase: new URL('https://vardhansudo.me'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: "Vardhan - Creative Developer | 3D Web Experiences",
-    description: "Creative developer crafting sleek web experiences with AI, 3D & creativity. Explore my portfolio of innovative web projects.",
-  url: "https://vardhan-portfolio.com",
+    title: "Vardhan - Creative Developer | WebGL & AI Design",
+    description: "Designing immersive web moments with purpose. Frontend engineer specializing in 3D web experiences, AI workflows, and modern web technologies.",
+    url: "https://vardhansudo.me",
     siteName: "Vardhan Portfolio",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Vardhan - Creative Developer Portfolio",
+        alt: "Vardhan - Creative Developer Portfolio showcasing WebGL and Three.js projects",
       },
     ],
     locale: "en_US",
@@ -55,10 +59,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Vardhan - Creative Developer | 3D Web Experiences",
-    description: "Creative developer crafting sleek web experiences with AI, 3D & creativity.",
+    title: "Vardhan - Creative Developer | WebGL & AI Design",
+    description: "Designing immersive web moments with purpose. Specializing in WebGL, Three.js, and modern web experiences.",
     images: ["/og-image.jpg"],
-  creator: "@vardhan_dev",
+    creator: "@vardhan_dev",
   },
   robots: {
     index: true,
@@ -108,9 +112,16 @@ export default function RootLayout({
         suppressHydrationWarning={true}
       >
         <ThemeProvider>
+          {/* Skip to main content link for accessibility */}
+          <a 
+            href="#main-content" 
+            className="sr-only focus:not-sr-only focus:absolute focus:z-[9999] focus:top-4 focus:left-4 focus:p-4 focus:bg-purple-600 focus:text-white focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 dark:focus:bg-fuchsia-600 dark:focus:ring-fuchsia-400"
+          >
+            Skip to main content
+          </a>
           <Navbar />
           <InteractiveCursor />
-          <main>
+          <main id="main-content">
             <PageTransition>{children}</PageTransition>
           </main>
           <AssistantWidget
@@ -123,6 +134,27 @@ export default function RootLayout({
           />
           <ScrollToTopRocket />
         </ThemeProvider>
+        
+        {/* JSON-LD Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "name": "Vardhan",
+              "url": "https://vardhansudo.me",
+              "jobTitle": "Creative Developer",
+              "description": "Frontend engineer specializing in immersive 3D web experiences and AI-assisted workflows",
+              "knowsAbout": ["WebGL", "Three.js", "React", "Next.js", "AI Design", "Frontend Development"],
+              "sameAs": [
+                "https://github.com/vardhan",
+                "https://linkedin.com/in/vardhan",
+                "https://twitter.com/vardhan_dev"
+              ]
+            })
+          }}
+        />
       </body>
     </html>
   );
