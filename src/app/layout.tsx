@@ -137,10 +137,10 @@ export default function RootLayout({
           </main>
           <AssistantWidget
             theme="auto"
-            kbUrl="/src/assistant-widget/kb-user.json"
+            kbUrl="/data/resume.json"
             avatarUrl="/assets/avatar.svg"
             agentName="Vardhan"
-            enableVoice={false}
+            enableVoice={true}
             showButton={true}
           />
           <ScrollToTopRocket />
