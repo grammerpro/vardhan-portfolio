@@ -1,5 +1,5 @@
 'use client';
-import { Suspense, useEffect, useMemo, useRef } from 'react';
+import { Suspense, useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Environment, Float, ContactShadows } from '@react-three/drei';
 import { motion } from 'framer-motion';
@@ -8,9 +8,7 @@ import KeyboardModel from './KeyboardModel';
 
 function Particles({ count = 2000 }) {
   const mesh = useRef<THREE.InstancedMesh>(null);
-  const light = useRef<THREE.PointLight>(null);
-  const { size, viewport } = useThree();
-  const aspect = size.width / viewport.width;
+  const { viewport } = useThree();
 
   const dummy = useMemo(() => new THREE.Object3D(), []);
   const particles = useMemo(() => {
@@ -35,7 +33,8 @@ function Particles({ count = 2000 }) {
     const my = (state.mouse.y * viewport.height) / 2;
 
     particles.forEach((particle, i) => {
-      let { t, factor, speed, xFactor, yFactor, zFactor } = particle;
+      let { t } = particle;
+      const { factor, speed, xFactor, yFactor, zFactor } = particle;
       t = particle.t += speed / 2;
       const a = Math.cos(t) + Math.sin(t * 1) / 10;
       const b = Math.sin(t) + Math.cos(t * 2) / 10;
