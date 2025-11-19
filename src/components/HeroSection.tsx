@@ -1,10 +1,9 @@
 'use client';
-import { Suspense, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Environment, Float, ContactShadows } from '@react-three/drei';
+import { Environment } from '@react-three/drei';
 import { motion } from 'framer-motion';
 import * as THREE from 'three';
-import ProceduralKeyboard from './ProceduralKeyboard';
 
 function Particles({ count = 2000 }) {
   const mesh = useRef<THREE.InstancedMesh>(null);
@@ -90,15 +89,6 @@ export default function HeroSection() {
           <ambientLight intensity={0.5} />
           <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
           <pointLight position={[-10, -10, -10]} intensity={1} color="#0ea5e9" />
-          
-          <Suspense fallback={null}>
-            <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-              <group position={[0, 0, 0]} rotation={[0.1, 0, 0]} scale={0.8}>
-                <ProceduralKeyboard />
-              </group>
-            </Float>
-            <ContactShadows resolution={1024} scale={20} blur={2} opacity={0.5} far={10} color="#0ea5e9" />
-          </Suspense>
           
           <Particles />
           <Rig />
