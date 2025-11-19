@@ -36,10 +36,10 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
     }
   });
 
-  // Colors based on the Bitmoji (Blonde hair, Blue shirt)
+  // Colors based on the Bitmoji (Black hair, Blue shirt)
   const skinColor = "#f5d0b0";
   const shirtColor = "#3b82f6"; // Blue-500 (Vibrant)
-  const hairColor = "#fbbf24"; // Amber-400
+  const hairColor = "#1a1a1a"; // Black Hair
   const pantsColor = "#1e3a8a"; // Dark Blue Jeans
   const shoeColor = "#ffffff";
 
@@ -88,18 +88,24 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
           <meshStandardMaterial color={skinColor} roughness={0.5} />
         </mesh>
         
-        {/* Hair - More volume */}
-        <mesh position={[0, 0.15, -0.05]}>
-          <sphereGeometry args={[0.4, 64, 64]} />
+        {/* Hair - Short Black Hair (No bun/turbine) */}
+        {/* Main hair cap */}
+        <mesh position={[0, 0.1, -0.05]}>
+          <sphereGeometry args={[0.39, 64, 64, 0, Math.PI * 2, 0, Math.PI / 2]} />
           <meshStandardMaterial color={hairColor} roughness={0.9} />
         </mesh>
-        {/* Hair Bangs */}
-        <mesh position={[0, 0.35, 0.15]}>
-          <sphereGeometry args={[0.15, 32, 32]} />
+        {/* Sideburns/Volume */}
+        <mesh position={[-0.35, 0, 0]}>
+          <sphereGeometry args={[0.1, 32, 32]} />
           <meshStandardMaterial color={hairColor} roughness={0.9} />
         </mesh>
-        <mesh position={[-0.2, 0.25, 0.1]}>
-          <sphereGeometry args={[0.12, 32, 32]} />
+        <mesh position={[0.35, 0, 0]}>
+          <sphereGeometry args={[0.1, 32, 32]} />
+          <meshStandardMaterial color={hairColor} roughness={0.9} />
+        </mesh>
+        {/* Top volume (flatter) */}
+        <mesh position={[0, 0.38, 0]}>
+          <cylinderGeometry args={[0.25, 0.35, 0.1]} />
           <meshStandardMaterial color={hairColor} roughness={0.9} />
         </mesh>
 
@@ -113,21 +119,31 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
           <meshStandardMaterial color="black" roughness={0.2} />
         </mesh>
 
-        {/* Glasses - Refined */}
-        <group position={[0, 0.05, 0.32]}>
-            {/* Frame */}
+        {/* Glasses - Thick Black Frames */}
+        <group position={[0, 0.05, 0.34]}>
+            {/* Left Lens Frame */}
             <mesh position={[-0.12, 0, 0]}>
-                <torusGeometry args={[0.08, 0.015, 16, 32]} />
-                <meshStandardMaterial color="#111" metalness={0.8} roughness={0.2} />
+                <torusGeometry args={[0.09, 0.02, 16, 32]} />
+                <meshStandardMaterial color="#000" metalness={0.6} roughness={0.2} />
             </mesh>
+            {/* Right Lens Frame */}
             <mesh position={[0.12, 0, 0]}>
-                <torusGeometry args={[0.08, 0.015, 16, 32]} />
-                <meshStandardMaterial color="#111" metalness={0.8} roughness={0.2} />
+                <torusGeometry args={[0.09, 0.02, 16, 32]} />
+                <meshStandardMaterial color="#000" metalness={0.6} roughness={0.2} />
             </mesh>
             {/* Bridge */}
             <mesh position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-                <cylinderGeometry args={[0.01, 0.01, 0.06]} />
-                <meshStandardMaterial color="#111" />
+                <cylinderGeometry args={[0.015, 0.015, 0.08]} />
+                <meshStandardMaterial color="#000" />
+            </mesh>
+            {/* Temple Arms */}
+            <mesh position={[-0.2, 0, -0.15]} rotation={[0, -0.2, 0]}>
+                <boxGeometry args={[0.02, 0.02, 0.3]} />
+                <meshStandardMaterial color="#000" />
+            </mesh>
+            <mesh position={[0.2, 0, -0.15]} rotation={[0, 0.2, 0]}>
+                <boxGeometry args={[0.02, 0.02, 0.3]} />
+                <meshStandardMaterial color="#000" />
             </mesh>
         </group>
 
@@ -138,8 +154,14 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
         </mesh>
       </group>
 
-      {/* Right Arm (Waving) */}
-      <group ref={rightArm} position={[0.42, 0.2, 0]}>
+      {/* Right Arm (Waving) - Blended Shoulder */}
+      <group ref={rightArm} position={[0.38, 0.25, 0]}>
+        {/* Shoulder Joint */}
+        <mesh position={[-0.05, 0, 0]}>
+           <sphereGeometry args={[0.14, 32, 32]} />
+           <meshStandardMaterial color={shirtColor} roughness={0.7} />
+        </mesh>
+        {/* Arm Segment */}
         <mesh position={[0, -0.25, 0]}>
           <capsuleGeometry args={[0.11, 0.5, 4, 8]} />
           <meshStandardMaterial color={shirtColor} roughness={0.7} />
@@ -151,8 +173,14 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
         </mesh>
       </group>
 
-      {/* Left Arm (Idle) */}
-      <group position={[-0.42, 0.2, 0]} rotation={[0, 0, 0.1]}>
+      {/* Left Arm (Idle) - Blended Shoulder */}
+      <group position={[-0.38, 0.25, 0]} rotation={[0, 0, 0.1]}>
+        {/* Shoulder Joint */}
+        <mesh position={[0.05, 0, 0]}>
+           <sphereGeometry args={[0.14, 32, 32]} />
+           <meshStandardMaterial color={shirtColor} roughness={0.7} />
+        </mesh>
+        {/* Arm Segment */}
         <mesh position={[0, -0.25, 0]}>
           <capsuleGeometry args={[0.11, 0.5, 4, 8]} />
           <meshStandardMaterial color={shirtColor} roughness={0.7} />
