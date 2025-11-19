@@ -5,6 +5,7 @@ import InteractiveCursor from "@/components/InteractiveCursor";
 import ThemeProvider from "@/components/ThemeProvider";
 import PageTransition from "@/components/PageTransition";
 import AssistantWidget from "@/react/AssistantWidget";
+import ThreeDAvatarLauncher from "@/components/ThreeDAvatarLauncher";
 import ScrollToTopRocket from "@/components/ScrollToTopRocket";
 import { Inter, Space_Grotesk } from "next/font/google";
 
@@ -141,8 +142,9 @@ export default function RootLayout({
             avatarUrl="https://api.dicebear.com/9.x/avataaars/svg?seed=Vardhan&backgroundColor=b6e3f4"
             agentName="Vardhan"
             enableVoice={true}
-            showButton={true}
+            showButton={false}
           />
+          <ThreeDAvatarLauncher />
           <ScrollToTopRocket />
         </ThemeProvider>
         
