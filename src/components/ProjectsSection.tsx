@@ -52,7 +52,17 @@ const projects = [
 
 const categories = ['All', 'Web Development', 'Data Analytics', 'Mobile Development', 'AI Integration', 'Web Design'];
 
-function ProjectCard({ project, index }: { project: any, index: number }) {
+interface Project {
+  id: number;
+  title: string;
+  category: string;
+  description: string;
+  tags: string[];
+  color: string;
+  span: string;
+}
+
+function ProjectCard({ project }: { project: Project }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -147,8 +157,8 @@ export default function ProjectsSection() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:grid-rows-3">
-          {filteredProjects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
+          {filteredProjects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
           ))}
         </div>
       </div>
