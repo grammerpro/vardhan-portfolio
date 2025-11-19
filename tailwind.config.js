@@ -8,6 +8,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        sans: ['var(--font-inter)', 'ui-sans-serif', 'system-ui'],
+        display: ['var(--font-space-grotesk)', 'ui-sans-serif', 'system-ui'],
         mono: ['Courier New', 'monospace'],
       },
     },

@@ -123,6 +123,23 @@ export default function HeroSection() {
           ))}
         </motion.ul>
       </div>
+
+      {/* Scroll Indicator */}
+      <motion.div
+        className="absolute bottom-10 left-1/2 -translate-x-1/2"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.5, duration: 1 }}
+      >
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="flex flex-col items-center gap-2"
+        >
+          <span className="text-xs font-medium uppercase tracking-widest text-neutral-500 dark:text-neutral-400">Scroll</span>
+          <div className="h-12 w-[1px] bg-gradient-to-b from-neutral-300 to-transparent dark:from-neutral-700"></div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

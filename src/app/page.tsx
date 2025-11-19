@@ -4,6 +4,7 @@ import ProjectsSection from "@/components/ProjectsSection";
 import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
 import ResumeAssistant from "@/components/ResumeAssistant";
+import Footer from "@/components/Footer";
 
 export default function HomePage() {
   return (
@@ -13,6 +14,7 @@ export default function HomePage() {
       <ProjectsSection />
       <AboutSection />
       <ContactSection />
+      <Footer />
 
       {/* Resume Assistant Widget */}
       <ResumeAssistant
