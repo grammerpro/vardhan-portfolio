@@ -3,11 +3,12 @@ export const siteConfig = {
   name: "Vardhan",
   tagline: "Creative developer crafting fast web experiences",
   description: "Senior web engineer specializing in modern web technologies and user experience",
-  email: "vardhan@example.com",
+  email: "vardhana1209@gmail.com",
   location: "San Francisco, CA",
   social: {
-    linkedin: "https://linkedin.com/in/vardhan",
-    github: "https://github.com/vardhan",
+    linkedin: "https://www.linkedin.com/in/sri-vardhan-7b5853184/",
+    github: "https://github.com/grammerpro",
+    leetcode: "https://leetcode.com/u/sudovardhan/",
     twitter: "https://twitter.com/vardhan"
   }
 };
@@ -48,7 +49,7 @@ export const projectsConfig = [
     image: "/placeholder-project1.jpg",
     tags: ["React", "Node.js", "MongoDB", "Stripe"],
     demo: "https://demo.example.com",
-    github: "https://github.com/vardhan/ecommerce"
+    github: "https://github.com/grammerpro/ecommerce"
   },
   {
     id: 2,
@@ -58,7 +59,7 @@ export const projectsConfig = [
     image: "/placeholder-project2.jpg",
     tags: ["D3.js", "Python", "PostgreSQL", "FastAPI"],
     demo: "https://dashboard.example.com",
-    github: "https://github.com/vardhan/dashboard"
+    github: "https://github.com/grammerpro/dashboard"
   },
   {
     id: 3,
@@ -68,7 +69,7 @@ export const projectsConfig = [
     image: "/placeholder-project3.jpg",
     tags: ["React Native", "Firebase", "TypeScript"],
     demo: "https://app.example.com",
-    github: "https://github.com/vardhan/banking-app"
+    github: "https://github.com/grammerpro/banking-app"
   },
   {
     id: 4,
@@ -78,7 +79,7 @@ export const projectsConfig = [
     image: "/placeholder-project4.jpg",
     tags: ["Next.js", "OpenAI", "Socket.io", "Redis"],
     demo: "https://chat.example.com",
-    github: "https://github.com/vardhan/ai-chat"
+    github: "https://github.com/grammerpro/ai-chat"
   },
   {
     id: 5,
@@ -88,7 +89,7 @@ export const projectsConfig = [
     image: "/placeholder-project5.jpg",
     tags: ["Next.js", "Three.js", "Tailwind", "Framer Motion"],
     demo: "https://portfolio.example.com",
-    github: "https://github.com/vardhan/portfolio"
+    github: "https://github.com/grammerpro/portfolio"
   }
 ];
 

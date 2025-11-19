@@ -159,9 +159,9 @@ export default function RootLayout({
               "description": "Frontend engineer specializing in immersive 3D web experiences and AI-assisted workflows",
               "knowsAbout": ["WebGL", "Three.js", "React", "Next.js", "AI Design", "Frontend Development"],
               "sameAs": [
-                "https://github.com/vardhan",
-                "https://linkedin.com/in/vardhan",
-                "https://twitter.com/vardhan_dev"
+                "https://github.com/grammerpro",
+                "https://www.linkedin.com/in/sri-vardhan-7b5853184/",
+                "https://leetcode.com/u/sudovardhan/"
               ]
             })
           }}

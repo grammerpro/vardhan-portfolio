@@ -4,11 +4,12 @@
 Creative developer specializing in modern web technologies, 3D graphics, and AI integration. Passionate about crafting immersive digital experiences that combine technical excellence with creative vision. Based in Cincinnati, Ohio with 4+ years of experience in frontend development and creative coding.
 
 ## Contact Information
-- **Email:** vardhan@example.com
+- **Email:** vardhana1209@gmail.com
 - **Location:** Cincinnati, Ohio
-- **LinkedIn:** linkedin.com/in/vardhan
-- **GitHub:** github.com/vardhan
-- **Portfolio:** vardhan-portfolio.com
+- **LinkedIn:** https://www.linkedin.com/in/sri-vardhan-7b5853184/
+- **GitHub:** https://github.com/grammerpro
+- **LeetCode:** https://leetcode.com/u/sudovardhan/
+- **Portfolio:** vardhansudo.me
 
 ## Skills
 ### Technical Skills

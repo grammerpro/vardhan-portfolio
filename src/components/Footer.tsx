@@ -13,7 +13,7 @@ export default function Footer() {
               I&apos;m currently available for freelance projects and open to full-time opportunities.
             </p>
             <a
-              href="mailto:hello@vardhan.dev"
+              href="mailto:vardhana1209@gmail.com"
               className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3 text-sm font-semibold text-neutral-950 transition-colors hover:bg-neutral-200"
             >
               Get in touch
@@ -33,10 +33,9 @@ export default function Footer() {
           <div>
             <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-neutral-500">Socials</h3>
             <ul className="space-y-3">
-              <li><a href="#" className="text-neutral-300 hover:text-white">Twitter / X</a></li>
-              <li><a href="#" className="text-neutral-300 hover:text-white">GitHub</a></li>
-              <li><a href="#" className="text-neutral-300 hover:text-white">LinkedIn</a></li>
-              <li><a href="#" className="text-neutral-300 hover:text-white">Instagram</a></li>
+              <li><a href="https://github.com/grammerpro" target="_blank" rel="noopener noreferrer" className="text-neutral-300 hover:text-white">GitHub</a></li>
+              <li><a href="https://www.linkedin.com/in/sri-vardhan-7b5853184/" target="_blank" rel="noopener noreferrer" className="text-neutral-300 hover:text-white">LinkedIn</a></li>
+              <li><a href="https://leetcode.com/u/sudovardhan/" target="_blank" rel="noopener noreferrer" className="text-neutral-300 hover:text-white">LeetCode</a></li>
             </ul>
           </div>
         </div>

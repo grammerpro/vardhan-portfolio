@@ -38,7 +38,7 @@ export default function ContactSection() {
   };
 
   const copyEmail = () => {
-    navigator.clipboard.writeText('vardhan@example.com');
+    navigator.clipboard.writeText('vardhana1209@gmail.com');
     // You could add a toast notification here
   };
 
@@ -111,14 +111,14 @@ export default function ContactSection() {
                 </div>
                 <div>
                   <div className="font-medium text-gray-900">Email</div>
-                  <div className="text-gray-600">vardhan@example.com</div>
+                  <div className="text-gray-600">vardhana1209@gmail.com</div>
                 </div>
                 <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <span className="text-sm text-sky-600 font-medium">Copy</span>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-300">
+              <a href="https://www.linkedin.com/in/sri-vardhan-7b5853184/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-300">
                 <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white text-xl">
                   💼
                 </div>
@@ -126,9 +126,9 @@ export default function ContactSection() {
                   <div className="font-medium text-gray-900">LinkedIn</div>
                   <div className="text-gray-600">Connect professionally</div>
                 </div>
-              </div>
+              </a>
 
-              <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-300">
+              <a href="https://github.com/grammerpro" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-300">
                 <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white text-xl">
                   🐙
                 </div>
@@ -136,7 +136,7 @@ export default function ContactSection() {
                   <div className="font-medium text-gray-900">GitHub</div>
                   <div className="text-gray-600">Check out my code</div>
                 </div>
-              </div>
+              </a>
             </motion.div>
 
             {/* Availability Status */}

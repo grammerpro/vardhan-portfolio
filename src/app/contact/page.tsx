@@ -7,13 +7,16 @@ export default function ContactPage() {
       </p>
       <ul className="text-lg text-sky-700 space-y-2">
         <li>
-          <a href="mailto:adabalavardhan@gmail.com" className="underline">Email</a>
+          <a href="mailto:vardhana1209@gmail.com" className="underline">Email</a>
         </li>
         <li>
-          <a href="https://www.linkedin.com/in/vardhanadabala" target="_blank" rel="noopener noreferrer" className="underline">LinkedIn</a>
+          <a href="https://www.linkedin.com/in/sri-vardhan-7b5853184/" target="_blank" rel="noopener noreferrer" className="underline">LinkedIn</a>
         </li>
         <li>
-          <a href="https://github.com/vardhantech" target="_blank" rel="noopener noreferrer" className="underline">GitHub</a>
+          <a href="https://github.com/grammerpro" target="_blank" rel="noopener noreferrer" className="underline">GitHub</a>
+        </li>
+        <li>
+          <a href="https://leetcode.com/u/sudovardhan/" target="_blank" rel="noopener noreferrer" className="underline">LeetCode</a>
         </li>
       </ul>
     </div>
