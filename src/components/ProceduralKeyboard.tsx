@@ -1,15 +1,26 @@
 'use client';
 
-import React, { useRef, useMemo } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { RoundedBox, Text, useTexture } from '@react-three/drei';
+import React, { useRef } from 'react';
+import { useFrame, ThreeElements } from '@react-three/fiber';
+import { RoundedBox, Text } from '@react-three/drei';
 import * as THREE from 'three';
 
-const Key = ({ position, color, label, width = 0.8, height = 0.8, depth = 0.4, fontSize = 0.2, textColor = 'white' }: any) => {
+interface KeyProps {
+  position: [number, number, number];
+  color: string;
+  label: string;
+  width?: number;
+  height?: number;
+  depth?: number;
+  fontSize?: number;
+  textColor?: string;
+}
+
+const Key = ({ position, color, label, width = 0.8, height = 0.8, depth = 0.4, fontSize = 0.2, textColor = 'white' }: KeyProps) => {
   const mesh = useRef<THREE.Mesh>(null);
   const [hovered, setHover] = React.useState(false);
 
-  useFrame((state) => {
+  useFrame(() => {
     if (mesh.current) {
       const targetY = hovered ? position[1] - 0.1 : position[1];
       mesh.current.position.y += (targetY - mesh.current.position.y) * 0.1;
@@ -87,7 +98,7 @@ const Oscilloscope = ({ position }: { position: [number, number, number] }) => {
   );
 };
 
-export default function ProceduralKeyboard(props: any) {
+export default function ProceduralKeyboard(props: ThreeElements['group']) {
   return (
     <group {...props}>
       {/* Main Body */}
