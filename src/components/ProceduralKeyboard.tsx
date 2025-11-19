@@ -119,11 +119,11 @@ export default function ProceduralKeyboard(props: any) {
              <meshStandardMaterial color="#000" />
         </RoundedBox>
         <Text position={[-1.5, 0, 0.06]} fontSize={0.15} color="#00ff00" anchorX="left" anchorY="middle">
-            Checking Freelance Availability...
+            Available For Freelance
         </Text>
         <mesh position={[1.5, 0, 0.06]}>
             <circleGeometry args={[0.1, 16]} />
-            <meshBasicMaterial color="#222" />
+            <meshBasicMaterial color="#00ff00" toneMapped={false} />
         </mesh>
       </group>
 
