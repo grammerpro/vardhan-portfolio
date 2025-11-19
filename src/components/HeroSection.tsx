@@ -4,6 +4,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import { motion } from 'framer-motion';
 import * as THREE from 'three';
+import InteractiveShapes from './InteractiveShapes';
 
 function Particles({ count = 2000 }) {
   const mesh = useRef<THREE.InstancedMesh>(null);
@@ -91,6 +92,7 @@ export default function HeroSection() {
           <pointLight position={[-10, -10, -10]} intensity={1} color="#0ea5e9" />
           
           <Particles />
+          <InteractiveShapes />
           <Rig />
           <Environment preset="city" />
         </Canvas>
