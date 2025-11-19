@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Environment, ContactShadows, Float } from '@react-three/drei';
+import { Environment, ContactShadows, Float, RoundedBox } from '@react-three/drei';
 import * as THREE from 'three';
 
 function AvatarModel({ onClick }: { onClick: () => void }) {
@@ -38,8 +38,8 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
 
   // Colors based on the Bitmoji (Blonde hair, Blue shirt)
   const skinColor = "#f5d0b0";
-  const shirtColor = "#60a5fa"; // Blue-400
-  const hairColor = "#fcd34d"; // Amber-300
+  const shirtColor = "#3b82f6"; // Blue-500 (Vibrant)
+  const hairColor = "#fbbf24"; // Amber-400
   const pantsColor = "#1e3a8a"; // Dark Blue Jeans
   const shoeColor = "#ffffff";
 
@@ -49,98 +49,116 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
       onClick={onClick} 
       onPointerOver={() => setHover(true)} 
       onPointerOut={() => setHover(false)}
-      position={[0, -0.5, 0]}
+      position={[0, -0.8, 0]}
     >
-      {/* Torso */}
-      <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[0.6, 0.7, 0.3]} />
-        <meshStandardMaterial color={shirtColor} />
+      {/* Torso - Rounded for organic look */}
+      <RoundedBox args={[0.65, 0.75, 0.35]} radius={0.15} smoothness={4} position={[0, 0, 0]}>
+        <meshStandardMaterial color={shirtColor} roughness={0.7} />
+      </RoundedBox>
+
+      {/* Neck */}
+      <mesh position={[0, 0.4, 0]}>
+        <cylinderGeometry args={[0.15, 0.15, 0.2]} />
+        <meshStandardMaterial color={skinColor} />
       </mesh>
 
-      {/* Legs */}
-      <mesh position={[-0.15, -0.6, 0]}>
-        <cylinderGeometry args={[0.12, 0.12, 0.6]} />
-        <meshStandardMaterial color={pantsColor} />
+      {/* Legs - Using Capsules for roundness */}
+      <mesh position={[-0.2, -0.6, 0]}>
+        <capsuleGeometry args={[0.13, 0.6, 4, 8]} />
+        <meshStandardMaterial color={pantsColor} roughness={0.8} />
       </mesh>
-      <mesh position={[0.15, -0.6, 0]}>
-        <cylinderGeometry args={[0.12, 0.12, 0.6]} />
-        <meshStandardMaterial color={pantsColor} />
+      <mesh position={[0.2, -0.6, 0]}>
+        <capsuleGeometry args={[0.13, 0.6, 4, 8]} />
+        <meshStandardMaterial color={pantsColor} roughness={0.8} />
       </mesh>
 
-      {/* Shoes */}
-      <mesh position={[-0.15, -0.95, 0.05]}>
-        <boxGeometry args={[0.15, 0.1, 0.25]} />
+      {/* Shoes - Rounded Boxes */}
+      <RoundedBox args={[0.2, 0.15, 0.35]} radius={0.05} smoothness={4} position={[-0.2, -1.0, 0.1]}>
         <meshStandardMaterial color={shoeColor} />
-      </mesh>
-      <mesh position={[0.15, -0.95, 0.05]}>
-        <boxGeometry args={[0.15, 0.1, 0.25]} />
+      </RoundedBox>
+      <RoundedBox args={[0.2, 0.15, 0.35]} radius={0.05} smoothness={4} position={[0.2, -1.0, 0.1]}>
         <meshStandardMaterial color={shoeColor} />
-      </mesh>
+      </RoundedBox>
 
       {/* Head Group */}
-      <group ref={head} position={[0, 0.6, 0]}>
+      <group ref={head} position={[0, 0.65, 0]}>
         {/* Face */}
         <mesh position={[0, 0, 0]}>
-          <sphereGeometry args={[0.35, 32, 32]} />
-          <meshStandardMaterial color={skinColor} />
+          <sphereGeometry args={[0.38, 64, 64]} />
+          <meshStandardMaterial color={skinColor} roughness={0.5} />
         </mesh>
         
-        {/* Hair (Simplified) */}
-        <mesh position={[0, 0.1, -0.05]}>
-          <sphereGeometry args={[0.36, 32, 32]} />
-          <meshStandardMaterial color={hairColor} />
+        {/* Hair - More volume */}
+        <mesh position={[0, 0.15, -0.05]}>
+          <sphereGeometry args={[0.4, 64, 64]} />
+          <meshStandardMaterial color={hairColor} roughness={0.9} />
         </mesh>
-        <mesh position={[0, 0.3, 0.05]}>
+        {/* Hair Bangs */}
+        <mesh position={[0, 0.35, 0.15]}>
           <sphereGeometry args={[0.15, 32, 32]} />
-          <meshStandardMaterial color={hairColor} />
+          <meshStandardMaterial color={hairColor} roughness={0.9} />
+        </mesh>
+        <mesh position={[-0.2, 0.25, 0.1]}>
+          <sphereGeometry args={[0.12, 32, 32]} />
+          <meshStandardMaterial color={hairColor} roughness={0.9} />
         </mesh>
 
         {/* Eyes */}
-        <mesh position={[-0.12, 0.05, 0.3]}>
-          <sphereGeometry args={[0.04, 16, 16]} />
-          <meshStandardMaterial color="black" />
+        <mesh position={[-0.12, 0.05, 0.32]}>
+          <sphereGeometry args={[0.05, 32, 32]} />
+          <meshStandardMaterial color="black" roughness={0.2} />
         </mesh>
-        <mesh position={[0.12, 0.05, 0.3]}>
-          <sphereGeometry args={[0.04, 16, 16]} />
-          <meshStandardMaterial color="black" />
+        <mesh position={[0.12, 0.05, 0.32]}>
+          <sphereGeometry args={[0.05, 32, 32]} />
+          <meshStandardMaterial color="black" roughness={0.2} />
         </mesh>
 
-        {/* Glasses */}
-        <mesh position={[0, 0.05, 0.32]}>
-          <torusGeometry args={[0.14, 0.015, 16, 32]} />
-          <meshStandardMaterial color="#333" />
-        </mesh>
-        <mesh position={[-0.12, 0.05, 0.32]}>
-           <ringGeometry args={[0.06, 0.08, 32]} />
-           <meshStandardMaterial color="#333" />
-        </mesh>
-         <mesh position={[0.12, 0.05, 0.32]}>
-           <ringGeometry args={[0.06, 0.08, 32]} />
-           <meshStandardMaterial color="#333" />
+        {/* Glasses - Refined */}
+        <group position={[0, 0.05, 0.32]}>
+            {/* Frame */}
+            <mesh position={[-0.12, 0, 0]}>
+                <torusGeometry args={[0.08, 0.015, 16, 32]} />
+                <meshStandardMaterial color="#111" metalness={0.8} roughness={0.2} />
+            </mesh>
+            <mesh position={[0.12, 0, 0]}>
+                <torusGeometry args={[0.08, 0.015, 16, 32]} />
+                <meshStandardMaterial color="#111" metalness={0.8} roughness={0.2} />
+            </mesh>
+            {/* Bridge */}
+            <mesh position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+                <cylinderGeometry args={[0.01, 0.01, 0.06]} />
+                <meshStandardMaterial color="#111" />
+            </mesh>
+        </group>
+
+        {/* Smile */}
+        <mesh position={[0, -0.12, 0.34]} rotation={[0, 0, Math.PI]}>
+            <torusGeometry args={[0.08, 0.015, 16, 32, Math.PI]} />
+            <meshStandardMaterial color="#333" />
         </mesh>
       </group>
 
       {/* Right Arm (Waving) */}
-      <group ref={rightArm} position={[0.4, 0.2, 0]}>
-        <mesh position={[0, -0.2, 0]}>
-          <capsuleGeometry args={[0.1, 0.5, 4, 8]} />
-          <meshStandardMaterial color={shirtColor} />
+      <group ref={rightArm} position={[0.42, 0.2, 0]}>
+        <mesh position={[0, -0.25, 0]}>
+          <capsuleGeometry args={[0.11, 0.5, 4, 8]} />
+          <meshStandardMaterial color={shirtColor} roughness={0.7} />
         </mesh>
         {/* Hand */}
-        <mesh position={[0, 0.15, 0]}>
-          <sphereGeometry args={[0.12, 16, 16]} />
+        <mesh position={[0, 0.1, 0]}>
+          <sphereGeometry args={[0.12, 32, 32]} />
           <meshStandardMaterial color={skinColor} />
         </mesh>
       </group>
 
       {/* Left Arm (Idle) */}
-      <group position={[-0.4, 0.2, 0]} rotation={[0, 0, 0.2]}>
-        <mesh position={[0, -0.2, 0]}>
-          <capsuleGeometry args={[0.1, 0.5, 4, 8]} />
-          <meshStandardMaterial color={shirtColor} />
+      <group position={[-0.42, 0.2, 0]} rotation={[0, 0, 0.1]}>
+        <mesh position={[0, -0.25, 0]}>
+          <capsuleGeometry args={[0.11, 0.5, 4, 8]} />
+          <meshStandardMaterial color={shirtColor} roughness={0.7} />
         </mesh>
-        <mesh position={[0, -0.55, 0]}>
-          <sphereGeometry args={[0.12, 16, 16]} />
+        <mesh position={[0, -0.6, 0]}>
+          <sphereGeometry args={[0.12, 32, 32]} />
           <meshStandardMaterial color={skinColor} />
         </mesh>
       </group>
