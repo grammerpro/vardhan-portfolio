@@ -88,61 +88,75 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
           <meshStandardMaterial color={skinColor} roughness={0.5} />
         </mesh>
         
-        {/* Hair - Short Black Hair (No bun/turbine) */}
-        {/* Main hair cap */}
-        <mesh position={[0, 0.1, -0.05]}>
-          <sphereGeometry args={[0.39, 64, 64, 0, Math.PI * 2, 0, Math.PI / 2]} />
-          <meshStandardMaterial color={hairColor} roughness={0.9} />
-        </mesh>
-        {/* Sideburns/Volume */}
-        <mesh position={[-0.35, 0, 0]}>
-          <sphereGeometry args={[0.1, 32, 32]} />
-          <meshStandardMaterial color={hairColor} roughness={0.9} />
-        </mesh>
-        <mesh position={[0.35, 0, 0]}>
-          <sphereGeometry args={[0.1, 32, 32]} />
-          <meshStandardMaterial color={hairColor} roughness={0.9} />
-        </mesh>
-        {/* Top volume (flatter) */}
-        <mesh position={[0, 0.38, 0]}>
-          <cylinderGeometry args={[0.25, 0.35, 0.1]} />
-          <meshStandardMaterial color={hairColor} roughness={0.9} />
-        </mesh>
+        {/* Hair - Natural Short Black Hair */}
+        <group position={[0, 0.05, 0]}>
+            {/* Main hair shape - slightly wider than head */}
+            <mesh position={[0, 0.1, -0.05]}>
+                <sphereGeometry args={[0.39, 64, 64, 0, Math.PI * 2, 0, Math.PI / 1.8]} />
+                <meshStandardMaterial color={hairColor} roughness={0.9} />
+            </mesh>
+            {/* Front/Top hair volume */}
+            <mesh position={[0, 0.35, 0.1]}>
+                <sphereGeometry args={[0.15, 32, 32]} />
+                <meshStandardMaterial color={hairColor} roughness={0.9} />
+            </mesh>
+            {/* Sideburns */}
+            <mesh position={[-0.32, 0, 0.05]}>
+                <sphereGeometry args={[0.1, 32, 32]} />
+                <meshStandardMaterial color={hairColor} roughness={0.9} />
+            </mesh>
+            <mesh position={[0.32, 0, 0.05]}>
+                <sphereGeometry args={[0.1, 32, 32]} />
+                <meshStandardMaterial color={hairColor} roughness={0.9} />
+            </mesh>
+        </group>
 
-        {/* Eyes */}
-        <mesh position={[-0.12, 0.05, 0.32]}>
-          <sphereGeometry args={[0.05, 32, 32]} />
-          <meshStandardMaterial color="black" roughness={0.2} />
-        </mesh>
-        <mesh position={[0.12, 0.05, 0.32]}>
-          <sphereGeometry args={[0.05, 32, 32]} />
-          <meshStandardMaterial color="black" roughness={0.2} />
-        </mesh>
+        {/* Eyes - White Sclera + Pupils */}
+        <group position={[0, 0.05, 0.32]}>
+            {/* Whites */}
+            <mesh position={[-0.12, 0, 0]}>
+                <sphereGeometry args={[0.08, 32, 32]} />
+                <meshStandardMaterial color="white" />
+            </mesh>
+            <mesh position={[0.12, 0, 0]}>
+                <sphereGeometry args={[0.08, 32, 32]} />
+                <meshStandardMaterial color="white" />
+            </mesh>
+            {/* Pupils */}
+            <mesh position={[-0.12, 0, 0.07]}>
+                <sphereGeometry args={[0.03, 32, 32]} />
+                <meshStandardMaterial color="black" />
+            </mesh>
+            <mesh position={[0.12, 0, 0.07]}>
+                <sphereGeometry args={[0.03, 32, 32]} />
+                <meshStandardMaterial color="black" />
+            </mesh>
+        </group>
 
-        {/* Glasses - Thick Black Frames */}
+        {/* Glasses - Thinner Frames */}
         <group position={[0, 0.05, 0.34]}>
             {/* Left Lens Frame */}
             <mesh position={[-0.12, 0, 0]}>
-                <torusGeometry args={[0.09, 0.02, 16, 32]} />
+                <torusGeometry args={[0.09, 0.008, 16, 32]} />
                 <meshStandardMaterial color="#000" metalness={0.6} roughness={0.2} />
             </mesh>
             {/* Right Lens Frame */}
             <mesh position={[0.12, 0, 0]}>
-                <torusGeometry args={[0.09, 0.02, 16, 32]} />
+                <torusGeometry args={[0.09, 0.008, 16, 32]} />
                 <meshStandardMaterial color="#000" metalness={0.6} roughness={0.2} />
             </mesh>
             {/* Bridge */}
             <mesh position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-                <cylinderGeometry args={[0.015, 0.015, 0.08]} />
+                <cylinderGeometry args={[0.008, 0.008, 0.08]} />
                 <meshStandardMaterial color="#000" />
             </mesh>
             {/* Temple Arms */}
-            <mesh position={[-0.2, 0, -0.15]} rotation={[0, -0.2, 0]}>
-                <boxGeometry args={[0.02, 0.02, 0.3]} />
+            <mesh position={[-0.21, 0, -0.15]} rotation={[0, -0.2, 0]}>
+                <boxGeometry args={[0.01, 0.01, 0.3]} />
                 <meshStandardMaterial color="#000" />
             </mesh>
-            <mesh position={[0.2, 0, -0.15]} rotation={[0, 0.2, 0]}>
-                <boxGeometry args={[0.02, 0.02, 0.3]} />
+            <mesh position={[0.21, 0, -0.15]} rotation={[0, 0.2, 0]}>
+                <boxGeometry args={[0.01, 0.01, 0.3]} />
                 <meshStandardMaterial color="#000" />
             </mesh>
         </group>
@@ -154,39 +168,40 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
         </mesh>
       </group>
 
-      {/* Right Arm (Waving) - Blended Shoulder */}
-      <group ref={rightArm} position={[0.38, 0.25, 0]}>
-        {/* Shoulder Joint */}
-        <mesh position={[-0.05, 0, 0]}>
-           <sphereGeometry args={[0.14, 32, 32]} />
+      {/* Right Arm (Waving) - Fixed Joint & Hand Position */}
+      <group ref={rightArm} position={[0.32, 0.25, 0]}>
+        {/* Shoulder Joint - Embedded */}
+        <mesh position={[0, 0, 0]}>
+           <sphereGeometry args={[0.13, 32, 32]} />
            <meshStandardMaterial color={shirtColor} roughness={0.7} />
         </mesh>
         {/* Arm Segment */}
         <mesh position={[0, -0.25, 0]}>
-          <capsuleGeometry args={[0.11, 0.5, 4, 8]} />
+          <capsuleGeometry args={[0.1, 0.5, 4, 8]} />
           <meshStandardMaterial color={shirtColor} roughness={0.7} />
         </mesh>
-        {/* Hand */}
-        <mesh position={[0, 0.1, 0]}>
-          <sphereGeometry args={[0.12, 32, 32]} />
+        {/* Hand - At the END of the arm */}
+        <mesh position={[0, -0.55, 0]}>
+          <sphereGeometry args={[0.11, 32, 32]} />
           <meshStandardMaterial color={skinColor} />
         </mesh>
       </group>
 
-      {/* Left Arm (Idle) - Blended Shoulder */}
-      <group position={[-0.38, 0.25, 0]} rotation={[0, 0, 0.1]}>
-        {/* Shoulder Joint */}
-        <mesh position={[0.05, 0, 0]}>
-           <sphereGeometry args={[0.14, 32, 32]} />
+      {/* Left Arm (Idle) - Fixed Joint & Hand Position */}
+      <group position={[-0.32, 0.25, 0]} rotation={[0, 0, 0.1]}>
+        {/* Shoulder Joint - Embedded */}
+        <mesh position={[0, 0, 0]}>
+           <sphereGeometry args={[0.13, 32, 32]} />
            <meshStandardMaterial color={shirtColor} roughness={0.7} />
         </mesh>
         {/* Arm Segment */}
         <mesh position={[0, -0.25, 0]}>
-          <capsuleGeometry args={[0.11, 0.5, 4, 8]} />
+          <capsuleGeometry args={[0.1, 0.5, 4, 8]} />
           <meshStandardMaterial color={shirtColor} roughness={0.7} />
         </mesh>
-        <mesh position={[0, -0.6, 0]}>
-          <sphereGeometry args={[0.12, 32, 32]} />
+        {/* Hand - At the END of the arm */}
+        <mesh position={[0, -0.55, 0]}>
+          <sphereGeometry args={[0.11, 32, 32]} />
           <meshStandardMaterial color={skinColor} />
         </mesh>
       </group>
