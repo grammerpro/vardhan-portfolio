@@ -34,7 +34,6 @@ const Key = ({ position, color, label, width = 0.8, height = 0.8, depth = 0.4, f
         color={textColor}
         anchorX="center"
         anchorY="middle"
-        font="/fonts/Inter-Bold.ttf" // Assuming we might need a font, or use default
       >
         {label}
       </Text>
