@@ -10,7 +10,7 @@ class AssistantWidget {
     this.options = {
       container: 'body',
       position: { bottom: 20, right: 20 },
-      avatarUrl: '/assets/avatar.png',
+      avatarUrl: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Vardhan&backgroundColor=b6e3f4',
       agentName: 'Vardhan',
       theme: 'auto',
       kbUrl: '/src/assistant-widget/kb-user.json',

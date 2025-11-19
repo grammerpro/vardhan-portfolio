@@ -138,7 +138,7 @@ export default function RootLayout({
           <AssistantWidget
             theme="auto"
             kbUrl="/data/resume.json"
-            avatarUrl="/assets/avatar.svg"
+            avatarUrl="https://api.dicebear.com/9.x/avataaars/svg?seed=Vardhan&backgroundColor=b6e3f4"
             agentName="Vardhan"
             enableVoice={true}
             showButton={true}
