@@ -40,6 +40,8 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
   const skinColor = "#f5d0b0";
   const shirtColor = "#60a5fa"; // Blue-400
   const hairColor = "#fcd34d"; // Amber-300
+  const pantsColor = "#1e3a8a"; // Dark Blue Jeans
+  const shoeColor = "#ffffff";
 
   return (
     <group 
@@ -47,78 +49,98 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
       onClick={onClick} 
       onPointerOver={() => setHover(true)} 
       onPointerOut={() => setHover(false)}
-      position={[0, -1, 0]}
+      position={[0, -0.5, 0]}
     >
-      {/* Body */}
+      {/* Torso */}
       <mesh position={[0, 0, 0]}>
-        <capsuleGeometry args={[0.6, 0.8, 4, 8]} />
+        <boxGeometry args={[0.6, 0.7, 0.3]} />
         <meshStandardMaterial color={shirtColor} />
       </mesh>
 
+      {/* Legs */}
+      <mesh position={[-0.15, -0.6, 0]}>
+        <cylinderGeometry args={[0.12, 0.12, 0.6]} />
+        <meshStandardMaterial color={pantsColor} />
+      </mesh>
+      <mesh position={[0.15, -0.6, 0]}>
+        <cylinderGeometry args={[0.12, 0.12, 0.6]} />
+        <meshStandardMaterial color={pantsColor} />
+      </mesh>
+
+      {/* Shoes */}
+      <mesh position={[-0.15, -0.95, 0.05]}>
+        <boxGeometry args={[0.15, 0.1, 0.25]} />
+        <meshStandardMaterial color={shoeColor} />
+      </mesh>
+      <mesh position={[0.15, -0.95, 0.05]}>
+        <boxGeometry args={[0.15, 0.1, 0.25]} />
+        <meshStandardMaterial color={shoeColor} />
+      </mesh>
+
       {/* Head Group */}
-      <group ref={head} position={[0, 0.8, 0]}>
+      <group ref={head} position={[0, 0.6, 0]}>
         {/* Face */}
         <mesh position={[0, 0, 0]}>
-          <sphereGeometry args={[0.45, 32, 32]} />
+          <sphereGeometry args={[0.35, 32, 32]} />
           <meshStandardMaterial color={skinColor} />
         </mesh>
         
         {/* Hair (Simplified) */}
-        <mesh position={[0, 0.1, -0.1]}>
-          <sphereGeometry args={[0.48, 32, 32]} />
+        <mesh position={[0, 0.1, -0.05]}>
+          <sphereGeometry args={[0.36, 32, 32]} />
           <meshStandardMaterial color={hairColor} />
         </mesh>
-        <mesh position={[0, 0.4, 0.1]}>
-          <sphereGeometry args={[0.2, 32, 32]} />
+        <mesh position={[0, 0.3, 0.05]}>
+          <sphereGeometry args={[0.15, 32, 32]} />
           <meshStandardMaterial color={hairColor} />
         </mesh>
 
         {/* Eyes */}
-        <mesh position={[-0.15, 0.05, 0.4]}>
-          <sphereGeometry args={[0.05, 16, 16]} />
+        <mesh position={[-0.12, 0.05, 0.3]}>
+          <sphereGeometry args={[0.04, 16, 16]} />
           <meshStandardMaterial color="black" />
         </mesh>
-        <mesh position={[0.15, 0.05, 0.4]}>
-          <sphereGeometry args={[0.05, 16, 16]} />
+        <mesh position={[0.12, 0.05, 0.3]}>
+          <sphereGeometry args={[0.04, 16, 16]} />
           <meshStandardMaterial color="black" />
         </mesh>
 
         {/* Glasses */}
-        <mesh position={[0, 0.05, 0.42]}>
-          <torusGeometry args={[0.18, 0.02, 16, 32]} />
+        <mesh position={[0, 0.05, 0.32]}>
+          <torusGeometry args={[0.14, 0.015, 16, 32]} />
           <meshStandardMaterial color="#333" />
         </mesh>
-        <mesh position={[-0.15, 0.05, 0.42]}>
-           <ringGeometry args={[0.08, 0.1, 32]} />
+        <mesh position={[-0.12, 0.05, 0.32]}>
+           <ringGeometry args={[0.06, 0.08, 32]} />
            <meshStandardMaterial color="#333" />
         </mesh>
-         <mesh position={[0.15, 0.05, 0.42]}>
-           <ringGeometry args={[0.08, 0.1, 32]} />
+         <mesh position={[0.12, 0.05, 0.32]}>
+           <ringGeometry args={[0.06, 0.08, 32]} />
            <meshStandardMaterial color="#333" />
         </mesh>
       </group>
 
       {/* Right Arm (Waving) */}
-      <group ref={rightArm} position={[0.6, 0.2, 0]}>
-        <mesh position={[0, 0.4, 0]}>
-          <capsuleGeometry args={[0.15, 0.8, 4, 8]} />
+      <group ref={rightArm} position={[0.4, 0.2, 0]}>
+        <mesh position={[0, -0.2, 0]}>
+          <capsuleGeometry args={[0.1, 0.5, 4, 8]} />
           <meshStandardMaterial color={shirtColor} />
         </mesh>
         {/* Hand */}
-        <mesh position={[0, 0.9, 0]}>
-          <sphereGeometry args={[0.18, 16, 16]} />
+        <mesh position={[0, 0.15, 0]}>
+          <sphereGeometry args={[0.12, 16, 16]} />
           <meshStandardMaterial color={skinColor} />
         </mesh>
       </group>
 
       {/* Left Arm (Idle) */}
-      <group position={[-0.6, -0.2, 0]} rotation={[0, 0, 0.2]}>
-        <mesh position={[0, -0.3, 0]}>
-          <capsuleGeometry args={[0.15, 0.8, 4, 8]} />
+      <group position={[-0.4, 0.2, 0]} rotation={[0, 0, 0.2]}>
+        <mesh position={[0, -0.2, 0]}>
+          <capsuleGeometry args={[0.1, 0.5, 4, 8]} />
           <meshStandardMaterial color={shirtColor} />
         </mesh>
-        <mesh position={[0, -0.8, 0]}>
-          <sphereGeometry args={[0.18, 16, 16]} />
+        <mesh position={[0, -0.55, 0]}>
+          <sphereGeometry args={[0.12, 16, 16]} />
           <meshStandardMaterial color={skinColor} />
         </mesh>
       </group>
@@ -168,10 +190,10 @@ export default function ThreeDAvatarLauncher() {
 
   return (
     <div 
-      className="fixed bottom-5 right-5 w-24 h-32 z-[10002] cursor-pointer transition-transform hover:scale-105"
+      className="fixed bottom-5 right-5 w-28 h-36 z-[10002] cursor-pointer transition-transform hover:scale-105"
       title="Ask Vardhan"
     >
-      <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
+      <Canvas camera={{ position: [0, 0, 3.5], fov: 45 }}>
         <ambientLight intensity={0.8} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
         <pointLight position={[-10, -10, -10]} />
