@@ -127,12 +127,22 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
   );
 }
 
+interface AssistantWidgetInstance {
+  open: () => void;
+  close: () => void;
+  isOpen: boolean;
+}
+
+interface CustomWindow extends Window {
+  assistantWidgetInstance?: AssistantWidgetInstance;
+}
+
 export default function ThreeDAvatarLauncher() {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = () => {
     // Access the global widget instance
-    const widget = (window as any).assistantWidgetInstance;
+    const widget = (window as unknown as CustomWindow).assistantWidgetInstance;
     if (widget) {
       if (isOpen) {
         widget.close();
@@ -146,7 +156,7 @@ export default function ThreeDAvatarLauncher() {
   // Listen for widget close events from the widget itself
   useEffect(() => {
     const checkState = setInterval(() => {
-       const widget = (window as any).assistantWidgetInstance;
+       const widget = (window as unknown as CustomWindow).assistantWidgetInstance;
        if (widget && widget.isOpen !== isOpen) {
          // Sync state if changed externally (e.g. close button clicked)
          // Note: The vanilla widget might not expose isOpen property directly, 
