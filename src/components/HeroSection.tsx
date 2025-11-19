@@ -4,7 +4,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Environment, Float, ContactShadows } from '@react-three/drei';
 import { motion } from 'framer-motion';
 import * as THREE from 'three';
-import KeyboardModel from './KeyboardModel';
+import ProceduralKeyboard from './ProceduralKeyboard';
 
 function Particles({ count = 2000 }) {
   const mesh = useRef<THREE.InstancedMesh>(null);
@@ -93,8 +93,8 @@ export default function HeroSection() {
           
           <Suspense fallback={null}>
             <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-              <group position={[4, 0, 0]} rotation={[0.2, -0.4, 0]} scale={1.8}>
-                <KeyboardModel />
+              <group position={[0, 0, 0]} rotation={[0.1, 0, 0]} scale={0.8}>
+                <ProceduralKeyboard />
               </group>
             </Float>
             <ContactShadows resolution={1024} scale={20} blur={2} opacity={0.5} far={10} color="#0ea5e9" />
