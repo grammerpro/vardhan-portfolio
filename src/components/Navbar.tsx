@@ -69,12 +69,12 @@ export default function Navbar() {
   };
 
   return (
-  <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur supports-[backdrop-filter]:bg-white/80 dark:supports-[backdrop-filter]:bg-neutral-900/70 bg-white/90 dark:bg-neutral-900/80 border-b border-gray-200/50 dark:border-neutral-800 shadow-sm">
+  <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-white/80 dark:bg-neutral-950/80 border-b border-gray-200/50 dark:border-neutral-800 shadow-sm transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
         <button
           onClick={() => scrollToSection("#home")}
-          className="text-2xl font-bold tracking-wide text-blue-600 hover:text-blue-700 transition-colors"
+          className="text-2xl font-bold tracking-wide text-neutral-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
         >
           VARDHAN
         </button>
@@ -85,8 +85,10 @@ export default function Navbar() {
             <Magnetic key={link.name} strength={6}>
               <button
                 onClick={() => scrollToSection(link.href)}
-                className={`inline-block font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors ${
-                  activeSection === (link.href.startsWith('/') ? link.href.substring(1) : link.href.substring(1)) ? "text-blue-600 dark:text-blue-400" : "text-gray-700 dark:text-gray-300"
+                className={`inline-block font-medium transition-colors ${
+                  activeSection === (link.href.startsWith('/') ? link.href.substring(1) : link.href.substring(1)) 
+                    ? "text-blue-600 dark:text-blue-400" 
+                    : "text-neutral-600 dark:text-neutral-300 hover:text-blue-600 dark:hover:text-blue-400"
                 }`}
               >
                 {link.name}
@@ -96,7 +98,7 @@ export default function Navbar() {
           {mounted && (
             <button
               onClick={toggle}
-              className="rounded-full border px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-neutral-800 border-gray-300 dark:border-neutral-700 transition-colors flex items-center gap-1"
+              className="rounded-full border px-3 py-2 text-sm text-neutral-700 dark:text-neutral-200 hover:bg-gray-100 dark:hover:bg-neutral-800 border-gray-300 dark:border-neutral-700 transition-colors flex items-center gap-1"
               aria-label={`Current theme: ${theme}. Click to cycle themes.`}
             >
               {theme === 'auto' && <span>🅰️</span>}

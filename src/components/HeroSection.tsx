@@ -93,7 +93,7 @@ export default function HeroSection() {
           
           <Suspense fallback={null}>
             <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-              <group position={[3, -1, 0]} rotation={[0.2, -0.3, 0]} scale={0.8}>
+              <group position={[4, 0, 0]} rotation={[0.2, -0.4, 0]} scale={1.8}>
                 <KeyboardModel />
               </group>
             </Float>
