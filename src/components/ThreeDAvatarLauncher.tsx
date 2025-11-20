@@ -1,15 +1,40 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Environment, ContactShadows, Float, RoundedBox } from '@react-three/drei';
+import { Environment, ContactShadows, Float, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 
 function AvatarModel({ onClick }: { onClick: () => void }) {
   const group = useRef<THREE.Group>(null);
-  const rightArm = useRef<THREE.Group>(null);
-  const head = useRef<THREE.Group>(null);
   const [hovered, setHover] = useState(false);
+  
+  // Load the GLB model
+  const { scene } = useGLTF('/models/avatar.glb');
+  
+  // Clone the scene to avoid issues with cached instances
+  const clone = useMemo(() => scene.clone(), [scene]);
+  
+  // Refs for bones
+  const rightArm = useRef<THREE.Object3D | null>(null);
+  const head = useRef<THREE.Object3D | null>(null);
+
+  // Find bones on mount
+  useEffect(() => {
+    clone.traverse((child) => {
+      if (child.type === 'Bone') {
+        if (child.name.includes('RightArm') || child.name.includes('RightForeArm')) {
+           // Prefer RightArm for waving
+           if (!rightArm.current || child.name.includes('RightArm')) {
+             rightArm.current = child;
+           }
+        }
+        if (child.name.includes('Head')) {
+          head.current = child;
+        }
+      }
+    });
+  }, [clone]);
 
   // Animation
   useFrame((state) => {
@@ -17,8 +42,8 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
     
     // Waving animation
     if (rightArm.current) {
-      // Arm swings back and forth
-      rightArm.current.rotation.z = Math.sin(t * 5) * 0.5 + 2.5; 
+      rightArm.current.rotation.z = Math.sin(t * 5) * 0.5 - 1.5; 
+      rightArm.current.rotation.x = Math.sin(t * 5) * 0.2 + 0.5;
     }
 
     // Head tracking mouse (subtle)
@@ -36,176 +61,15 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
     }
   });
 
-  // Colors based on the Bitmoji (Black hair, Blue shirt)
-  const skinColor = "#f5d0b0";
-  const shirtColor = "#3b82f6"; // Blue-500 (Vibrant)
-  const hairColor = "#1a1a1a"; // Black Hair
-  const pantsColor = "#1e3a8a"; // Dark Blue Jeans
-  const shoeColor = "#ffffff";
-
   return (
     <group 
       ref={group} 
       onClick={onClick} 
       onPointerOver={() => setHover(true)} 
       onPointerOut={() => setHover(false)}
-      position={[0, -0.8, 0]}
+      position={[0, -1.6, 0]}
     >
-      {/* Torso - Rounded for organic look */}
-      <RoundedBox args={[0.65, 0.75, 0.35]} radius={0.15} smoothness={4} position={[0, 0, 0]}>
-        <meshStandardMaterial color={shirtColor} roughness={0.7} />
-      </RoundedBox>
-
-      {/* Neck */}
-      <mesh position={[0, 0.4, 0]}>
-        <cylinderGeometry args={[0.15, 0.15, 0.2]} />
-        <meshStandardMaterial color={skinColor} />
-      </mesh>
-
-      {/* Legs - Using Capsules for roundness */}
-      <mesh position={[-0.2, -0.6, 0]}>
-        <capsuleGeometry args={[0.13, 0.6, 4, 8]} />
-        <meshStandardMaterial color={pantsColor} roughness={0.8} />
-      </mesh>
-      <mesh position={[0.2, -0.6, 0]}>
-        <capsuleGeometry args={[0.13, 0.6, 4, 8]} />
-        <meshStandardMaterial color={pantsColor} roughness={0.8} />
-      </mesh>
-
-      {/* Shoes - Rounded Boxes */}
-      <RoundedBox args={[0.2, 0.15, 0.35]} radius={0.05} smoothness={4} position={[-0.2, -1.0, 0.1]}>
-        <meshStandardMaterial color={shoeColor} />
-      </RoundedBox>
-      <RoundedBox args={[0.2, 0.15, 0.35]} radius={0.05} smoothness={4} position={[0.2, -1.0, 0.1]}>
-        <meshStandardMaterial color={shoeColor} />
-      </RoundedBox>
-
-      {/* Head Group */}
-      <group ref={head} position={[0, 0.65, 0]}>
-        {/* Face */}
-        <mesh position={[0, 0, 0]}>
-          <sphereGeometry args={[0.38, 64, 64]} />
-          <meshStandardMaterial color={skinColor} roughness={0.5} />
-        </mesh>
-        
-        {/* Hair - Natural Short Black Hair */}
-        <group position={[0, 0.05, 0]}>
-            {/* Main hair shape - slightly wider than head */}
-            <mesh position={[0, 0.1, -0.05]}>
-                <sphereGeometry args={[0.39, 64, 64, 0, Math.PI * 2, 0, Math.PI / 1.8]} />
-                <meshStandardMaterial color={hairColor} roughness={0.9} />
-            </mesh>
-            {/* Front/Top hair volume */}
-            <mesh position={[0, 0.35, 0.1]}>
-                <sphereGeometry args={[0.15, 32, 32]} />
-                <meshStandardMaterial color={hairColor} roughness={0.9} />
-            </mesh>
-            {/* Sideburns */}
-            <mesh position={[-0.32, 0, 0.05]}>
-                <sphereGeometry args={[0.1, 32, 32]} />
-                <meshStandardMaterial color={hairColor} roughness={0.9} />
-            </mesh>
-            <mesh position={[0.32, 0, 0.05]}>
-                <sphereGeometry args={[0.1, 32, 32]} />
-                <meshStandardMaterial color={hairColor} roughness={0.9} />
-            </mesh>
-        </group>
-
-        {/* Eyes - White Sclera + Pupils */}
-        <group position={[0, 0.05, 0.32]}>
-            {/* Whites */}
-            <mesh position={[-0.12, 0, 0]}>
-                <sphereGeometry args={[0.08, 32, 32]} />
-                <meshStandardMaterial color="white" />
-            </mesh>
-            <mesh position={[0.12, 0, 0]}>
-                <sphereGeometry args={[0.08, 32, 32]} />
-                <meshStandardMaterial color="white" />
-            </mesh>
-            {/* Pupils */}
-            <mesh position={[-0.12, 0, 0.07]}>
-                <sphereGeometry args={[0.03, 32, 32]} />
-                <meshStandardMaterial color="black" />
-            </mesh>
-            <mesh position={[0.12, 0, 0.07]}>
-                <sphereGeometry args={[0.03, 32, 32]} />
-                <meshStandardMaterial color="black" />
-            </mesh>
-        </group>
-
-        {/* Glasses - Thinner Frames */}
-        <group position={[0, 0.05, 0.34]}>
-            {/* Left Lens Frame */}
-            <mesh position={[-0.12, 0, 0]}>
-                <torusGeometry args={[0.09, 0.008, 16, 32]} />
-                <meshStandardMaterial color="#000" metalness={0.6} roughness={0.2} />
-            </mesh>
-            {/* Right Lens Frame */}
-            <mesh position={[0.12, 0, 0]}>
-                <torusGeometry args={[0.09, 0.008, 16, 32]} />
-                <meshStandardMaterial color="#000" metalness={0.6} roughness={0.2} />
-            </mesh>
-            {/* Bridge */}
-            <mesh position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-                <cylinderGeometry args={[0.008, 0.008, 0.08]} />
-                <meshStandardMaterial color="#000" />
-            </mesh>
-            {/* Temple Arms */}
-            <mesh position={[-0.21, 0, -0.15]} rotation={[0, -0.2, 0]}>
-                <boxGeometry args={[0.01, 0.01, 0.3]} />
-                <meshStandardMaterial color="#000" />
-            </mesh>
-            <mesh position={[0.21, 0, -0.15]} rotation={[0, 0.2, 0]}>
-                <boxGeometry args={[0.01, 0.01, 0.3]} />
-                <meshStandardMaterial color="#000" />
-            </mesh>
-        </group>
-
-        {/* Smile */}
-        <mesh position={[0, -0.12, 0.34]} rotation={[0, 0, Math.PI]}>
-            <torusGeometry args={[0.08, 0.015, 16, 32, Math.PI]} />
-            <meshStandardMaterial color="#333" />
-        </mesh>
-      </group>
-
-      {/* Right Arm (Waving) - Fixed Joint & Hand Position */}
-      <group ref={rightArm} position={[0.32, 0.25, 0]}>
-        {/* Shoulder Joint - Embedded */}
-        <mesh position={[0, 0, 0]}>
-           <sphereGeometry args={[0.13, 32, 32]} />
-           <meshStandardMaterial color={shirtColor} roughness={0.7} />
-        </mesh>
-        {/* Arm Segment */}
-        <mesh position={[0, -0.25, 0]}>
-          <capsuleGeometry args={[0.1, 0.5, 4, 8]} />
-          <meshStandardMaterial color={shirtColor} roughness={0.7} />
-        </mesh>
-        {/* Hand - At the END of the arm */}
-        <mesh position={[0, -0.55, 0]}>
-          <sphereGeometry args={[0.11, 32, 32]} />
-          <meshStandardMaterial color={skinColor} />
-        </mesh>
-      </group>
-
-      {/* Left Arm (Idle) - Fixed Joint & Hand Position */}
-      <group position={[-0.32, 0.25, 0]} rotation={[0, 0, 0.1]}>
-        {/* Shoulder Joint - Embedded */}
-        <mesh position={[0, 0, 0]}>
-           <sphereGeometry args={[0.13, 32, 32]} />
-           <meshStandardMaterial color={shirtColor} roughness={0.7} />
-        </mesh>
-        {/* Arm Segment */}
-        <mesh position={[0, -0.25, 0]}>
-          <capsuleGeometry args={[0.1, 0.5, 4, 8]} />
-          <meshStandardMaterial color={shirtColor} roughness={0.7} />
-        </mesh>
-        {/* Hand - At the END of the arm */}
-        <mesh position={[0, -0.55, 0]}>
-          <sphereGeometry args={[0.11, 32, 32]} />
-          <meshStandardMaterial color={skinColor} />
-        </mesh>
-      </group>
-
+      <primitive object={clone} scale={1.2} />
     </group>
   );
 }
