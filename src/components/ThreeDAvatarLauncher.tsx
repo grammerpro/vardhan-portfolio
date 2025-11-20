@@ -67,10 +67,10 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
       onClick={onClick} 
       onPointerOver={() => setHover(true)} 
       onPointerOut={() => setHover(false)}
-      position={[0, -5.8, 0]} // Lowered significantly for waist-up shot
+      position={[0, -2.5, 0]} // Centered full body
       rotation={[0, -0.2, 0]}
     >
-      <primitive object={clone} scale={6.5} />
+      <primitive object={clone} scale={2.3} />
     </group>
   );
 }
@@ -116,10 +116,10 @@ export default function ThreeDAvatarLauncher() {
 
   return (
     <div 
-      className="fixed bottom-5 right-5 w-32 h-40 z-[10002] cursor-pointer transition-transform hover:scale-105"
+      className="fixed bottom-5 right-5 w-48 h-64 z-[10002] cursor-pointer transition-transform hover:scale-105"
       title="Ask Vardhan"
     >
-      <Canvas camera={{ position: [0, 0, 2.0], fov: 40 }}>
+      <Canvas camera={{ position: [0, 0, 3.0], fov: 35 }}>
         <ambientLight intensity={1.2} />
         <spotLight position={[5, 5, 5]} angle={0.3} penumbra={1} intensity={1.5} />
         <pointLight position={[-5, -5, -5]} intensity={0.5} />
