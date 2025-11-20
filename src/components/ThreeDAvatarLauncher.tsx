@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Environment, ContactShadows, Float, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -18,6 +18,7 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
   // Refs for bones
   const rightArm = useRef<THREE.Object3D | null>(null);
   const head = useRef<THREE.Object3D | null>(null);
+  const { camera } = useThree();
 
   // Find bones on mount
   useEffect(() => {
@@ -35,6 +36,26 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
       }
     });
   }, [clone]);
+
+  // Auto-fit camera so the entire model is visible: compute bounding box & place camera
+  useEffect(() => {
+    try {
+      const box = new THREE.Box3().setFromObject(clone);
+      const size = box.getSize(new THREE.Vector3());
+      const center = box.getCenter(new THREE.Vector3());
+
+      // Sphere radius & a multiplier to determine camera distance
+      const radius = size.length() * 0.5;
+      const distance = radius * 2.2; // tweak this factor if needed
+
+      // Move the camera back and slightly up to fit the model vertically
+      camera.position.set(center.x, center.y + radius * 0.35, distance + 0.8);
+      camera.lookAt(center.x, center.y, center.z);
+      camera.updateProjectionMatrix();
+    } catch (err) {
+      // Clone may not be fully ready; ignore errors silently
+    }
+  }, [clone, camera]);
 
   // Animation
   useFrame((state) => {
