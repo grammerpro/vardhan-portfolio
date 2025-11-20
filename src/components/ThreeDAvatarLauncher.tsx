@@ -49,13 +49,28 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
       const distance = radius * 2.2; // tweak this factor if needed
 
       // Move the camera back and slightly up to fit the model vertically
-      camera.position.set(center.x, center.y + radius * 0.35, distance + 0.8);
+      camera.position.set(center.x, center.y + radius * 0.35, distance + 1.5);
       camera.lookAt(center.x, center.y, center.z);
       camera.updateProjectionMatrix();
     } catch (err) {
       // Clone may not be fully ready; ignore errors silently
     }
   }, [clone, camera]);
+
+  // Position the group so the avatar's feet align near the bottom of the view
+  useEffect(() => {
+    try {
+      const box = new THREE.Box3().setFromObject(clone);
+      const bottomY = box.min.y;
+      const desiredFeetY = -1.2; // in world coordinates, push feet slightly below origin
+      const offsetY = desiredFeetY - bottomY;
+      if (group.current) {
+        group.current.position.y = offsetY;
+      }
+    } catch (err) {
+      // ignore
+    }
+  }, [clone]);
 
   // Animation
   useFrame((state) => {
@@ -137,10 +152,10 @@ export default function ThreeDAvatarLauncher() {
 
   return (
     <div 
-      className="fixed bottom-5 right-5 w-48 h-64 z-[10002] cursor-pointer transition-transform hover:scale-105"
+      className="fixed bottom-5 right-5 w-56 h-80 z-[10002] cursor-pointer transition-transform hover:scale-105"
       title="Ask Vardhan"
     >
-      <Canvas camera={{ position: [0, 0, 3.0], fov: 35 }}>
+      <Canvas camera={{ position: [0, 0, 4.0], fov: 30 }}>
         <ambientLight intensity={1.2} />
         <spotLight position={[5, 5, 5]} angle={0.3} penumbra={1} intensity={1.5} />
         <pointLight position={[-5, -5, -5]} intensity={0.5} />
