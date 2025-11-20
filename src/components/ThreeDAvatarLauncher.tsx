@@ -1,11 +1,11 @@
 'use client';
 
-import { useRef, useState, useEffect, useMemo } from 'react';
+import { useRef, useState, useEffect, useMemo, Suspense } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Environment, ContactShadows, Float, useGLTF } from '@react-three/drei';
+import { Environment, ContactShadows, useGLTF, useAnimations } from '@react-three/drei';
 import * as THREE from 'three';
 
-function AvatarModel({ onClick }: { onClick: () => void }) {
+function AvatarWithAnimation({ onClick }: { onClick: () => void }) {
   const group = useRef<THREE.Group>(null);
   const [hovered, setHover] = useState(false);
   
@@ -15,54 +15,51 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
   // Clone the scene to avoid issues with cached instances
   const clone = useMemo(() => scene.clone(), [scene]);
   
-  // Refs for bones
-  const rightArm = useRef<THREE.Object3D | null>(null);
-  const head = useRef<THREE.Object3D | null>(null);
+  // Load the animation
+  // Note: Ensure /animations/Idle.glb exists in your public folder
+  const { animations } = useGLTF('/animations/Idle.glb');
+  const { actions } = useAnimations(animations, group);
+
+  // Play animation
+  useEffect(() => {
+    if (actions && animations.length > 0) {
+      // Play the first animation found in the GLB
+      const action = actions[animations[0].name];
+      if (action) {
+        action.reset().fadeIn(0.5).play();
+      }
+      return () => {
+        action?.fadeOut(0.5);
+      };
+    }
+  }, [actions, animations]);
+
   const { camera } = useThree();
 
-  // Find bones on mount
-  useEffect(() => {
-    clone.traverse((child) => {
-      if (child.type === 'Bone') {
-        if (child.name.includes('RightArm') || child.name.includes('RightForeArm')) {
-           // Prefer RightArm for waving
-           if (!rightArm.current || child.name.includes('RightArm')) {
-             rightArm.current = child;
-           }
-        }
-        if (child.name.includes('Head')) {
-          head.current = child;
-        }
-      }
-    });
-  }, [clone]);
-
-  // Auto-fit camera so the entire model is visible: compute bounding box & place camera
+  // Auto-fit camera so the entire model is visible
   useEffect(() => {
     try {
       const box = new THREE.Box3().setFromObject(clone);
       const size = box.getSize(new THREE.Vector3());
       const center = box.getCenter(new THREE.Vector3());
 
-      // Sphere radius & a multiplier to determine camera distance
       const radius = size.length() * 0.5;
-      const distance = radius * 2.2; // tweak this factor if needed
+      const distance = radius * 2.2;
 
-      // Move the camera back and slightly up to fit the model vertically
       camera.position.set(center.x, center.y + radius * 0.35, distance + 1.5);
       camera.lookAt(center.x, center.y, center.z);
       camera.updateProjectionMatrix();
     } catch (err) {
-      // Clone may not be fully ready; ignore errors silently
+      // ignore
     }
   }, [clone, camera]);
 
-  // Position the group so the avatar's feet align near the bottom of the view
+  // Position the group
   useEffect(() => {
     try {
       const box = new THREE.Box3().setFromObject(clone);
       const bottomY = box.min.y;
-      const desiredFeetY = -1.2; // in world coordinates, push feet slightly below origin
+      const desiredFeetY = -1.2;
       const offsetY = desiredFeetY - bottomY;
       if (group.current) {
         group.current.position.y = offsetY;
@@ -72,25 +69,8 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
     }
   }, [clone]);
 
-  // Animation
-  useFrame((state) => {
-    const t = state.clock.getElapsedTime();
-    
-    // Waving animation
-    if (rightArm.current) {
-      rightArm.current.rotation.z = Math.sin(t * 5) * 0.5 - 1.5; 
-      rightArm.current.rotation.x = Math.sin(t * 5) * 0.2 + 0.5;
-    }
-
-    // Head tracking mouse (subtle)
-    if (head.current) {
-      const targetX = (state.mouse.x * 0.5);
-      const targetY = (state.mouse.y * 0.5);
-      head.current.rotation.y = THREE.MathUtils.lerp(head.current.rotation.y, targetX, 0.1);
-      head.current.rotation.x = THREE.MathUtils.lerp(head.current.rotation.x, -targetY, 0.1);
-    }
-
-    // Hover scale effect
+  // Hover scale effect
+  useFrame(() => {
     if (group.current) {
       const targetScale = hovered ? 1.1 : 1;
       group.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
@@ -103,7 +83,7 @@ function AvatarModel({ onClick }: { onClick: () => void }) {
       onClick={onClick} 
       onPointerOver={() => setHover(true)} 
       onPointerOut={() => setHover(false)}
-      position={[0, -2.5, 0]} // Centered full body
+      position={[0, -2.5, 0]} 
       rotation={[0, -0.2, 0]}
     >
       <primitive object={clone} scale={2.3} />
@@ -161,10 +141,15 @@ export default function ThreeDAvatarLauncher() {
         <pointLight position={[-5, -5, -5]} intensity={0.5} />
         <Environment preset="city" />
         
-        <AvatarModel onClick={handleClick} />
+        <Suspense fallback={null}>
+          <AvatarWithAnimation onClick={handleClick} />
+        </Suspense>
         
         <ContactShadows position={[0, -2, 0]} opacity={0.4} scale={10} blur={2} far={4} />
       </Canvas>
     </div>
   );
 }
+
+useGLTF.preload('/models/avatar.glb');
+useGLTF.preload('/animations/Idle.glb');
