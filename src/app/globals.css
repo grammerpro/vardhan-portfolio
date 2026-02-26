@@ -139,6 +139,44 @@ h1, h2, h3, h4, h5, h6 {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
+
+/* Scroll-to-top rocket animations */
+@keyframes rocket-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes rocket-shake {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  25% { transform: translateY(-1px) rotate(-2deg); }
+  50% { transform: translateY(1px) rotate(2deg); }
+  75% { transform: translateY(-1px) rotate(-2deg); }
+}
+
+@keyframes rocket-launch {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.1); }
+  100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+}
+
+@keyframes rocket-flame {
+  0%, 100% { transform: scaleY(1); opacity: 1; }
+  50% { transform: scaleY(1.2); opacity: 0.8; }
+}
+
+.animate-bob { animation: rocket-bob 2s ease-in-out infinite; }
+.animate-shake { animation: rocket-shake 150ms ease-in-out 1; }
+.animate-launch { animation: rocket-launch 1s ease-out forwards; }
+.animate-flame { animation: rocket-flame 0.5s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-bob,
+  .animate-shake,
+  .animate-launch,
+  .animate-flame {
+    animation: none !important;
+  }
+}
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   *,

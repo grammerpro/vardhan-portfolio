@@ -502,13 +502,15 @@ class AssistantWidget {
   }
 
   setupEventListeners() {
-    if (!this.buttonElement || !this.panelElement || !this.input || !this.sendButton) {
+    if (!this.panelElement || !this.input || !this.sendButton) {
       console.warn('AssistantWidget: missing key elements; event listeners not attached');
       return;
     }
 
-  // Button click
-  if (this.buttonElement) this.buttonElement.addEventListener('click', () => this.toggle());
+    // Button click (optional when launcher button is hidden)
+    if (this.buttonElement) {
+      this.buttonElement.addEventListener('click', () => this.toggle());
+    }
 
     // Close button
     const closeButton = this.panelElement.querySelector('.assistant-widget__close');

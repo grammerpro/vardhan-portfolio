@@ -1,11 +1,10 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
-import InteractiveCursor from "@/components/InteractiveCursor";
 import ThemeProvider from "@/components/ThemeProvider";
 import PageTransition from "@/components/PageTransition";
 import AssistantWidget from "@/react/AssistantWidget";
-import ThreeDAvatarLauncher from "@/components/ThreeDAvatarLauncher";
+import WalkingAvatar from "@/components/WalkingAvatar";
 import ScrollToTopRocket from "@/components/ScrollToTopRocket";
 import { Inter, Space_Grotesk } from "next/font/google";
 
@@ -125,14 +124,13 @@ export default function RootLayout({
       >
         <ThemeProvider>
           {/* Skip to main content link for accessibility */}
-          <a 
-            href="#main-content" 
+          <a
+            href="#main-content"
             className="sr-only focus:not-sr-only focus:absolute focus:z-[9999] focus:top-4 focus:left-4 focus:p-4 focus:bg-purple-600 focus:text-white focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 dark:focus:bg-fuchsia-600 dark:focus:ring-fuchsia-400"
           >
             Skip to main content
           </a>
           <Navbar />
-          <InteractiveCursor />
           <main id="main-content">
             <PageTransition>{children}</PageTransition>
           </main>
@@ -144,10 +142,10 @@ export default function RootLayout({
             enableVoice={true}
             showButton={false}
           />
-          <ThreeDAvatarLauncher />
+          <WalkingAvatar />
           <ScrollToTopRocket />
         </ThemeProvider>
-        
+
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"
