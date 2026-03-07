@@ -1,9 +1,113 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 export default function Resume() {
   const [showPdf, setShowPdf] = useState(false);
+
+  const launchPaperAirplane = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    const btn = e.currentTarget;
+    const rect = btn.getBoundingClientRect();
+
+    // Calculate the start position (center of the button)
+    const startX = rect.left + rect.width / 2;
+    const startY = rect.top + rect.height / 2;
+
+    // Calculate the end position (top-right corner — where downloads appear)
+    const endX = window.innerWidth - 20;
+    const endY = 10;
+
+    // Create the paper airplane SVG element
+    const airplane = document.createElement('div');
+    airplane.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="none">
+        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="#0ea5e9" stroke="#0284c7" stroke-width="1" stroke-linejoin="round"/>
+      </svg>
+    `;
+    airplane.style.cssText = `
+      position: fixed;
+      left: ${startX - 14}px;
+      top: ${startY - 14}px;
+      z-index: 99999;
+      pointer-events: none;
+      filter: drop-shadow(0 2px 8px rgba(14, 165, 233, 0.5));
+    `;
+    document.body.appendChild(airplane);
+
+    // Calculate deltas for the flight path
+    const deltaX = endX - startX;
+    const deltaY = endY - startY;
+
+    // Use Web Animations API for a smooth, curved flight
+    const animation = airplane.animate(
+      [
+        {
+          transform: 'translate(0, 0) rotate(-10deg) scale(1)',
+          opacity: 1,
+        },
+        {
+          transform: `translate(${deltaX * 0.3}px, ${deltaY * 0.5 - 60}px) rotate(-30deg) scale(0.85)`,
+          opacity: 1,
+          offset: 0.3,
+        },
+        {
+          transform: `translate(${deltaX * 0.65}px, ${deltaY * 0.7 - 40}px) rotate(-45deg) scale(0.6)`,
+          opacity: 0.8,
+          offset: 0.65,
+        },
+        {
+          transform: `translate(${deltaX}px, ${deltaY}px) rotate(-50deg) scale(0.3)`,
+          opacity: 0,
+        },
+      ],
+      {
+        duration: 1200,
+        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+        fill: 'forwards',
+      }
+    );
+
+    // Add a subtle trail effect
+    let trailCount = 0;
+    const trailInterval = setInterval(() => {
+      trailCount++;
+      if (trailCount > 8) {
+        clearInterval(trailInterval);
+        return;
+      }
+      const trail = document.createElement('div');
+      const computedStyle = getComputedStyle(airplane);
+      const matrix = new DOMMatrix(computedStyle.transform);
+      trail.style.cssText = `
+        position: fixed;
+        left: ${startX - 3 + matrix.m41}px;
+        top: ${startY - 3 + matrix.m42}px;
+        width: 6px;
+        height: 6px;
+        background: radial-gradient(circle, rgba(14, 165, 233, 0.6), transparent);
+        border-radius: 50%;
+        z-index: 99998;
+        pointer-events: none;
+      `;
+      document.body.appendChild(trail);
+
+      trail.animate(
+        [
+          { opacity: 0.6, transform: 'scale(1)' },
+          { opacity: 0, transform: 'scale(2.5)' },
+        ],
+        { duration: 600, easing: 'ease-out', fill: 'forwards' }
+      );
+
+      setTimeout(() => trail.remove(), 600);
+    }, 100);
+
+    // Cleanup when animation finishes
+    animation.onfinish = () => {
+      airplane.remove();
+      clearInterval(trailInterval);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-white dark:bg-neutral-950 py-20">
@@ -18,8 +122,10 @@ export default function Resume() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
             <a
+              id="download-resume-btn"
               href="/resume.pdf"
               download="Vardhan_Resume.pdf"
+              onClick={launchPaperAirplane}
               className="inline-flex items-center px-8 py-4 bg-sky-500 text-white rounded-full font-medium text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-sky-600 hover:scale-105"
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -31,8 +137,8 @@ export default function Resume() {
             <button
               onClick={() => setShowPdf(!showPdf)}
               className={`inline-flex items-center px-8 py-4 border-2 rounded-full font-medium text-lg transition-all duration-300 hover:scale-105 ${showPdf
-                  ? 'bg-sky-500 border-sky-500 text-white'
-                  : 'border-sky-500 text-sky-500 hover:bg-sky-500 hover:text-white'
+                ? 'bg-sky-500 border-sky-500 text-white'
+                : 'border-sky-500 text-sky-500 hover:bg-sky-500 hover:text-white'
                 }`}
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
