@@ -9,69 +9,109 @@ export default function Resume() {
     const btn = e.currentTarget;
     const rect = btn.getBoundingClientRect();
 
-    // Calculate the start position (center of the button)
+    // Start position: center of the button
     const startX = rect.left + rect.width / 2;
     const startY = rect.top + rect.height / 2;
 
-    // Calculate the end position (top-right corner — where downloads appear)
+    // End position: top-right corner (where browser downloads appear)
     const endX = window.innerWidth - 20;
     const endY = 10;
 
-    // Create the paper airplane SVG element
+    // Create a larger, more visible paper airplane SVG
     const airplane = document.createElement('div');
     airplane.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="none">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="40" fill="none">
         <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="#0ea5e9" stroke="#0284c7" stroke-width="1" stroke-linejoin="round"/>
       </svg>
     `;
     airplane.style.cssText = `
       position: fixed;
-      left: ${startX - 14}px;
-      top: ${startY - 14}px;
+      left: ${startX - 20}px;
+      top: ${startY - 20}px;
       z-index: 99999;
       pointer-events: none;
-      filter: drop-shadow(0 2px 8px rgba(14, 165, 233, 0.5));
+      filter: drop-shadow(0 4px 12px rgba(14, 165, 233, 0.6));
     `;
     document.body.appendChild(airplane);
 
-    // Calculate deltas for the flight path
+    // Deltas to final destination
     const deltaX = endX - startX;
     const deltaY = endY - startY;
 
-    // Use Web Animations API for a smooth, curved flight
+    // Circular looping flight path:
+    // 1. Swing left and slightly up
+    // 2. Loop down-right
+    // 3. Come back up in a wide arc
+    // 4. Sweep right and land at top-right corner
     const animation = airplane.animate(
       [
+        // Start: at button center
         {
-          transform: 'translate(0, 0) rotate(-10deg) scale(1)',
+          transform: 'translate(0, 0) rotate(0deg) scale(1)',
           opacity: 1,
+          offset: 0,
         },
+        // Phase 1: Swing up and to the left
         {
-          transform: `translate(${deltaX * 0.3}px, ${deltaY * 0.5 - 60}px) rotate(-30deg) scale(0.85)`,
+          transform: `translate(${-150}px, ${-120}px) rotate(-60deg) scale(1.1)`,
           opacity: 1,
-          offset: 0.3,
+          offset: 0.12,
         },
+        // Phase 2: Arc down-left (top of the loop)
         {
-          transform: `translate(${deltaX * 0.65}px, ${deltaY * 0.7 - 40}px) rotate(-45deg) scale(0.6)`,
-          opacity: 0.8,
-          offset: 0.65,
+          transform: `translate(${-220}px, ${40}px) rotate(-150deg) scale(1.05)`,
+          opacity: 1,
+          offset: 0.25,
         },
+        // Phase 3: Bottom of the loop — swinging right
         {
-          transform: `translate(${deltaX}px, ${deltaY}px) rotate(-50deg) scale(0.3)`,
+          transform: `translate(${-80}px, ${140}px) rotate(-240deg) scale(1)`,
+          opacity: 1,
+          offset: 0.38,
+        },
+        // Phase 4: Coming back up through the right side of the loop
+        {
+          transform: `translate(${60}px, ${-20}px) rotate(-330deg) scale(0.95)`,
+          opacity: 1,
+          offset: 0.5,
+        },
+        // Phase 5: Full loop completed, now heading toward top-right
+        {
+          transform: `translate(${deltaX * 0.35}px, ${deltaY * 0.3 - 80}px) rotate(-380deg) scale(0.85)`,
+          opacity: 1,
+          offset: 0.62,
+        },
+        // Phase 6: Sweeping up and right
+        {
+          transform: `translate(${deltaX * 0.6}px, ${deltaY * 0.5 - 50}px) rotate(-400deg) scale(0.7)`,
+          opacity: 0.9,
+          offset: 0.75,
+        },
+        // Phase 7: Approaching the corner
+        {
+          transform: `translate(${deltaX * 0.85}px, ${deltaY * 0.8}px) rotate(-420deg) scale(0.5)`,
+          opacity: 0.7,
+          offset: 0.88,
+        },
+        // Final: arrive at top-right corner, shrink and fade
+        {
+          transform: `translate(${deltaX}px, ${deltaY}px) rotate(-440deg) scale(0.25)`,
           opacity: 0,
+          offset: 1,
         },
       ],
       {
-        duration: 1200,
-        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+        duration: 3500,
+        easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
         fill: 'forwards',
       }
     );
 
-    // Add a subtle trail effect
+    // Trail effect — spawns glowing particles along the flight path
     let trailCount = 0;
     const trailInterval = setInterval(() => {
       trailCount++;
-      if (trailCount > 8) {
+      if (trailCount > 28) {
         clearInterval(trailInterval);
         return;
       }
@@ -80,11 +120,11 @@ export default function Resume() {
       const matrix = new DOMMatrix(computedStyle.transform);
       trail.style.cssText = `
         position: fixed;
-        left: ${startX - 3 + matrix.m41}px;
-        top: ${startY - 3 + matrix.m42}px;
-        width: 6px;
-        height: 6px;
-        background: radial-gradient(circle, rgba(14, 165, 233, 0.6), transparent);
+        left: ${startX - 4 + matrix.m41}px;
+        top: ${startY - 4 + matrix.m42}px;
+        width: 8px;
+        height: 8px;
+        background: radial-gradient(circle, rgba(14, 165, 233, 0.7), transparent);
         border-radius: 50%;
         z-index: 99998;
         pointer-events: none;
@@ -93,14 +133,14 @@ export default function Resume() {
 
       trail.animate(
         [
-          { opacity: 0.6, transform: 'scale(1)' },
-          { opacity: 0, transform: 'scale(2.5)' },
+          { opacity: 0.7, transform: 'scale(1)' },
+          { opacity: 0, transform: 'scale(3)' },
         ],
-        { duration: 600, easing: 'ease-out', fill: 'forwards' }
+        { duration: 800, easing: 'ease-out', fill: 'forwards' }
       );
 
-      setTimeout(() => trail.remove(), 600);
-    }, 100);
+      setTimeout(() => trail.remove(), 800);
+    }, 110);
 
     // Cleanup when animation finishes
     animation.onfinish = () => {
