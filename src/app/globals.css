@@ -35,14 +35,8 @@ html, body {
   color: rgb(var(--fg));
 }
 
-/* Apple-inspired smooth scrolling */
-html {
-  scroll-snap-type: y mandatory;
-}
-
-section {
-  scroll-snap-align: start;
-}
+/* scroll-snap removed globally — the sticky hero parallax
+   wrapper needs free-form scrolling to work correctly. */
 
 /* Subtle grain for depth */
 /* Optional grain overlay (disabled for a cleaner, sleeker look). Re-enable by restoring opacity below. */

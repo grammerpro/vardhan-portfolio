@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 
 export default function HomePage() {
   return (
-    <main className="w-full snap-y snap-mandatory scroll-smooth">
+    <main className="w-full scroll-smooth">
       <HeroSection />
       <StatsSection />
       <ProjectsSection />

@@ -798,8 +798,8 @@ export default function WalkingAvatar() {
 
     return (
         <motion.div
-            className="fixed z-40 bottom-0 right-0 cursor-pointer"
-            style={{ width: '400px', height: '140px' }}
+            className="fixed z-40 bottom-0 right-0 cursor-pointer overflow-visible"
+            style={{ width: '400px', height: '180px' }}
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
