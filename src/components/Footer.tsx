@@ -1,52 +1,112 @@
 'use client';
 
+import { siteConfig } from '@/config/site';
+
+/**
+ * Section 5.7. The marquee is a single row, set in the mono utility face at
+ * low contrast, roughly 40 seconds per cycle. It should read as a status
+ * ticker rather than a banner.
+ *
+ * The marquee is the one place a `linear` timing function is correct: brief
+ * section 3 permits it for continuous loops.
+ */
+
+const TICKER = [
+  'FULL STACK ENGINEER',
+  'CINCINNATI OHIO',
+  'ADOBE EXPERIENCE MANAGER',
+  'REACT / TYPESCRIPT',
+  'JAVA SPRING BOOT',
+  'AWS',
+  'THREE.JS',
+  'OPEN TO FULL-TIME',
+];
+
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
+  const year = new Date().getFullYear();
+  const row = TICKER.join('  /  ');
 
   return (
-    <footer className="relative w-full bg-neutral-950 py-20 text-white snap-start">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
-          <div className="col-span-1 lg:col-span-2">
-            <h2 className="mb-6 text-3xl font-bold md:text-4xl">Let&apos;s build something<br />extraordinary together.</h2>
-            <p className="mb-8 max-w-md text-neutral-400">
-              I&apos;m currently available for freelance projects and open to full-time opportunities.
-            </p>
-            <a
-              href="mailto:vardhana1209@gmail.com"
-              className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3 text-sm font-semibold text-neutral-950 transition-colors hover:bg-neutral-200"
-            >
-              Get in touch
-            </a>
-          </div>
+    <footer className="relative w-full overflow-hidden bg-paper pt-s6 text-ink">
+      {/* Marquee. aria-hidden because it is decorative repetition; everything
+          it says is stated in prose elsewhere on the page. Hidden outright
+          under reduced motion rather than left as a frozen strip. */}
+      <div
+        aria-hidden="true"
+        className="flex w-full overflow-hidden border-y border-[color:var(--hairline-light)] py-s2 motion-reduce:hidden"
+      >
+        <div className="marquee-track u-mono flex shrink-0 gap-s4 whitespace-nowrap text-graphite">
+          <span>{row}</span>
+          <span>{row}</span>
+        </div>
+      </div>
 
-          <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-neutral-500">Sitemap</h3>
-            <ul className="space-y-3">
-              <li><a href="#home" className="text-neutral-300 hover:text-white">Home</a></li>
-              <li><a href="#projects" className="text-neutral-300 hover:text-white">Projects</a></li>
-              <li><a href="#about" className="text-neutral-300 hover:text-white">About</a></li>
-              <li><a href="/resume" className="text-neutral-300 hover:text-white">Resume</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-neutral-500">Socials</h3>
-            <ul className="space-y-3">
-              <li><a href="https://github.com/grammerpro" target="_blank" rel="noopener noreferrer" className="text-neutral-300 hover:text-white">GitHub</a></li>
-              <li><a href="https://www.linkedin.com/in/sri-vardhan-7b5853184/" target="_blank" rel="noopener noreferrer" className="text-neutral-300 hover:text-white">LinkedIn</a></li>
-              <li><a href="https://leetcode.com/u/sudovardhan/" target="_blank" rel="noopener noreferrer" className="text-neutral-300 hover:text-white">LeetCode</a></li>
-            </ul>
-          </div>
+      <div className="mx-auto grid w-full max-w-[var(--grid-max)] grid-cols-4 gap-s3 px-[var(--page-margin)] py-s6 md:grid-cols-12">
+        <div className="col-span-4 md:col-span-6">
+          <p className="u-mono mb-s3 text-graphite">Sitemap</p>
+          <ul className="flex flex-col gap-s1 text-body">
+            <li>
+              <a href="#hero" className="underline underline-offset-4 hover:text-signal">
+                Index
+              </a>
+            </li>
+            <li>
+              <a href="#work" className="underline underline-offset-4 hover:text-signal">
+                Work
+              </a>
+            </li>
+            <li>
+              <a href="#about" className="underline underline-offset-4 hover:text-signal">
+                About
+              </a>
+            </li>
+            <li>
+              <a href="/resume" className="underline underline-offset-4 hover:text-signal">
+                Resume
+              </a>
+            </li>
+          </ul>
         </div>
 
-        <div className="mt-20 flex flex-col items-center justify-between border-t border-neutral-800 pt-8 md:flex-row">
-          <p className="text-sm text-neutral-500">
-            &copy; {currentYear} Vardhan. All rights reserved.
-          </p>
-          <p className="mt-4 text-sm text-neutral-500 md:mt-0">
-            Designed & Built with Next.js & Tailwind
-          </p>
+        <div className="col-span-4 md:col-span-6">
+          <p className="u-mono mb-s3 text-graphite">Elsewhere</p>
+          <ul className="flex flex-col gap-s1 text-body">
+            <li>
+              <a
+                href={siteConfig.social.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-4 hover:text-signal"
+              >
+                GitHub
+              </a>
+            </li>
+            <li>
+              <a
+                href={siteConfig.social.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-4 hover:text-signal"
+              >
+                LinkedIn
+              </a>
+            </li>
+            <li>
+              <a
+                href={siteConfig.social.leetcode}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-4 hover:text-signal"
+              >
+                LeetCode
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div className="u-mono col-span-4 mt-s5 flex flex-col gap-s1 text-graphite md:col-span-12 md:flex-row md:justify-between">
+          <span>&copy; {year} Vardhan</span>
+          <span>Open to full-time roles and freelance work</span>
         </div>
       </div>
     </footer>

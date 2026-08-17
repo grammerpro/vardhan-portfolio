@@ -1,164 +1,213 @@
 'use client';
-import { useState, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
 
-const projects = [
+import { useRef } from 'react';
+import Image from 'next/image';
+import { gsap, useGSAP } from '@/lib/gsap';
+import useReducedMotion, { prefersReducedMotion } from '@/hooks/useReducedMotion';
+
+/**
+ * Section 5.3. Horizontal pinned gallery.
+ *
+ * The section pins and a horizontal track translates on X, scrubbed against
+ * vertical scroll. Track distance is total card width minus one viewport.
+ *
+ * The category filter chips are gone. A six-item list does not need filtering
+ * and filter UI in a portfolio is a tell.
+ *
+ * Below 768px this falls back to a plain vertical stack. Section 7 requires
+ * that, because a pinned horizontal scroll cannot be made properly reachable
+ * on a small touch screen.
+ *
+ * Project content is Vardhan's and is not written or edited here.
+ */
+
+type Project = {
+  id: number;
+  title: string;
+  description: string;
+  tags: string[];
+  image: string;
+  url: string;
+};
+
+const projects: Project[] = [
   {
     id: 1,
-    title: 'E-Commerce Platform',
-    category: 'Web Development',
-    description: 'A modern e-commerce solution with React and Node.js, featuring real-time inventory management.',
-    tags: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-    color: 'from-blue-500 to-cyan-500',
-    span: 'md:col-span-2 md:row-span-2',
+    title: 'Aura Landing',
+    description:
+      'A futuristic landing page for Aura - AI frameworks & smart eyewear, built with modern web aesthetics.',
+    tags: ['Next.js', 'AI', 'Smart Eyewear', 'Tailwind'],
+    image: '/images/aura-landing.png',
+    url: 'https://github.com/grammerpro/aura-landing',
   },
   {
     id: 2,
-    title: 'Data Viz Dashboard',
-    category: 'Data Analytics',
-    description: 'Interactive dashboard for business analytics with real-time data processing.',
-    tags: ['D3.js', 'Python', 'PostgreSQL'],
-    color: 'from-purple-500 to-pink-500',
-    span: 'md:col-span-1 md:row-span-1',
+    title: 'Java Native RAG',
+    description:
+      'A native Java Retrieval-Augmented Generation system for fast local LLM document intelligence.',
+    tags: ['Java', 'RAG', 'VectorDB', 'LLM'],
+    image: '/images/java-rag.png',
+    url: 'https://github.com/grammerpro/Java-Native-RAG-System',
   },
   {
     id: 3,
-    title: 'Mobile Banking App',
-    category: 'Mobile Development',
-    description: 'User-friendly mobile banking interface with biometric authentication.',
-    tags: ['React Native', 'Firebase'],
-    color: 'from-green-500 to-teal-500',
-    span: 'md:col-span-1 md:row-span-2',
+    title: 'Chroma Loop',
+    description: 'An interactive WebGL experience using Three.js and custom shader ribbons.',
+    tags: ['Three.js', 'WebGL', 'GSAP', 'Shaders'],
+    image: '/images/chroma-loop.png',
+    url: 'https://github.com/grammerpro/Chroma-Loop',
   },
   {
     id: 4,
-    title: 'AI Chat Application',
-    category: 'AI Integration',
-    description: 'Real-time chat app with AI integration and natural language processing.',
-    tags: ['Next.js', 'OpenAI', 'Socket.io'],
-    color: 'from-orange-500 to-red-500',
-    span: 'md:col-span-2 md:row-span-1',
+    title: 'ANON Dapp',
+    description: 'A decentralized anonymous application using zero-knowledge proof frameworks.',
+    tags: ['Solidity', 'Ethereum', 'React', 'Cryptography'],
+    image: '/images/anon-dapp.png',
+    url: 'https://github.com/grammerpro/ANON-Dapp',
   },
   {
     id: 5,
-    title: 'Portfolio Website',
-    category: 'Web Design',
-    description: 'Personal portfolio with Three.js animations and interactive 3D elements.',
-    tags: ['Next.js', 'Three.js', 'Tailwind'],
-    color: 'from-indigo-500 to-purple-500',
-    span: 'md:col-span-1 md:row-span-1',
-  }
+    title: 'PDF Editor Tool',
+    description: 'A client-side PDF document editor featuring secure digital signature integrations.',
+    tags: ['React', 'PDF.js', 'WebCrypto', 'Tailwind'],
+    image: '/images/pdf-editor.png',
+    url: 'https://github.com/grammerpro/pdf-editor-tool',
+  },
+  {
+    id: 6,
+    title: 'Blockchain Storage',
+    description:
+      'Decentralized cloud file storage utilizing Ethereum smart contracts and IPFS storage nodes.',
+    tags: ['IPFS', 'Solidity', 'Ethereum', 'React'],
+    image: '/images/blockchain-storage.png',
+    url: 'https://github.com/grammerpro/BlockchainFileStorage',
+  },
 ];
 
-const categories = ['All', 'Web Development', 'Data Analytics', 'Mobile Development', 'AI Integration', 'Web Design'];
-
-interface Project {
-  id: number;
-  title: string;
-  category: string;
-  description: string;
-  tags: string[];
-  color: string;
-  span: string;
-}
-
-function ProjectCard({ project }: { project: Project }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.9, 1], [0, 1, 1, 0]);
-
+function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
-    <motion.div
-      ref={ref}
-      style={{ opacity, y }}
-      className={`group relative overflow-hidden rounded-3xl bg-neutral-100 dark:bg-neutral-900 ${project.span}`}
-    >
-      <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-0 transition-opacity duration-500 group-hover:opacity-10`} />
-      
-      <div className="flex h-full flex-col justify-between p-8">
-        <div>
-          <div className="mb-4 flex items-center justify-between">
-            <span className="rounded-full border border-neutral-200 bg-white/50 px-3 py-1 text-xs font-medium text-neutral-600 backdrop-blur-sm dark:border-neutral-800 dark:bg-neutral-800/50 dark:text-neutral-400">
-              {project.category}
-            </span>
-            <motion.div
-              whileHover={{ rotate: 45 }}
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-900 dark:border-neutral-800 dark:bg-neutral-800 dark:text-white"
-            >
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </motion.div>
+    <article data-card className="flex w-full shrink-0 flex-col md:w-[46vw] lg:w-[38vw]">
+      <a
+        href={project.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group flex flex-col gap-s3"
+      >
+        {/* Media, roughly 4:3. The frame stays put and the image shifts inside
+            it, scaled up so the parallax never exposes an edge. Translating
+            the frame itself left gaps between the media and its own caption. */}
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-void">
+          <div data-card-media className="absolute inset-0 scale-[1.18]">
+            <Image
+              src={project.image}
+              alt={`${project.title} project screenshot`}
+              fill
+              sizes="(max-width: 767px) 100vw, (max-width: 1023px) 46vw, 38vw"
+              className="object-cover object-center transition-transform duration-[var(--dur-base)] ease-out-expo group-hover:scale-[1.04]"
+            />
           </div>
-          
-          <h3 className="mb-2 text-2xl font-bold text-neutral-900 dark:text-white md:text-3xl">
+        </div>
+
+        <div data-card-text className="flex flex-col gap-s1">
+          <span className="u-mono text-graphite-void">{String(index + 1).padStart(2, '0')}</span>
+          <h3 className="font-display text-h2 font-extrabold leading-[0.95] tracking-[-0.03em] text-bone">
             {project.title}
           </h3>
-          <p className="max-w-md text-neutral-600 dark:text-neutral-400">
+          <p className="max-w-[46ch] text-body leading-[var(--leading-body)] text-graphite-void">
             {project.description}
           </p>
+          <ul className="u-mono mt-s1 flex flex-wrap gap-s2 text-graphite-void">
+            {project.tags.map((tag) => (
+              <li key={tag}>{tag}</li>
+            ))}
+          </ul>
         </div>
-
-        <div className="mt-8 flex flex-wrap gap-2">
-          {project.tags.map((tag: string) => (
-            <span key={tag} className="text-sm font-medium text-neutral-500 dark:text-neutral-500">
-              #{tag}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Hover Reveal Image/Gradient */}
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br from-neutral-200 to-neutral-100 opacity-0 transition-opacity duration-500 group-hover:opacity-100 dark:from-neutral-800 dark:to-neutral-900" />
-    </motion.div>
+      </a>
+    </article>
   );
 }
 
 export default function ProjectsSection() {
-  const [activeCategory, setActiveCategory] = useState('All');
-  
-  const filteredProjects = activeCategory === 'All'
-    ? projects
-    : projects.filter(project => project.category === activeCategory);
+  const root = useRef<HTMLElement>(null);
+  const track = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+
+  useGSAP(
+    () => {
+      // Vertical stack below 768px, and whenever motion is reduced. Neither
+      // path creates a ScrollTrigger at all.
+      if (prefersReducedMotion() || window.matchMedia('(max-width: 767px)').matches) {
+        return;
+      }
+
+      const trackEl = track.current;
+      const rootEl = root.current;
+      if (!trackEl || !rootEl) return;
+
+      const distance = () => Math.max(0, trackEl.scrollWidth - window.innerWidth);
+
+      const tween = gsap.to(trackEl, {
+        x: () => -distance(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: rootEl,
+          start: 'top top',
+          end: () => `+=${distance()}`,
+          pin: true,
+          // Scrub 1.0 with smoothing, not instant, per the brief.
+          scrub: 1,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      // Depth inside the horizontal move: media runs slightly faster than the
+      // track, text slightly slower.
+      const cards = gsap.utils.toArray<HTMLElement>('[data-card]', trackEl);
+      const parallax = cards.map((card) => {
+        const media = card.querySelector('[data-card-media]');
+        const text = card.querySelector('[data-card-text]');
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: rootEl,
+            start: 'top top',
+            end: () => `+=${distance()}`,
+            scrub: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+        if (media) tl.fromTo(media, { xPercent: 0 }, { xPercent: -12, ease: 'none' }, 0);
+        if (text) tl.fromTo(text, { xPercent: 0 }, { xPercent: 4, ease: 'none' }, 0);
+        return tl;
+      });
+
+      return () => {
+        tween.scrollTrigger?.kill();
+        tween.kill();
+        parallax.forEach((tl) => {
+          tl.scrollTrigger?.kill();
+          tl.kill();
+        });
+      };
+    },
+    { scope: root },
+  );
 
   return (
-    <section id="projects" className="relative w-full bg-white py-32 dark:bg-neutral-950">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-20 flex flex-col items-end justify-between gap-8 md:flex-row md:items-end">
-          <div className="max-w-2xl">
-            <h2 className="mb-6 text-4xl font-bold leading-tight text-neutral-900 dark:text-white md:text-6xl">
-              Selected Works
-            </h2>
-            <p className="text-lg text-neutral-600 dark:text-neutral-400">
-              A curated selection of projects that demonstrate my passion for building polished, performance-driven web experiences.
-            </p>
-          </div>
-          
-          <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                  activeCategory === category
-                    ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900'
-                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        </div>
+    <section id="work" ref={root} className="relative w-full overflow-hidden bg-void">
+      <div className="flex min-h-svh flex-col justify-center py-s6">
+        <h2 className="u-mono mb-s5 px-[var(--page-margin)] text-graphite-void">Selected work</h2>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:grid-rows-3">
-          {filteredProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+        <div
+          ref={track}
+          className={
+            reduced
+              ? 'flex flex-col gap-s6 px-[var(--page-margin)]'
+              : 'flex flex-col gap-s6 px-[var(--page-margin)] md:w-max md:flex-row md:items-start md:gap-s5'
+          }
+        >
+          {projects.map((project, index) => (
+            <ProjectCard key={project.id} project={project} index={index} />
           ))}
         </div>
       </div>

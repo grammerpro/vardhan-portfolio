@@ -1,19 +1,23 @@
 import HeroSection from "@/components/HeroSection";
-import StatsSection from "@/components/StatsSection";
+import PositioningSection from "@/components/PositioningSection";
 import ProjectsSection from "@/components/ProjectsSection";
+import CapabilitySection from "@/components/CapabilitySection";
 import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
 export default function HomePage() {
+  // Not a <main>: layout.tsx already provides the single main landmark, and
+  // nesting a second one gave the page two.
   return (
-    <main className="w-full scroll-smooth">
+    <div className="w-full">
       <HeroSection />
-      <StatsSection />
+      <PositioningSection />
       <ProjectsSection />
+      <CapabilitySection />
       <AboutSection />
       <ContactSection />
       <Footer />
-    </main>
+    </div>
   );
 }

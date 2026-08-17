@@ -1,26 +1,22 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 
+/**
+ * Route transition, CSS only.
+ *
+ * This previously used framer-motion, which put roughly 40kB and a large
+ * chunk of script evaluation on the homepage's critical path for a 350ms
+ * fade. It also used `easeOut` and `easeIn`, which brief section 3 forbids.
+ *
+ * Keying the wrapper on the pathname restarts the CSS animation on
+ * navigation, which is all the original did.
+ */
 export default function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return <>{children}</>;
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <motion.div
-        key={pathname}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } }}
-        exit={{ opacity: 0, y: -10, transition: { duration: 0.25, ease: "easeIn" } }}
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
+    <div key={pathname} className="route-fade">
+      {children}
+    </div>
   );
 }
-
-

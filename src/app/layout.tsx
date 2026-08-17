@@ -1,33 +1,52 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
-import ThemeProvider from "@/components/ThemeProvider";
 import PageTransition from "@/components/PageTransition";
-import AssistantWidget from "@/react/AssistantWidget";
-import WalkingAvatar from "@/components/WalkingAvatar";
-import ScrollToTopRocket from "@/components/ScrollToTopRocket";
-import { Inter, Space_Grotesk } from "next/font/google";
+import DeferredAssistant from "@/components/DeferredAssistant";
+import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
+import EntrySequence from "@/components/EntrySequence";
+import InstrumentRail from "@/components/InstrumentRail";
+import { Archivo, Geist, Geist_Mono } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space-grotesk" });
+// Display face. The wdth axis is what makes this the loud face; headlines set
+// it between 110 and 125, so it has to be requested as a variable axis here.
+const archivo = Archivo({
+  subsets: ["latin"],
+  display: "swap",
+  axes: ["wdth"],
+  variable: "--font-archivo",
+});
+
+const geistSans = Geist({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-geist-sans",
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-geist-mono",
+});
 
 export const metadata: Metadata = {
   title: {
-    default: "Vardhan - Creative Developer | WebGL & AI Design",
+    default: "Vardhan - Full Stack Engineer",
     template: "%s | Vardhan"
   },
-  description: "Portfolio of Vardhan - Frontend engineer specializing in immersive 3D web experiences, AI-assisted workflows, and polished product launches. Expert in WebGL, Three.js, React, and Next.js.",
+  description: "Vardhan is a full stack engineer in Cincinnati, Ohio. Five years on enterprise content platforms with Adobe Experience Manager, React, TypeScript, Java Spring Boot, and AWS, plus independent work in WebGL, retrieval systems, and browser tooling.",
   keywords: [
-    "WebGL",
-    "Three.js",
-    "Frontend Developer",
+    "Full Stack Engineer",
+    "Adobe Experience Manager",
+    "AEM",
     "React",
-    "Next.js",
-    "creative developer",
-    "3D web development",
-    "AI integration",
-    "immersive web experiences",
-    "portfolio",
+    "TypeScript",
+    "Java Spring Boot",
+    "Node.js",
+    "AWS",
+    "Three.js",
+    "WebGL",
+    "Cincinnati",
     "Vardhan"
   ],
   authors: [{ name: "Vardhan", url: "https://vardhansudo.me" }],
@@ -43,16 +62,16 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: "Vardhan - Creative Developer | WebGL & AI Design",
-    description: "Designing immersive web moments with purpose. Frontend engineer specializing in 3D web experiences, AI workflows, and modern web technologies.",
+    title: "Vardhan - Full Stack Engineer",
+    description: "Enterprise content platforms by day. WebGL, retrieval systems, and browser tooling in my own repos.",
     url: "https://vardhansudo.me",
-    siteName: "Vardhan Portfolio",
+    siteName: "Vardhan",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Vardhan - Creative Developer Portfolio showcasing WebGL and Three.js projects",
+        alt: "Vardhan, full stack engineer, Cincinnati Ohio",
       },
     ],
     locale: "en_US",
@@ -60,10 +79,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Vardhan - Creative Developer | WebGL & AI Design",
-    description: "Designing immersive web moments with purpose. Specializing in WebGL, Three.js, and modern web experiences.",
+    title: "Vardhan - Full Stack Engineer",
+    description: "Enterprise content platforms by day. WebGL, retrieval systems, and browser tooling in my own repos.",
     images: ["/og-image.jpg"],
-    creator: "@vardhan_dev",
+    // creator removed: the @vardhan_dev handle could not be verified.
   },
   robots: {
     index: true,
@@ -76,9 +95,9 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    google: 'your-google-verification-code',
-  },
+  // No `verification` block. It previously shipped the literal placeholder
+  // string 'your-google-verification-code'. Add it back with a real token
+  // from Search Console when you have one.
 };
 
 export default function RootLayout({
@@ -87,24 +106,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`scroll-smooth ${spaceGrotesk.variable}`} suppressHydrationWarning>
+    <html lang="en" className={archivo.variable} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
+                // Entry sequence gate. Runs before the body paints so a
+                // returning visitor never sees a flash of the overlay, and a
+                // first-time visitor never sees a flash of the hero.
                 try {
-                  const theme = localStorage.getItem('theme') || 'auto';
-                  const resolved = theme === 'auto' 
-                    ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') 
-                    : theme;
-                  if (resolved === 'dark') {
-                    document.documentElement.classList.add('dark');
-                  } else {
-                    document.documentElement.classList.remove('dark');
-                  }
+                  var seen = sessionStorage.getItem('entry-seen');
+                  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                  // Desktop only. On a throttled phone the curtain lands on
+                  // top of an already slow first paint, which reads as the
+                  // site being broken rather than as a deliberate beat.
+                  var small = window.matchMedia('(max-width: 767px)').matches;
+                  document.documentElement.dataset.entry =
+                    (seen || reduced || small) ? 'seen' : 'first';
                 } catch (e) {
-                  console.error('Theme initialization error:', e);
+                  document.documentElement.dataset.entry = 'seen';
                 }
               })();
             `,
@@ -115,36 +136,34 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest" />
-        <meta name="theme-color" content="#0ea5e9" />
-        <meta name="msapplication-TileColor" content="#0ea5e9" />
+        <meta name="theme-color" content="#E8E6E1" />
+        <meta name="msapplication-TileColor" content="#E8E6E1" />
       </head>
       <body
-        className={`${inter.variable} font-sans antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
         suppressHydrationWarning={true}
       >
-        <ThemeProvider>
-          {/* Skip to main content link for accessibility */}
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:absolute focus:z-[9999] focus:top-4 focus:left-4 focus:p-4 focus:bg-purple-600 focus:text-white focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 dark:focus:bg-fuchsia-600 dark:focus:ring-fuchsia-400"
-          >
-            Skip to main content
-          </a>
-          <Navbar />
-          <main id="main-content">
-            <PageTransition>{children}</PageTransition>
-          </main>
-          <AssistantWidget
-            theme="auto"
-            kbUrl="/data/resume.json"
-            avatarUrl="https://api.dicebear.com/9.x/avataaars/svg?seed=Vardhan&backgroundColor=b6e3f4"
-            agentName="Vardhan"
-            enableVoice={true}
-            showButton={false}
-          />
-          <WalkingAvatar />
-          <ScrollToTopRocket />
-        </ThemeProvider>
+        <SmoothScrollProvider>
+            <EntrySequence />
+            <InstrumentRail />
+            {/* Skip to main content link for accessibility */}
+            <a
+              href="#main-content"
+              className="u-mono sr-only focus:not-sr-only focus:absolute focus:z-[9999] focus:top-s2 focus:left-s2 focus:bg-signal focus:p-s2 focus:text-bone"
+            >
+              Skip to main content
+            </a>
+            <Navbar />
+            <main id="main-content">
+              <PageTransition>{children}</PageTransition>
+            </main>
+            <DeferredAssistant />
+            {/* WalkingAvatar and ScrollToTopRocket were unmounted here during
+                Phase 3. Both sat directly on top of the instrument rail, and a
+                cartoon character with a speech bubble contradicts the
+                "measured, quiet, and exact" direction in brief section 2. The
+                components still exist if you want them back. */}
+        </SmoothScrollProvider>
 
         {/* JSON-LD Structured Data */}
         <script
@@ -155,9 +174,15 @@ export default function RootLayout({
               "@type": "Person",
               "name": "Vardhan",
               "url": "https://vardhansudo.me",
-              "jobTitle": "Creative Developer",
-              "description": "Frontend engineer specializing in immersive 3D web experiences and AI-assisted workflows",
-              "knowsAbout": ["WebGL", "Three.js", "React", "Next.js", "AI Design", "Frontend Development"],
+              "jobTitle": "Full Stack Engineer",
+              "description": "Full stack engineer in Cincinnati, Ohio. Enterprise content platforms, plus independent work in WebGL and retrieval systems.",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Cincinnati",
+                "addressRegion": "OH",
+                "addressCountry": "US"
+              },
+              "knowsAbout": ["Adobe Experience Manager", "React", "TypeScript", "Java Spring Boot", "Node.js", "AWS", "Three.js", "WebGL"],
               "sameAs": [
                 "https://github.com/grammerpro",
                 "https://www.linkedin.com/in/sri-vardhan-7b5853184/",

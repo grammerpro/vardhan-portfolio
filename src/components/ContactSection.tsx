@@ -1,263 +1,251 @@
 'use client';
+
 import { useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { siteConfig } from '@/config/site';
+
+/**
+ * Phase 2 content pass.
+ *
+ * The form now posts to /api/contact and reports what actually happened. The
+ * previous version called setIsSubmitted(true) and showed "Thank you for your
+ * message!" without sending anything.
+ *
+ * The "Available for new projects" badge is gone from here. The claim is true
+ * but it was being made in three places at once; it now appears once, in the
+ * footer.
+ */
+
+type Status =
+  | { kind: 'idle' }
+  | { kind: 'sending' }
+  | { kind: 'sent' }
+  | { kind: 'error'; message: string };
 
 export default function ContactSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"]
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
-
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: ''
+    message: '',
+    // Honeypot. Hidden from people, filled in by bots.
+    company: '',
   });
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [status, setStatus] = useState<Status>({ kind: 'idle' });
+  const [copied, setCopied] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // Simulate form submission
-    setIsSubmitted(true);
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({ name: '', email: '', message: '' });
-    }, 3000);
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setStatus({ kind: 'sending' });
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        setStatus({
+          kind: 'error',
+          message: result.error || 'Something went wrong. Please email me directly.',
+        });
+        return;
+      }
+
+      setStatus({ kind: 'sent' });
+      setFormData({ name: '', email: '', message: '', company: '' });
+    } catch {
+      setStatus({
+        kind: 'error',
+        message: 'Could not reach the server. Please email me directly.',
+      });
+    }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-  const copyEmail = () => {
-    navigator.clipboard.writeText('vardhana1209@gmail.com');
-    // You could add a toast notification here
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(siteConfig.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard blocked. The address is visible on screen either way.
+    }
   };
+
+  const sending = status.kind === 'sending';
 
   return (
-    <section ref={sectionRef} id="contact" className="relative w-full min-h-screen bg-white py-20 snap-start overflow-hidden">
-      {/* Parallax background */}
-      <motion.div
-        style={{ y }}
-        className="absolute inset-0 opacity-20"
-      >
-        <div className="absolute top-20 right-20 w-64 h-64 bg-sky-100 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-20 w-48 h-48 bg-blue-100 rounded-full blur-2xl"></div>
-      </motion.div>
+    <section id="contact" className="relative w-full bg-paper py-s7 text-ink">
+      <div className="mx-auto max-w-[var(--grid-max)] px-[var(--page-margin)]">
+        <h2 className="u-mono mb-s5 text-graphite">
+          Contact
+        </h2>
+        <p className="mb-s6 max-w-[52ch] text-body leading-[var(--leading-body)] text-ink">
+          Email is the fastest way to reach me. The form goes to the same place.
+        </p>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-            Let&apos;s Build Something Together
-          </h2>
-          <p className="text-lg md:text-xl text-gray-600 font-light max-w-2xl mx-auto leading-relaxed">
-            Ready to bring your ideas to life? I&apos;d love to hear about your project and explore how we can create something amazing.
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
-            className="space-y-8"
-          >
-            <div className="space-y-6">
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-lg text-gray-700 leading-relaxed"
+        <div className="grid grid-cols-1 gap-s6 lg:grid-cols-2">
+          {/* Direct channels */}
+          <div className="flex flex-col gap-s2">
+            <div className="flex items-center gap-4">
+              <a
+                href={`mailto:${siteConfig.email}`}
+                className="text-body text-ink underline underline-offset-4 hover:text-signal"
               >
-                Whether you have a project in mind, need technical consultation, or just want to connect,
-                I&apos;m always excited to discuss new opportunities and creative challenges.
-              </motion.p>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="text-lg text-gray-700 leading-relaxed"
+                {siteConfig.email}
+              </a>
+              <button
+                type="button"
+                onClick={copyEmail}
+                className="u-mono text-graphite underline underline-offset-4 hover:text-signal"
               >
-                Let&apos;s create something that not only works beautifully but also tells your unique story.
-              </motion.p>
+                {copied ? 'Copied' : 'Copy'}
+              </button>
             </div>
 
-            {/* Contact Methods */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="space-y-6"
-            >
-              <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-300 group cursor-pointer" onClick={copyEmail}>
-                <div className="w-12 h-12 bg-sky-500 rounded-full flex items-center justify-center text-white text-xl">
-                  📧
-                </div>
-                <div>
-                  <div className="font-medium text-gray-900">Email</div>
-                  <div className="text-gray-600">vardhana1209@gmail.com</div>
-                </div>
-                <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="text-sm text-sky-600 font-medium">Copy</span>
-                </div>
-              </div>
-
-              <a href="https://www.linkedin.com/in/sri-vardhan-7b5853184/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-300">
-                <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white text-xl">
-                  💼
-                </div>
-                <div>
-                  <div className="font-medium text-gray-900">LinkedIn</div>
-                  <div className="text-gray-600">Connect professionally</div>
-                </div>
-              </a>
-
-              <a href="https://github.com/grammerpro" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-300">
-                <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white text-xl">
-                  🐙
-                </div>
-                <div>
-                  <div className="font-medium text-gray-900">GitHub</div>
-                  <div className="text-gray-600">Check out my code</div>
-                </div>
-              </a>
-            </motion.div>
-
-            {/* Availability Status */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="flex items-center gap-3 p-4 bg-green-50 rounded-xl"
-            >
-              <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-green-700 font-medium">Available for new projects</span>
-            </motion.div>
-          </motion.div>
-
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
-            className="bg-gray-50 rounded-2xl p-8"
-          >
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
+            <ul className="flex flex-col gap-s1 text-body">
+              <li>
+                <a
+                  href={siteConfig.social.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-ink underline underline-offset-4 hover:text-signal"
                 >
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-300"
-                    placeholder="Your name"
-                  />
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
+                  LinkedIn
+                </a>
+              </li>
+              <li>
+                <a
+                  href={siteConfig.social.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-ink underline underline-offset-4 hover:text-signal"
                 >
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-300"
-                    placeholder="your.email@example.com"
-                  />
-                </motion.div>
-              </div>
+                  GitHub
+                </a>
+              </li>
+              <li>
+                <a
+                  href={siteConfig.social.leetcode}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-ink underline underline-offset-4 hover:text-signal"
+                >
+                  LeetCode
+                </a>
+              </li>
+            </ul>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
+            <p className="u-mono pt-s3 text-graphite">
+              {siteConfig.location}
+            </p>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-s3">
+            <div>
+              <label
+                htmlFor="name"
+                className="u-mono mb-s1 block text-graphite"
               >
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows={5}
-                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-300 resize-none"
-                  placeholder="Tell me about your project..."
-                />
-              </motion.div>
+                Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                maxLength={100}
+                disabled={sending}
+                className="w-full border border-[color:var(--hairline-light)] bg-transparent px-s2 py-s2 text-body text-ink"
+              />
+            </div>
 
-              <motion.button
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                whileHover={{ scale: 1.02, y: -1 }}
-                whileTap={{ scale: 0.98 }}
-                type="submit"
-                disabled={isSubmitted}
-                className="w-full px-8 py-4 bg-sky-500 text-white rounded-xl font-medium text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-sky-600 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
+            <div>
+              <label
+                htmlFor="email"
+                className="u-mono mb-s1 block text-graphite"
               >
-                <span className="relative z-10">
-                  {isSubmitted ? 'Message Sent! 🎉' : 'Send Message'}
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-sky-400 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                maxLength={200}
+                disabled={sending}
+                className="w-full border border-[color:var(--hairline-light)] bg-transparent px-s2 py-s2 text-body text-ink"
+              />
+            </div>
 
-                {/* Animated underline */}
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.3 }}
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-white origin-left"
-                />
-              </motion.button>
-            </form>
-
-            {/* Success message */}
-            {isSubmitted && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="mt-6 p-4 bg-green-50 border border-green-200 rounded-xl text-center"
+            <div>
+              <label
+                htmlFor="message"
+                className="u-mono mb-s1 block text-graphite"
               >
-                <div className="text-green-700 font-medium">Thank you for your message!</div>
-                <div className="text-green-600 text-sm mt-1">I&apos;ll get back to you soon.</div>
-              </motion.div>
-            )}
-          </motion.div>
+                Message
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                required
+                maxLength={5000}
+                rows={6}
+                disabled={sending}
+                className="w-full resize-none border border-[color:var(--hairline-light)] bg-transparent px-s2 py-s2 text-body text-ink"
+              />
+            </div>
+
+            {/* Honeypot. Hidden from people and from screen readers, but a bot
+                parsing the DOM will fill it in and get silently dropped. */}
+            <div aria-hidden="true" className="absolute left-[-9999px]">
+              <label htmlFor="company">Company</label>
+              <input
+                type="text"
+                id="company"
+                name="company"
+                tabIndex={-1}
+                autoComplete="off"
+                value={formData.company}
+                onChange={handleChange}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={sending}
+              className="u-mono w-full bg-ink px-s4 py-s3 text-paper transition-colors duration-[var(--dur-micro)] hover:bg-signal disabled:opacity-50"
+            >
+              {sending ? 'Sending' : 'Send message'}
+            </button>
+
+            {/* Real outcomes only. aria-live so the result is announced. */}
+            <div aria-live="polite" className="min-h-[1.5rem]">
+              {status.kind === 'sent' && (
+                <p className="text-ink">
+                  Message sent. I will reply to the address you gave.
+                </p>
+              )}
+              {status.kind === 'error' && (
+                <p className="text-signal">{status.message}</p>
+              )}
+            </div>
+          </form>
         </div>
       </div>
     </section>
