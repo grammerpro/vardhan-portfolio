@@ -16,10 +16,14 @@ import { siteConfig } from '@/config/site';
  * CTA buttons, the ambient shapes, the interactive grid, and the noise
  * texture layer.
  *
- * The WebGL point cloud behind the type is dynamically imported and client-
- * only, so the three/R3F bundle stays out of the first load.
+ * The Index, the constructed hero object, is dynamically imported and client
+ * only so the three/R3F bundle stays out of the first load. Where WebGL does
+ * not run (mobile, or reduced motion at any width) the same structure appears
+ * as a build-time SVG instead of nothing.
  */
 const SceneLayer = dynamic(() => import('./webgl/SceneLayer'), { ssr: false });
+const HeroStructureFallback = dynamic(() => import('./HeroStructureFallback'), { ssr: false });
+
 export default function HeroSection() {
   const root = useRef<HTMLElement>(null);
 
@@ -93,6 +97,7 @@ export default function HeroSection() {
       className="relative flex min-h-svh w-full flex-col justify-end bg-paper"
     >
       <SceneLayer />
+      <HeroStructureFallback />
 
       <div
         className="relative z-10 mx-auto grid w-full max-w-[var(--grid-max)] grid-cols-4 gap-s3 px-[var(--page-margin)]

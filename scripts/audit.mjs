@@ -91,9 +91,18 @@ async function run(reducedMotion) {
       text: (h.textContent || '').trim().slice(0, 40),
     }));
 
-    const imagesMissingAlt = [...document.images].filter(
-      (i) => !i.alt || i.alt.trim() === '',
-    ).length;
+    // An empty alt on a decorative image is correct, not a defect: it tells a
+    // screen reader to skip it. Only flag images with no alt attribute at all,
+    // or an empty alt on an image that is not marked decorative.
+    const imagesMissingAlt = [...document.images].filter((i) => {
+      if (!i.hasAttribute('alt')) return true;
+      if (i.alt.trim() !== '') return false;
+      const decorative =
+        i.getAttribute('aria-hidden') === 'true' ||
+        i.getAttribute('role') === 'presentation' ||
+        i.closest('[aria-hidden="true"]') !== null;
+      return !decorative;
+    }).length;
 
     const landmarks = {
       main: document.querySelectorAll('main').length,

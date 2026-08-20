@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import PointCloud from './PointCloud';
+import IndexStructure from './IndexStructure';
 
 /**
  * The single <Canvas> for the whole page. Section 4 allows exactly one, as a
@@ -88,12 +88,18 @@ export default function SceneLayer() {
   return (
     // Canvas opacity 0 to 1 over 1600ms, linear, per section 5.1.
     <div aria-hidden="true" className="canvas-fade pointer-events-none fixed inset-0 z-0">
+      {/* Orthographic, not a long-lens perspective. The brief allows either,
+          but true orthographic makes "diagram rather than object in a room"
+          structural rather than an approximation that drifts the first time
+          somebody adjusts the focal length. Antialiasing stays on here: at 1px
+          line width, aliased edges are very visible. */}
       <Canvas
+        orthographic
         dpr={dpr}
-        gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
-        camera={{ position: [0, 0, 9], fov: 50 }}
+        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+        camera={{ position: [26, 18, 30], zoom: 14, near: -200, far: 200 }}
       >
-        <PointCloud dpr={dpr} />
+        <IndexStructure />
       </Canvas>
     </div>
   );
