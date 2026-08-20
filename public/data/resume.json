@@ -6,18 +6,70 @@
     "summary": "Results driven engineer with 5 plus years building scalable, responsive web applications across enterprise, fintech, telecom, and healthcare. Deep experience with Adobe Experience Manager for 3 plus years, React, TypeScript, Java Spring Boot, Node.js, and AWS. Strong focus on performance, SEO, CMS, DevOps, and pixel perfect UI from Figma designs."
   },
   "contact": {
-    "phone": "5135486916",
     "email": "vardhana1209@gmail.com",
     "location": "Cincinnati Ohio"
   },
   "career_goals": "Leverage full stack and AEM expertise to deliver high performing digital experiences, mentor teams, and grow into leadership roles that drive innovation with AI, cloud, and enterprise scale systems.",
   "skills": {
-    "frontend": ["React", "TypeScript", "Alpine.js", "JavaScript", "HTML5", "CSS3", "Bootstrap", "jQuery", "Jest", "Figma"],
-    "backend": ["Node.js", "Express.js", "REST APIs", "GraphQL", "Java Spring Boot", "Hibernate"],
-    "cms_frameworks": ["Adobe Experience Manager", "Phoenix platform at T Mobile", "Content Fragments", "Experience Fragments", "MSM", "AEM Components", "Dispatcher configs", "Sling Models"],
-    "cloud_devops": ["AWS EC2", "AWS Lambda", "S3", "Docker", "GitLab CI CD", "GitHub", "BitBucket", "Jenkins", "GGShield"],
-    "tools_testing": ["Postman", "VS Code", "Jest", "JUnit", "Mocha", "Jira", "Prometheus", "Grafana"],
-    "databases": ["PostgreSQL", "MySQL", "MongoDB", "Snowflake", "SQL Server", "Oracle"]
+    "frontend": [
+      "React",
+      "TypeScript",
+      "Alpine.js",
+      "JavaScript",
+      "HTML5",
+      "CSS3",
+      "Bootstrap",
+      "jQuery",
+      "Jest",
+      "Figma"
+    ],
+    "backend": [
+      "Node.js",
+      "Express.js",
+      "REST APIs",
+      "GraphQL",
+      "Java Spring Boot",
+      "Hibernate"
+    ],
+    "cms_frameworks": [
+      "Adobe Experience Manager",
+      "Phoenix platform at T Mobile",
+      "Content Fragments",
+      "Experience Fragments",
+      "MSM",
+      "AEM Components",
+      "Dispatcher configs",
+      "Sling Models"
+    ],
+    "cloud_devops": [
+      "AWS EC2",
+      "AWS Lambda",
+      "S3",
+      "Docker",
+      "GitLab CI CD",
+      "GitHub",
+      "BitBucket",
+      "Jenkins",
+      "GGShield"
+    ],
+    "tools_testing": [
+      "Postman",
+      "VS Code",
+      "Jest",
+      "JUnit",
+      "Mocha",
+      "Jira",
+      "Prometheus",
+      "Grafana"
+    ],
+    "databases": [
+      "PostgreSQL",
+      "MySQL",
+      "MongoDB",
+      "Snowflake",
+      "SQL Server",
+      "Oracle"
+    ]
   },
   "strengths": [
     "Rapid prototyping",
@@ -107,12 +159,30 @@
     "AEM backed portals with React at University of Cincinnati using Content Fragments"
   ],
   "projects_portfolio": [
-    {"name": "Face Emotion Recognition", "summary": "CNN based Python model with improved live detection accuracy"},
-    {"name": "AI Attendance System", "summary": "Facial recognition app for automated employee check ins"},
-    {"name": "Geolocation Clustering", "summary": "K means clustering for faster location analytics"},
-    {"name": "Blockchain Voting Platform", "summary": "Decentralized voting solution targeting millions of users"},
-    {"name": "AI Colorization Model", "summary": "Colorizes grayscale images with improved accuracy"},
-    {"name": "Toxic Comment Classifier", "summary": "NLP model for toxicity detection"}
+    {
+      "name": "Face Emotion Recognition",
+      "summary": "CNN based Python model with improved live detection accuracy"
+    },
+    {
+      "name": "AI Attendance System",
+      "summary": "Facial recognition app for automated employee check ins"
+    },
+    {
+      "name": "Geolocation Clustering",
+      "summary": "K means clustering for faster location analytics"
+    },
+    {
+      "name": "Blockchain Voting Platform",
+      "summary": "Decentralized voting solution targeting millions of users"
+    },
+    {
+      "name": "AI Colorization Model",
+      "summary": "Colorizes grayscale images with improved accuracy"
+    },
+    {
+      "name": "Toxic Comment Classifier",
+      "summary": "NLP model for toxicity detection"
+    }
   ],
   "education": [
     {
@@ -132,9 +202,21 @@
     "AWS Certified Solutions Architect Associate in progress"
   ],
   "faqs": [
-    {"q": "What are your career goals", "a": "I plan to use my AEM and full stack skills to deliver high performing digital experiences and mentor teams while growing into leadership that pushes innovation in AI and cloud."},
-    {"q": "Tell me about your leadership experience", "a": "I have led delivery at T Mobile by writing authoring guides, coordinating deployments across environments, mentoring teammates, and driving secure coding and testing practices."},
-    {"q": "What is your educational background", "a": "Master of Science in Information Technology from the University of Cincinnati with GPA 4.0 and a Bachelor of Technology in Information Technology from JNTU Hyderabad."},
-    {"q": "What projects have you worked on recently", "a": "Recent work includes a Telemetry page with reusable components and shimmer loaders at T Mobile, React plus AEM integrations at Freddie Mac, and AEM backed portals with React at the University of Cincinnati."}
+    {
+      "q": "What are your career goals",
+      "a": "I plan to use my AEM and full stack skills to deliver high performing digital experiences and mentor teams while growing into leadership that pushes innovation in AI and cloud."
+    },
+    {
+      "q": "Tell me about your leadership experience",
+      "a": "I have led delivery at T Mobile by writing authoring guides, coordinating deployments across environments, mentoring teammates, and driving secure coding and testing practices."
+    },
+    {
+      "q": "What is your educational background",
+      "a": "Master of Science in Information Technology from the University of Cincinnati with GPA 4.0 and a Bachelor of Technology in Information Technology from JNTU Hyderabad."
+    },
+    {
+      "q": "What projects have you worked on recently",
+      "a": "Recent work includes a Telemetry page with reusable components and shimmer loaders at T Mobile, React plus AEM integrations at Freddie Mac, and AEM backed portals with React at the University of Cincinnati."
+    }
   ]
 }

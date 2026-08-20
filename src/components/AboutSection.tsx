@@ -15,9 +15,17 @@ import { prefersReducedMotion } from '@/hooks/useReducedMotion';
  * 5+/50+/15+ counters were deleted in the Phase 2 content pass.
  *
  * Section 5.5 also asks for one photograph beside this prose. Vardhan has
- * chosen to leave it out for now, so the column is prose only and the layout
- * is built for that rather than holding an empty slot open.
+ * chosen to ship without one, so there is no empty frame and no placeholder
+ * avatar: the prose column simply sits on the grid at its natural width.
+ *
+ * Adding a photograph later is a drop-in. Set PORTRAIT to a path under
+ * /public and the prose narrows to columns 2-7 while the image takes 8-12.
+ * Nothing else needs to change.
  */
+
+/** Set to e.g. { src: '/images/vardhan.jpg', alt: '...' } to enable. */
+const PORTRAIT: { src: string; alt: string } | null = null;
+
 export default function AboutSection() {
   const root = useRef<HTMLElement>(null);
 
@@ -79,7 +87,13 @@ export default function AboutSection() {
       <div className="mx-auto grid w-full max-w-[var(--grid-max)] grid-cols-4 gap-s3 px-[var(--page-margin)] md:grid-cols-12">
         <h2 className="u-mono col-span-4 mb-s5 text-graphite md:col-span-12">About</h2>
 
-        <div className="col-span-4 flex flex-col gap-s3 md:col-span-6 md:col-start-2">
+        <div
+          className={
+            PORTRAIT
+              ? 'col-span-4 flex flex-col gap-s3 md:col-span-6 md:col-start-2'
+              : 'col-span-4 flex flex-col gap-s3 md:col-span-7 md:col-start-2'
+          }
+        >
           <p className="text-body leading-[var(--leading-body)]">
             I am a full stack engineer in Cincinnati. Five years in, most of it on
             enterprise content platforms: Adobe Experience Manager, React and
