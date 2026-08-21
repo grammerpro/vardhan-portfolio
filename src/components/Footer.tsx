@@ -46,22 +46,22 @@ export default function Footer() {
           <p className="u-mono mb-s3 text-graphite">Sitemap</p>
           <ul className="flex flex-col gap-s1 text-body">
             <li>
-              <a href="#hero" className="underline underline-offset-4 hover:text-signal">
+              <a href="#hero" className="link hover:text-signal">
                 Index
               </a>
             </li>
             <li>
-              <a href="#work" className="underline underline-offset-4 hover:text-signal">
+              <a href="#work" className="link hover:text-signal">
                 Work
               </a>
             </li>
             <li>
-              <a href="#about" className="underline underline-offset-4 hover:text-signal">
+              <a href="#about" className="link hover:text-signal">
                 About
               </a>
             </li>
             <li>
-              <a href="/resume" className="underline underline-offset-4 hover:text-signal">
+              <a href="/resume" className="link hover:text-signal">
                 Resume
               </a>
             </li>
@@ -72,31 +72,31 @@ export default function Footer() {
           <p className="u-mono mb-s3 text-graphite">Elsewhere</p>
           <ul className="flex flex-col gap-s1 text-body">
             <li>
-              <a
+              <a data-cursor="↗"
                 href={siteConfig.social.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline underline-offset-4 hover:text-signal"
+                className="link link-external hover:text-signal"
               >
                 GitHub
               </a>
             </li>
             <li>
-              <a
+              <a data-cursor="↗"
                 href={siteConfig.social.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline underline-offset-4 hover:text-signal"
+                className="link link-external hover:text-signal"
               >
                 LinkedIn
               </a>
             </li>
             <li>
-              <a
+              <a data-cursor="↗"
                 href={siteConfig.social.leetcode}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline underline-offset-4 hover:text-signal"
+                className="link link-external hover:text-signal"
               >
                 LeetCode
               </a>

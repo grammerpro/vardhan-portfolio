@@ -6,6 +6,7 @@ import DeferredAssistant from "@/components/DeferredAssistant";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import EntrySequence from "@/components/EntrySequence";
 import InstrumentRail from "@/components/InstrumentRail";
+import StateCursor from "@/components/StateCursor";
 import { Archivo, Geist, Geist_Mono } from "next/font/google";
 
 // Display face. The wdth axis is what makes this the loud face; headlines set
@@ -146,6 +147,7 @@ export default function RootLayout({
         <SmoothScrollProvider>
             <EntrySequence />
             <InstrumentRail />
+            <StateCursor />
             {/* Skip to main content link for accessibility */}
             <a
               href="#main-content"

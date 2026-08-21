@@ -98,14 +98,14 @@ export default function ContactSection() {
             <div className="flex items-center gap-4">
               <a
                 href={`mailto:${siteConfig.email}`}
-                className="text-body text-ink underline underline-offset-4 hover:text-signal"
+                className="text-body text-ink link hover:text-signal"
               >
                 {siteConfig.email}
               </a>
               <button
                 type="button"
                 onClick={copyEmail}
-                className="u-mono text-graphite underline underline-offset-4 hover:text-signal"
+                className="u-mono text-graphite link hover:text-signal"
               >
                 {copied ? 'Copied' : 'Copy'}
               </button>
@@ -113,31 +113,31 @@ export default function ContactSection() {
 
             <ul className="flex flex-col gap-s1 text-body">
               <li>
-                <a
+                <a data-cursor="↗"
                   href={siteConfig.social.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-ink underline underline-offset-4 hover:text-signal"
+                  className="text-ink link hover:text-signal"
                 >
                   LinkedIn
                 </a>
               </li>
               <li>
-                <a
+                <a data-cursor="↗"
                   href={siteConfig.social.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-ink underline underline-offset-4 hover:text-signal"
+                  className="text-ink link hover:text-signal"
                 >
                   GitHub
                 </a>
               </li>
               <li>
-                <a
+                <a data-cursor="↗"
                   href={siteConfig.social.leetcode}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-ink underline underline-offset-4 hover:text-signal"
+                  className="text-ink link hover:text-signal"
                 >
                   LeetCode
                 </a>

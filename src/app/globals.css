@@ -52,6 +52,11 @@
   --spacing-s7: 160px;
   --spacing-s8: 240px;
 
+  /* Tracking. --tracking-tight is tuned for mid-range headings; at hero scale
+     it reads loose, so display sizes take the tighter value. */
+  --tracking-tight: -0.03em;
+  --tracking-display: -0.04em;
+
   /* Motion. Never use ease, ease-in-out, or a Tailwind default timing. */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
@@ -161,34 +166,14 @@ html.lenis body {
    Base
 --------------------------------------------------------------------------- */
 
-/* Legacy light/dark theme tokens. Still driving every existing section, so
-   they stay until Phase 4 replaces the theme toggle with the scroll-driven
-   paper-to-void transition. Nothing new may use them. */
-:root {
-  --bg: 255 255 255;
-  --fg: 17 24 39;
-  --surface: 249 250 251;
-  --card: 255 255 255;
-  --muted: 156 163 175;
-  --border: 209 213 219;
-  --ring: 31 59 255;
-}
-
-.dark {
-  --bg: 3 7 18;
-  --fg: 248 250 252;
-  --surface: 17 24 39;
-  --card: 17 24 39;
-  --muted: 107 114 128;
-  --border: 55 65 81;
-  --ring: 31 59 255;
-}
-
+/* The legacy light/dark theme variables were deleted here. ThemeProvider and
+   the .dark class went with the tonal arc, so --bg was pinned to white and
+   showed through anywhere a section did not paint its own background. */
 html,
 body {
   min-height: 100%;
-  background-color: rgb(var(--bg));
-  color: rgb(var(--fg));
+  background-color: var(--paper);
+  color: var(--ink);
 }
 
 /* No scroll-behavior: smooth. Lenis owns scrolling, and the two fight. */
@@ -200,7 +185,16 @@ h4,
 h5,
 h6 {
   font-family: var(--font-display);
-  letter-spacing: -0.03em;
+  letter-spacing: var(--tracking-tight);
+  /* Safari only today. Progressive enhancement: pulls opening quotes and
+     hyphens into the margin so the optical left edge stays straight. */
+  hanging-punctuation: first last;
+}
+
+/* Display sizes take the tighter tracking. */
+.text-display,
+.tracking-display {
+  letter-spacing: var(--tracking-display);
 }
 
 .font-sans {
@@ -215,18 +209,24 @@ h6 {
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.12em;
+  /* The rail's SCROLL and FPS values change every frame. Without tabular
+     figures the text reflows on every digit change. */
+  font-variant-numeric: tabular-nums;
 }
 
-/* Subtle grain for depth. */
+/* Grain. One fixed layer over everything, which is what film grain is.
+   It previously sat at z-index -1, behind body's own background-color, and so
+   had never actually rendered. It must never animate: animated grain costs
+   paint time every frame for no perceptual gain. */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.02"/></svg>');
-  background-size: 400px 400px;
-  z-index: -1;
-  opacity: 0.03;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)"/></svg>');
+  background-size: 128px 128px;
+  z-index: 90;
+  opacity: 0.035;
 }
 
 ::-webkit-scrollbar {
@@ -252,17 +252,86 @@ body::before {
 }
 
 /* ---------------------------------------------------------------------------
+   Links.
+
+   Two stacked gradients rather than a border or text-decoration. The lower one
+   is always present at 30% so links stay distinguishable without relying on
+   colour alone, which WCAG 1.4.1 requires. The upper one wipes in from the
+   left at full strength on hover and focus.
+--------------------------------------------------------------------------- */
+
+.link {
+  text-decoration: none;
+  background-image:
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px, 100% 1px;
+  background-position: 0 100%, 0 100%;
+  background-repeat: no-repeat;
+  padding-bottom: 2px;
+  transition: background-size var(--dur-micro) var(--ease-out-expo);
+}
+
+/* The resting underline is the second layer, held back to 30%. */
+.link {
+  background-image:
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(
+      color-mix(in srgb, currentColor 30%, transparent),
+      color-mix(in srgb, currentColor 30%, transparent)
+    );
+}
+
+.link:hover,
+.link:focus-visible {
+  background-size: 100% 1px, 100% 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link {
+    transition: none;
+  }
+}
+
+/* External links carry a mono arrow that nudges up and right on hover. */
+.link-external::after {
+  content: "97";
+  display: inline-block;
+  margin-left: 0.35em;
+  font-family: var(--font-mono);
+  transition: transform var(--dur-micro) var(--ease-out-expo);
+}
+
+.link-external:hover::after,
+.link-external:focus-visible::after {
+  transform: translate(2px, -2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link-external::after {
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Focus. Visible ring in --signal, per section 7.
 --------------------------------------------------------------------------- */
 
 :focus-visible {
   outline: 2px solid var(--signal);
-  outline-offset: 2px;
+  outline-offset: 3px;
   border-radius: 2px;
   /* Tailwind's transition-colors includes outline-color, which made the focus
      ring fade in over --dur-micro. A focus indicator should be immediate, so
      it is pinned here regardless of what the element transitions. */
   transition-property: color, background-color, border-color, opacity, transform;
+}
+
+/* Project cards are large targets on --void, where a 2px ring at the element
+   edge is easy to miss. They get the ring drawn inside the media frame too. */
+[data-card] a:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
 }
 
 /* ---------------------------------------------------------------------------

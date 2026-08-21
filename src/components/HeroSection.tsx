@@ -123,7 +123,7 @@ export default function HeroSection() {
 
           <h1
             data-hero-name
-            className="font-display text-display font-black leading-[0.86] tracking-[-0.03em] text-ink opacity-0"
+            className="font-display text-display font-black leading-[0.86] tracking-display text-ink opacity-0"
             style={{ fontStretch: '118%' }}
           >
             Vardhan
@@ -132,8 +132,7 @@ export default function HeroSection() {
           <p data-hero-fade className="mt-s4">
             <a
               href="#work"
-              className="u-mono text-ink underline decoration-1 underline-offset-8
-                         transition-colors duration-[var(--dur-micro)] hover:text-signal"
+              className="u-mono link text-ink hover:text-signal"
             >
               Selected work
             </a>

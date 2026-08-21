@@ -1,50 +1,47 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 
+export const metadata = { title: 'Not found' };
+
+/**
+ * Section 7 of PHASE_2_BRIEF: state what happened and what to do next, in the
+ * interface's voice. No apologies, no personality, no oversized "404" as
+ * decoration.
+ */
 export default function NotFound() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-purple-50 to-sky-50 px-6 dark:from-slate-900 dark:to-slate-800">
-      <motion.div
-        className="max-w-md text-center"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <motion.h1
-          className="mb-4 bg-gradient-to-r from-purple-600 to-sky-600 bg-clip-text text-9xl font-bold text-transparent dark:from-purple-400 dark:to-sky-400"
-          initial={{ scale: 0.5 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-        >
-          404
-        </motion.h1>
+    <div className="flex min-h-svh w-full items-center bg-paper text-ink">
+      <div className="mx-auto grid w-full max-w-[var(--grid-max)] grid-cols-4 gap-s3 px-[var(--page-margin)] md:grid-cols-12">
+        <div className="col-span-4 md:col-span-7 md:col-start-2">
+          <p className="u-mono mb-s3 text-graphite">Error 404</p>
 
-        <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
-          Page Not Found
-        </h2>
-        
-        <p className="mb-8 text-gray-600 dark:text-gray-300">
-          Oops! The page you&apos;re looking for seems to have wandered off into the digital void.
-        </p>
+          <h1 className="mb-s4 font-display text-h1 font-black leading-[0.95] tracking-display">
+            This page does not&nbsp;exist.
+          </h1>
 
-        <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-          <Link
-            href="/"
-            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-sky-500 px-8 py-3 font-semibold text-white shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2"
-          >
-            Go home
-          </Link>
-          
-          <Link
-            href="/projects"
-            className="inline-flex items-center justify-center rounded-full border border-purple-200 bg-white px-8 py-3 font-semibold text-purple-600 backdrop-blur-xl transition-all hover:border-purple-300 hover:bg-white/80 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 dark:border-white/20 dark:bg-white/10 dark:text-purple-200"
-          >
-            View projects
-          </Link>
+          <p className="mb-s5 max-w-[52ch] text-body leading-[var(--leading-body)] text-graphite">
+            The address is either mistyped or points at something that has been
+            removed. Everything on this site is reachable from the index.
+          </p>
+
+          <ul className="flex flex-col gap-s2 text-body">
+            <li>
+              <Link href="/" className="link hover:text-signal">
+                Return to the index
+              </Link>
+            </li>
+            <li>
+              <Link href="/#work" className="link hover:text-signal">
+                Selected work
+              </Link>
+            </li>
+            <li>
+              <Link href="/resume" className="link hover:text-signal">
+                Resume
+              </Link>
+            </li>
+          </ul>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

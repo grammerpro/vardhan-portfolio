@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import Image from 'next/image';
+import ProjectMedia, { type ProjectVideo } from './ProjectMedia';
 import { gsap, useGSAP } from '@/lib/gsap';
 import useReducedMotion, { prefersReducedMotion } from '@/hooks/useReducedMotion';
 
@@ -28,6 +28,8 @@ type Project = {
   tags: string[];
   image: string;
   url: string;
+  /** Optional silent loop of the project running. See ProjectMedia. */
+  video?: ProjectVideo;
 };
 
 const projects: Project[] = [
@@ -56,6 +58,11 @@ const projects: Project[] = [
     tags: ['Three.js', 'WebGL', 'GSAP', 'Shaders'],
     image: '/images/chroma-loop.png',
     url: 'https://github.com/grammerpro/Chroma-Loop',
+    // To add a loop: capture ~4s of the project running, then
+    //   ffmpeg -i in.mov -c:v libvpx-vp9 -b:v 800k -an public/videos/name.webm
+    //   ffmpeg -i in.mov -c:v libx264 -pix_fmt yuv420p -b:v 800k -an public/videos/name.mp4
+    // and set video: { webm, mp4, poster }. Verified working with a generated
+    // clip; removed because no real footage exists yet.
   },
   {
     id: 4,
@@ -87,7 +94,7 @@ const projects: Project[] = [
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
     <article data-card className="flex w-full shrink-0 flex-col md:w-[46vw] lg:w-[38vw]">
-      <a
+      <a data-cursor="↗"
         href={project.url}
         target="_blank"
         rel="noopener noreferrer"
@@ -96,14 +103,13 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         {/* Media, roughly 4:3. The frame stays put and the image shifts inside
             it, scaled up so the parallax never exposes an edge. Translating
             the frame itself left gaps between the media and its own caption. */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-void">
+        <div data-cursor="VIEW" className="relative aspect-[4/3] w-full overflow-hidden bg-void">
           <div data-card-media className="absolute inset-0 scale-[1.18]">
-            <Image
-              src={project.image}
+            <ProjectMedia
+              image={project.image}
+              video={project.video}
               alt={`${project.title} project screenshot`}
-              fill
               sizes="(max-width: 767px) 100vw, (max-width: 1023px) 46vw, 38vw"
-              className="object-cover object-center transition-transform duration-[var(--dur-base)] ease-out-expo group-hover:scale-[1.04]"
             />
           </div>
         </div>
@@ -200,6 +206,7 @@ export default function ProjectsSection() {
 
         <div
           ref={track}
+          data-cursor="DRAG"
           className={
             reduced
               ? 'flex flex-col gap-s6 px-[var(--page-margin)]'
