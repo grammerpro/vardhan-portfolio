@@ -2,7 +2,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import PageTransition from "@/components/PageTransition";
-import DeferredAssistant from "@/components/DeferredAssistant";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import EntrySequence from "@/components/EntrySequence";
 import InstrumentRail from "@/components/InstrumentRail";
@@ -159,12 +158,6 @@ export default function RootLayout({
             <main id="main-content">
               <PageTransition>{children}</PageTransition>
             </main>
-            <DeferredAssistant />
-            {/* WalkingAvatar and ScrollToTopRocket were unmounted here during
-                Phase 3. Both sat directly on top of the instrument rail, and a
-                cartoon character with a speech bubble contradicts the
-                "measured, quiet, and exact" direction in brief section 2. The
-                components still exist if you want them back. */}
         </SmoothScrollProvider>
 
         {/* JSON-LD Structured Data */}

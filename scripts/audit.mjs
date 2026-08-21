@@ -156,14 +156,14 @@ async function run(reducedMotion) {
 
     // Every section must still be readable.
     const visible = await page.evaluate(() =>
-      ['hero', 'positioning', 'work', 'capability', 'about', 'contact'].filter((id) => {
+      ['hero', 'positioning', 'work', 'capability', 'fit', 'about', 'contact'].filter((id) => {
         const el = document.getElementById(id);
         if (!el) return false;
         return el.offsetHeight > 0 && getComputedStyle(el).visibility !== 'hidden';
       }),
     );
-    if (visible.length === 6) pass('reduced-motion: all six sections rendered and visible');
-    else fail(`reduced-motion: only ${visible.length}/6 sections visible`);
+    if (visible.length === 7) pass('reduced-motion: all seven sections rendered and visible');
+    else fail(`reduced-motion: only ${visible.length}/7 sections visible`);
 
     // Text that is normally revealed must not be stuck at opacity 0.
     const hidden = await page.evaluate(() => {

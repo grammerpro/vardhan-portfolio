@@ -2,6 +2,7 @@ import HeroSection from "@/components/HeroSection";
 import PositioningSection from "@/components/PositioningSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import CapabilitySection from "@/components/CapabilitySection";
+import FitCheck from "@/components/FitCheck";
 import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
@@ -15,6 +16,7 @@ export default function HomePage() {
       <PositioningSection />
       <ProjectsSection />
       <CapabilitySection />
+      <FitCheck />
       <AboutSection />
       <ContactSection />
       <Footer />

@@ -27,6 +27,7 @@ const SECTIONS = [
   { id: 'positioning', label: 'POSITIONING' },
   { id: 'work', label: 'WORK' },
   { id: 'capability', label: 'CAPABILITY' },
+  { id: 'fit', label: 'FIT CHECK' },
   { id: 'about', label: 'ABOUT' },
   { id: 'contact', label: 'CONTACT' },
 ];

@@ -14,7 +14,7 @@ const baseUrl = process.argv[2] || 'http://localhost:3000';
 const outDir = process.argv[3] || 'shots';
 const reduced = process.argv.includes('--reduced');
 
-const SECTIONS = ['hero', 'positioning', 'work', 'capability', 'about', 'contact'];
+const SECTIONS = ['hero', 'positioning', 'work', 'capability', 'fit', 'about', 'contact'];
 const VIEWPORTS = [
   { name: '1440', width: 1440, height: 900 },
   { name: '390', width: 390, height: 844 },
