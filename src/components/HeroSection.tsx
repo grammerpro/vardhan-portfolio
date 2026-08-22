@@ -35,10 +35,18 @@ export default function HeroSection() {
 
       if (!nameEl || !supporting) return;
 
-      // Reduced motion: everything visible at its final position, no split,
-      // no tween. Section 7 requires this to be built in per section rather
-      // than retrofitted.
-      if (reduced) {
+      // Everything visible at its final position, no split, no tween, when
+      // either of these holds:
+      //
+      // - Reduced motion. Section 7 requires this per section.
+      // - Small screens. The reveal starts by setting opacity to 0 after
+      //   hydration, which made this text the Largest Contentful Paint element
+      //   with 3.2s of render delay on a throttled phone, against a 2.5s
+      //   budget. Precedence rule 0.1 puts LCP above the motion spec, and
+      //   mobile already skips the entry curtain for the same reason.
+      const small = window.matchMedia('(max-width: 767px)').matches;
+
+      if (reduced || small) {
         gsap.set([nameEl, ...Array.from(supporting)], { opacity: 1, y: 0 });
         return;
       }
