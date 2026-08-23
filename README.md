@@ -10,12 +10,6 @@ Precise hairline grids, monospace telemetry, one accent colour, and scroll chore
 
 </div>
 
-<br />
-
-![Hero](docs/preview/hero.png)
-
-<br />
-
 ---
 
 ## The idea
@@ -31,6 +25,22 @@ SEC 03 / WORK        SCROLL 42.7%        FPS 60
 Every one of those numbers is real. The section comes from a bounds check against the viewport centre, the scroll percentage from the smooth-scroll engine's own progress value, and the frame rate from an actual `requestAnimationFrame` counter on a rolling one-second window. Nothing is a decorative animation pretending to be data.
 
 Everything else stays deliberately quiet so that one element can carry the personality.
+
+The second signature element is [Fit Check](#fit-check): paste a job description and the page tells you where Vardhan matches it and where he does not, showing the retrieved evidence rather than hiding it.
+
+---
+
+## The hero object
+
+![The Index](docs/preview/hero.png)
+
+A single constructed object built from 48 rectangular volumes on a strict three-dimensional grid, rendered as thin lines rather than solid surfaces. It is a content architecture seen in the abstract: modules nested inside modules, every edge parallel to one of three axes, nothing rotated off-axis.
+
+The structure comes from recursive subdivision rather than scattered placement, because subdivision is what a content hierarchy actually is, and because randomly positioned boxes read as a wireframe city. It is generated from a fixed seed, so it is the same object every build.
+
+On entry it assembles: modules arrive from outside the frame along a single axis each and snap into place, bottom to top. That runs entirely in the vertex shader from a single merged geometry, because animating 48 separate objects would mean 48 draw calls and per-object matrix work on the main thread every frame. Line opacity falls off with view depth, which is what stops the interior collapsing into a tangle and what makes it read as a drafted axonometric.
+
+Where WebGL does not run, below 768px or under reduced motion, the same generator projects the same structure to a single inline SVG path. Not an `<img>`: an image element is a Largest Contentful Paint candidate, and as a file reference the decoration became the LCP element on mobile with a 6.8s load delay.
 
 ---
 
@@ -48,6 +58,24 @@ The page begins on paper, turns to void as you enter the work, and returns to pa
 <td><sub><b>Selected work</b> · a horizontal track translated on X against vertical scroll. Media parallaxes faster than the track, text slower, creating depth inside the horizontal move.</sub></td>
 </tr>
 </table>
+
+---
+
+## Fit Check
+
+![Fit Check](docs/preview/fit-check.png)
+
+Paste a job description; get a verdict, the specific matches with citations, and the gaps. It is built to say no.
+
+Two things make it worth having. It answers the question a recruiter actually arrives with, which is not "tell me about this person" but "does he fit the role on my desk". And it is honest, which the category is not: an assessor that opens with "no Kubernetes experience, and this role lists it three times" is credible in a way a sales bot is not.
+
+**The retrieval is on screen.** Every entry pulled from the corpus is listed with its cosine score as the answer streams. Hiding retrieval behind a typing indicator is the norm; showing it makes the feature a demonstration of the retrieval work rather than a claim about it.
+
+**How it works.** Twenty-two hand-written entries in [`content/corpus/`](content/corpus), each embedded once by [`scripts/build-corpus.mjs`](scripts/build-corpus.mjs) with the vectors committed, so a request never waits on an embedding build. At query time the job description is embedded, scored by cosine similarity, and the top six above a relevance floor are passed to the model. No vector database: twenty-two entries is an array and a dot product.
+
+**The floor is calibrated, not guessed.** Measured against this corpus, genuine role queries top out between 0.67 and 0.78 while unrelated ones ("equine veterinary surgeon", "sourdough starter") reach 0.53. The floor sits at 0.60, which separates them while still admitting a poor-fit role: a Kubernetes platform position scores 0.672 and deserves an honest no rather than a refusal.
+
+**Guardrails.** Entries marked `verified: false` are excluded from retrieval entirely rather than caveated in the output, so an unreviewed draft does not exist as far as the feature is concerned. The pasted text is never logged or stored. Everything inside the job description is treated as data, never instruction: attempts to override the system prompt, claim unearned expertise, or exfiltrate the prompt were tested and all three were ignored. Rate limited per IP, capped daily, 15 second timeout, and every failure path degrades to a message pointing at the resume.
 
 ---
 
@@ -106,17 +134,26 @@ src/
 ├── app/
 │   ├── globals.css              Token system, single source of truth
 │   ├── layout.tsx               Fonts, entry gate, providers
-│   └── api/contact/route.ts     Validated, rate-limited mail endpoint
+│   └── api/
+│       ├── contact/route.ts     Validated, rate-limited mail endpoint
+│       └── fit/route.ts         Fit Check: retrieval + streaming assessment
 ├── components/
 │   ├── EntrySequence.tsx        First-load curtain, real load progress
 │   ├── InstrumentRail.tsx       The signature element
 │   ├── HeroSection.tsx          Masked line reveal
 │   ├── PositioningSection.tsx   Pinned word scrub + tonal arc
 │   ├── ProjectsSection.tsx      Horizontal pinned gallery
+│   ├── FitCheck.tsx             Job description assessment
+│   ├── StateCursor.tsx          VIEW / DRAG / arrow, no trailing dot
+│   ├── HeroStructureFallback.tsx  Inline SVG where WebGL does not run
 │   ├── providers/               Single smooth-scroll instance
-│   └── webgl/                   Point cloud, one canvas for the page
+│   └── webgl/                   The Index, one canvas for the page
 ├── hooks/useReducedMotion.ts
-└── lib/gsap.ts                  Central plugin registration
+└── lib/
+    ├── gsap.ts                  Central plugin registration
+    └── fit.ts                   Cosine retrieval over the committed vectors
+
+content/corpus/                  22 hand-written entries behind Fit Check
 ```
 
 ### Notes worth knowing
@@ -136,11 +173,13 @@ src/
 Verified by [`scripts/audit.mjs`](scripts/audit.mjs), which drives a real browser and asserts 25 checks:
 
 - Contrast at or above 4.5:1 for body text on both palettes
-- One `h1`, no skipped heading levels, real landmarks, alt text on every image
+- One `h1`, no skipped heading levels, real landmarks, and alt text on every image that carries meaning (decorative ones are correctly marked empty rather than described)
 - Full keyboard traversal with a visible `--signal` focus ring on every stop, applied instantly rather than faded in
 - `prefers-reduced-motion: reduce` creates **no** pins, **no** scroll scrubs, never constructs the smooth-scroll engine, and never mounts the canvas — every section stays fully readable at final position
 
-Reduced motion is handled per section as each was built, not retrofitted at the end.
+Fit Check is fully keyboard operable, announces its result through a live region, and states under the input that nothing is logged.
+
+Reduced motion is handled per section as each was built, not retrofitted at the end. Below 768px the hero reveal is skipped as well, because setting opacity to zero after hydration made the hero text the Largest Contentful Paint element with three seconds of render delay.
 
 ```bash
 node scripts/audit.mjs http://localhost:3000
@@ -154,11 +193,14 @@ The horizontal gallery falls back to a vertical stack below 768px, where a pinne
 
 | Metric | Measured | Budget |
 | --- | --- | --- |
-| Largest Contentful Paint | 1.2s | < 2.5s |
+| First-load JavaScript | 167 kB | < 250 kB |
 | Cumulative Layout Shift | 0 | < 0.05 |
-| First-load JavaScript | 166kB | < 250kB |
+| Largest Contentful Paint, desktop | 0.7–1.2s | < 2.5s |
+| Largest Contentful Paint, mobile | 3.0–4.1s | < 2.5s |
 
 Only `transform` and `opacity` are animated on scroll. The canvas caps device pixel ratio at 2, mounts only near the viewport, unmounts on tab blur, and is skipped entirely on mobile and under reduced motion. The 3D layer is dynamically imported so it never touches the first load.
+
+**A note on Lighthouse numbers.** Composite scores measured on a development machine were not reproducible across a long session: with a byte-identical bundle, desktop measured 93 early and 58 hours later. The figures above are the ones that held across every run, or are deterministic. Mobile LCP is the one budget still unmet, bound by main-thread contention during hydration rather than by fonts or render-blocking CSS. Measure the deployed site rather than trusting a local score.
 
 ---
 
@@ -183,15 +225,18 @@ Create `.env.local`:
 RESEND_API_KEY=re_...
 CONTACT_TO_EMAIL=you@example.com
 CONTACT_FROM_EMAIL=Portfolio <hello@yourdomain.com>
+GEMINI_API_KEY=...
 ```
 
-Without these the contact endpoint returns 503 and the form says so plainly. A form that silently does nothing is worse than no form.
+Without the Resend keys the contact endpoint returns 503 and the form says so plainly. A form that silently does nothing is worse than no form. Without `GEMINI_API_KEY` the Fit Check endpoint does the same, pointing the visitor at the resume instead.
 
 ### Tooling
 
 ```bash
 node scripts/shoot.mjs <url> <outDir> [--reduced]   # every section at 0/50/100%, 1440px and 390px
 node scripts/audit.mjs <url>                        # 25 accessibility and reduced-motion checks
+node scripts/build-corpus.mjs                       # re-embed content/corpus after editing it
+node scripts/preview.mjs <url>                      # recapture the images in this README
 ```
 
 `shoot.mjs` measures the pin spacer rather than the section for pinned content, otherwise the entire scrubbed range goes uncaptured.
@@ -200,7 +245,7 @@ node scripts/audit.mjs <url>                        # 25 accessibility and reduc
 
 ## Stack
 
-Next.js (App Router) · TypeScript · Tailwind CSS v4 · GSAP + ScrollTrigger · Lenis · SplitType · react-three-fiber · Resend
+Next.js (App Router) · TypeScript · Tailwind CSS v4 · GSAP + ScrollTrigger · Lenis · SplitType · react-three-fiber · Resend · Gemini
 
 ---
 
