@@ -5,11 +5,11 @@ const poster = readFileSync('public/signature/hero-desktop.webp').toString('base
 let font = '';
 try {
   // The latin Archivo file is emitted by the existing next/font configuration.
-  const css = readdirSync('.next-production/static/css', { recursive: true }).filter((file) => file.endsWith('.css')).map((file) => readFileSync(`.next-production/static/css/${file}`, 'utf8')).join('');
+  const css = readdirSync('.next/static/css', { recursive: true }).filter((file) => file.endsWith('.css')).map((file) => readFileSync(`.next/static/css/${file}`, 'utf8')).join('');
   const face = [...css.matchAll(/@font-face\s*\{([^}]+)\}/g)].find((match) => /font-family:\s*['"]?Archivo/.test(match[1]) && match[1].includes('.p.woff2'));
   const file = face?.[1].match(/media\/([^"')]+\.woff2)/)?.[1];
   if (!file) throw new Error('Archivo Latin face is not present in the local build.');
-  const fontData = readFileSync(`.next-production/static/media/${file}`).toString('base64');
+  const fontData = readFileSync(`.next/static/media/${file}`).toString('base64');
   font = `@font-face{font-family:Archivo;src:url(data:font/woff2;base64,${fontData}) format('woff2');font-weight:100 900;font-display:block}`;
 } catch { console.log('No built Archivo font found; preview uses the system sans fallback.'); }
 

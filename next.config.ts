@@ -3,7 +3,7 @@ import path from 'node:path';
 
 const nextConfig: NextConfig = {
   // Keep a running local dev server from overwriting production verification artifacts.
-  distDir: process.env.NODE_ENV === 'development' ? '.next-dev' : '.next-production',
+  distDir: process.env.NODE_ENV === 'development' ? '.next-dev' : '.next',
   outputFileTracingRoot: path.resolve(process.cwd()),
   devIndicators: false,
   images: {

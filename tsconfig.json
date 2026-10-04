@@ -34,8 +34,7 @@
     ".next-dev/types/**/*.ts",
     ".next/types/**/*.ts",
     "next-env.d.ts",
-    "src/lib/tsconfig.json",
-    ".next-production/types/**/*.ts"
+    "src/lib/tsconfig.json"
   ],
   "exclude": [
     "node_modules"

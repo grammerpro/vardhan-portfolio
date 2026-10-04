@@ -49,7 +49,7 @@ The active layout uses Archivo and Geist Mono through `next/font/google`. Next e
 
 Local notices are `public/licenses/Archivo-OFL.txt` (4,388 bytes) and `public/licenses/Geist-Mono-OFL.txt` (4,387 bytes). They retain the respective copyright notices. No font was renamed or modified. Latin variable-font assets in the inspected build are:
 
-| Build asset under `.next-production/static/media/` | Family | Bytes |
+| Build asset under `.next/static/media/` | Family | Bytes |
 | --- | --- | ---: |
 | `1a4aa50920b5315c-s.p.woff2` | Archivo Latin | 34,940 |
 | `7d4881bb7e1bf84d-s.p.woff2` | Geist Mono Latin | 23,108 |
