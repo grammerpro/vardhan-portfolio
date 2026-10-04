@@ -1,0 +1,15 @@
+import Link from 'next/link';
+import Image from 'next/image';
+import { featuredProjects, archiveProjects } from '@/content/portfolio';
+import { RetrievalPreview, ChromaPreview, StoragePreview } from './ProjectPreviews';
+
+export default function FeaturedWork() {
+  return <section id="work" className="work-section section-shell dark-section" aria-labelledby="work-title">
+    <div className="work-heading"><div><p className="eyebrow"><span className="section-number">03</span> Selected work</p><h2 id="work-title">Ideas, made<br /><em>tangible.</em></h2></div><p>A closer look at the systems,<br />interactions, and experiments<br />I build on my own time.</p></div>
+    <div className="featured-exhibits">{featuredProjects.map((project, index) => <article className={`project-exhibit exhibit-${project.slug}`} id={project.slug} key={project.slug} aria-labelledby={`${project.slug}-title`}>
+      <div className="project-caption"><span className="eyebrow">EXHIBIT {String(index + 1).padStart(2, '0')} <span className="caption-slash">/</span> {project.kicker}</span><span className="project-status">Independent project</span></div>
+      <div className="project-composition"><div className="project-story"><h3 id={`${project.slug}-title`}>{project.title}</h3><p>{project.summary}</p><ul className="project-tags" aria-label="Technologies">{project.tags.map(tag => <li key={tag}>{tag}</li>)}</ul><div className="project-actions"><Link className="button button-light" href={`/work/${project.slug}`}>Case study <span aria-hidden="true">↗</span></Link><a className="action-link" href={project.sourceUrl} target="_blank" rel="noopener noreferrer">Source <span aria-hidden="true">↗</span></a></div><p className="project-scope">{project.status}</p></div><div className="project-visual">{project.slug === 'java-native-rag' ? <RetrievalPreview /> : project.slug === 'chroma-loop' ? <ChromaPreview /> : <StoragePreview />}</div></div>
+    </article>)}</div>
+    <div className="archive"><div className="archive-title"><h3>More from the workbench.</h3><Link className="action-link" href="/projects">View all work <span aria-hidden="true">↗</span></Link></div><div className="archive-list">{archiveProjects.map((project, index) => <article className="archive-item" key={project.slug}><span className="archive-index">{String(index + 4).padStart(2, '0')}</span><Link href={`/work/${project.slug}`} className="archive-image" tabIndex={-1} aria-hidden="true"><Image src={project.image} width={160} height={100} alt="" sizes="160px" /></Link><div className="archive-copy"><Link href={`/work/${project.slug}`}><h4>{project.title}</h4></Link><p>{project.summary}</p></div><div className="archive-meta"><span>{project.tags.slice(0, 2).join(' / ')}</span><a href={project.sourceUrl} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} source code`}>Source ↗</a></div><Link className="archive-arrow" href={`/work/${project.slug}`} aria-label={`${project.title} case study`}>↗</Link></article>)}</div></div>
+  </section>;
+}

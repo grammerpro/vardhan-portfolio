@@ -1,0 +1,33 @@
+.layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; --poster-opacity: 1; }
+.layer:not([data-chapter]) { position: absolute; height: 100svh; bottom: auto; }
+.canvas { display: block; width: 100%; height: 100%; opacity: 0; transition: opacity 280ms ease; }
+.layer[data-ready='true'] .canvas { opacity: 1; }
+.poster { position: absolute; width: 160svh; height: 100svh; left: calc(50% - 80svh); top: 0; opacity: var(--poster-opacity); }
+.poster img { display: block; width: 100%; height: 100%; max-width: none; }
+.layer[data-ready='true'] .poster { opacity: 0; }
+.layer[data-chapter='contact'] .poster { transform: scale(.64); transform-origin: 65% 50%; }
+.recovery { position: fixed; right: 24px; bottom: 76px; z-index: 60; display: flex; align-items: center; gap: 16px; padding: 10px 14px; border: 1px solid #a3a6a2; background: #e9e6df; color: #151719; font-size: 12px; box-shadow: 0 4px 18px #0001; }
+.recovery button { min-height: 44px; cursor: pointer; padding: 4px 8px; border: 0; border-bottom: 1px solid currentColor; background: transparent; color: inherit; font: inherit; }
+.recovery button:focus-visible, .inspector button:focus-visible { outline: 2px solid #b56925; outline-offset: 4px; }
+.inspector { display: grid; grid-template-columns: minmax(160px, 1fr) minmax(200px, 1fr); align-items: center; max-width: 640px; width: 100%; color: #f4f1ea; border: 1px solid #56616a; background: #141a1f; }
+.inspectorVisual { min-height: 260px; display: grid; place-items: center; background: radial-gradient(ellipse at 50% 65%, #313d43 0%, #192126 50%, #141a1f 75%); }
+.inspectorVisual svg { width: 100%; max-height: 300px; }
+.inspectorCopy { padding: 24px; }
+.inspectorHeader { display: flex; justify-content: space-between; gap: 20px; margin-bottom: 24px; color: #adb3b8; font: 11px/1.5 monospace; text-transform: uppercase; letter-spacing: .1em; }
+.inspector button { width: 100%; min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 20px; cursor: pointer; padding: 8px 0; border: none; border-bottom: 1px solid #899196; color: #f4f1ea; background: transparent; font: inherit; font-size: 14px; text-align: left; }
+.inspectorCopy p { font-size: 14px; line-height: 1.6; max-width: 30ch; margin: 18px 0 0; color: #d2d6d7; }
+.inspectorCopy .inspectorNote { font-size: 11px; color: #adb3b8; }
+@media (max-width: 1000px) {
+  .poster { width: 46.20853svh; height: 100svh; left: calc(50% - 23.104265svh); top: 0; }
+  .layer[data-chapter='contact'] .poster { transform: scale(.7); }
+}
+@media (max-width: 767px) {
+  .recovery { left: 16px; right: 16px; bottom: 64px; justify-content: space-between; padding: 8px 12px; }
+  .inspector { grid-template-columns: 1fr; }
+  .inspectorVisual { min-height: 220px; max-height: 240px; }
+  .inspectorVisual svg { height: 240px; }
+  .inspectorCopy { padding: 20px; }
+  .inspectorCopy p { max-width: none; }
+  .inspectorHeader { margin-bottom: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .canvas { transition: none; } }

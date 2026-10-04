@@ -1,0 +1,75 @@
+{
+  "scope": "Declared critical opaque text/focus/control pairs. Not a substitute for composited gradient/canvas inspection or a full WCAG audit.",
+  "results": [
+    {
+      "role": "Paper primary text",
+      "foreground": "#151719",
+      "background": "#E9E6DF",
+      "ratio": 14.42,
+      "minimum": 4.5
+    },
+    {
+      "role": "Paper secondary text",
+      "foreground": "#585E60",
+      "background": "#E9E6DF",
+      "ratio": 5.29,
+      "minimum": 4.5
+    },
+    {
+      "role": "Dark primary text",
+      "foreground": "#F4F1EA",
+      "background": "#111315",
+      "ratio": 16.51,
+      "minimum": 4.5
+    },
+    {
+      "role": "Dark secondary text",
+      "foreground": "#ADB3B8",
+      "background": "#111315",
+      "ratio": 8.79,
+      "minimum": 4.5
+    },
+    {
+      "role": "Dark amber accent text",
+      "foreground": "#EEAE62",
+      "background": "#111315",
+      "ratio": 9.63,
+      "minimum": 4.5
+    },
+    {
+      "role": "Panel caption",
+      "foreground": "#A7B3B8",
+      "background": "#1A1E22",
+      "ratio": 7.81,
+      "minimum": 4.5
+    },
+    {
+      "role": "Paper focus indicator",
+      "foreground": "#96511A",
+      "background": "#E9E6DF",
+      "ratio": 4.83,
+      "minimum": 3
+    },
+    {
+      "role": "Dark focus indicator",
+      "foreground": "#EEAE62",
+      "background": "#1A1E22",
+      "ratio": 8.67,
+      "minimum": 3
+    },
+    {
+      "role": "Form field boundary",
+      "foreground": "#67756E",
+      "background": "#131B18",
+      "ratio": 3.63,
+      "minimum": 3
+    },
+    {
+      "role": "Paper muted large heading",
+      "foreground": "#717365",
+      "background": "#E9E6DF",
+      "ratio": 3.88,
+      "minimum": 3
+    }
+  ]
+}

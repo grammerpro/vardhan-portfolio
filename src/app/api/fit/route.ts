@@ -1,4 +1,5 @@
 import { retrieve, corpusSize, EMBEDDING_MODEL, RELEVANCE_FLOOR } from '@/lib/fit';
+import { readRequestObject, RequestInputError } from '@/lib/request-json';
 
 export const runtime = 'nodejs';
 
@@ -20,6 +21,7 @@ const TIMEOUT_MS = 15_000;
 /** One request per IP per 20s, recorded on completion, not on arrival. */
 const RATE_WINDOW_MS = 20_000;
 const lastCompleted = new Map<string, number>();
+const inFlight = new Set<string>();
 
 /**
  * Global daily ceiling. When it trips, the feature degrades to a message
@@ -42,7 +44,7 @@ function overDailyCap(): boolean {
 
 function rateLimited(ip: string): boolean {
   const previous = lastCompleted.get(ip);
-  return previous !== undefined && Date.now() - previous < RATE_WINDOW_MS;
+  return inFlight.has(ip) || (previous !== undefined && Date.now() - previous < RATE_WINDOW_MS);
 }
 
 function recordCompletion(ip: string): void {
@@ -52,6 +54,7 @@ function recordCompletion(ip: string): void {
     for (const [key, seen] of lastCompleted) {
       if (now - seen > RATE_WINDOW_MS) lastCompleted.delete(key);
     }
+    if (lastCompleted.size > 5000) lastCompleted.delete(lastCompleted.keys().next().value!);
   }
 }
 
@@ -103,7 +106,11 @@ async function embedQuery(key: string, text: string, signal: AbortSignal): Promi
 
   if (!response.ok) throw new Error(`embed ${response.status}`);
   const json = await response.json();
-  return json.embedding.values as number[];
+  const vector: unknown = json?.embedding?.values;
+  if (!Array.isArray(vector) || !vector.length || !vector.every(value => typeof value === 'number' && Number.isFinite(value))) {
+    throw new Error('Invalid embedding response');
+  }
+  return vector;
 }
 
 export async function POST(request: Request) {
@@ -124,22 +131,34 @@ export async function POST(request: Request) {
   if (overDailyCap()) return fail(429, `Fit Check has hit its daily limit. ${FALLBACK}`);
   if (rateLimited(ip)) return fail(429, 'One check at a time. Try again in a few seconds.');
 
-  let payload: unknown;
+  let payload: Record<string, unknown>;
   try {
-    payload = await request.json();
-  } catch {
-    return fail(400, 'Malformed request.');
+    payload = await readRequestObject(request);
+  } catch (error) {
+    return fail(error instanceof RequestInputError ? error.status : 400, error instanceof RequestInputError ? error.message : 'Malformed request.');
   }
 
-  const description = String((payload as Record<string, unknown>)?.description ?? '').trim();
+  const description = typeof payload.description === 'string' ? payload.description.trim() : '';
 
   if (!description) return fail(400, 'Paste a job description first.');
   if (description.length > MAX_INPUT) {
     return fail(400, `That is longer than ${MAX_INPUT} characters. Paste the requirements section.`);
   }
 
+  // Per-process controls, not a distributed quota. Include embedding attempts
+  // and failures; an unsuccessful provider call can still consume resources.
+  if (rateLimited(ip)) return fail(429, 'One check at a time. Try again in a few seconds.');
+  if (overDailyCap()) return fail(429, `Fit Check has hit its daily limit. ${FALLBACK}`);
+  inFlight.add(ip);
+  dayCount += 1;
+
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  const release = () => {
+    clearTimeout(timeout);
+    inFlight.delete(ip);
+    recordCompletion(ip);
+  };
 
   try {
     const queryVector = await embedQuery(key, description, controller.signal);
@@ -148,8 +167,7 @@ export async function POST(request: Request) {
     // Nothing cleared the floor, so this is not a role question. Say so plainly
     // rather than passing weak matches to the model.
     if (evidence.length === 0) {
-      clearTimeout(timeout);
-      recordCompletion(ip);
+      release();
       return new Response(
         JSON.stringify({
           outOfScope: true,
@@ -189,11 +207,9 @@ export async function POST(request: Request) {
     );
 
     if (!response.ok || !response.body) {
-      clearTimeout(timeout);
+      release();
       return fail(502, `The assessment could not be generated. ${FALLBACK}`);
     }
-
-    dayCount += 1;
 
     // Evidence goes first as a single JSON line, then the model's text. The
     // client renders the retrieved entries as they arrive rather than hiding
@@ -208,11 +224,28 @@ export async function POST(request: Request) {
       searched: corpusSize,
     });
 
+    let cancelled = false;
     const stream = new ReadableStream({
       async start(out) {
         out.enqueue(encoder.encode(`${header}\n`));
 
         let buffer = '';
+        let emitted = false;
+        const processLine = (line: string) => {
+          if (!line.startsWith('data:')) return;
+          const data = line.slice(5).trim();
+          if (!data || data === '[DONE]') return;
+          const parsed = JSON.parse(data);
+          if (parsed.error) throw new Error('Generation failed');
+          const parts = parsed?.candidates?.[0]?.content?.parts;
+          if (!Array.isArray(parts)) return;
+          for (const part of parts) {
+            if (typeof part.text === 'string' && part.text) {
+              emitted = true;
+              out.enqueue(encoder.encode(part.text));
+            }
+          }
+        };
         try {
           for (;;) {
             const { done, value } = await upstream.read();
@@ -222,24 +255,26 @@ export async function POST(request: Request) {
             const lines = buffer.split('\n');
             buffer = lines.pop() ?? '';
 
-            for (const line of lines) {
-              if (!line.startsWith('data:')) continue;
-              const data = line.slice(5).trim();
-              if (!data || data === '[DONE]') continue;
-              try {
-                const parsed = JSON.parse(data);
-                const text = parsed?.candidates?.[0]?.content?.parts?.[0]?.text;
-                if (text) out.enqueue(encoder.encode(text));
-              } catch {
-                // Partial JSON across a chunk boundary; the buffer handles it.
-              }
-            }
+            for (const line of lines) processLine(line);
           }
+          buffer += decoder.decode();
+          if (buffer.trim()) processLine(buffer);
+          if (!emitted) throw new Error('Empty generation');
+          if (!cancelled) out.close();
+        } catch {
+          // A partial assessment must never be advertised as complete. The
+          // client sees a failed stream and retains the input for retry.
+          if (!cancelled) out.error(new Error('Assessment stream interrupted.'));
         } finally {
-          clearTimeout(timeout);
-          recordCompletion(ip);
-          out.close();
+          release();
+          upstream.releaseLock();
         }
+      },
+      async cancel() {
+        cancelled = true;
+        controller.abort();
+        await upstream.cancel().catch(() => {});
+        release();
       },
     });
 
@@ -250,10 +285,10 @@ export async function POST(request: Request) {
       },
     });
   } catch (caught) {
-    clearTimeout(timeout);
+    release();
     const aborted = caught instanceof Error && caught.name === 'AbortError';
     // Deliberately does not log the pasted description.
-    console.error('Fit Check failed:', aborted ? 'timeout' : (caught as Error)?.message);
+    console.error('Fit Check failed:', aborted ? 'timeout' : 'provider request failed');
     return fail(
       aborted ? 504 : 500,
       aborted ? `That took too long. ${FALLBACK}` : `Something failed. ${FALLBACK}`,

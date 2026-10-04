@@ -1,80 +1,48 @@
-'use client';
+﻿import type { Metadata } from 'next';
+import Link from 'next/link';
+import { siteConfig } from '@/config/site';
+import ResumeActions from './ResumeActions';
+import styles from './resume.module.css';
 
-import { useState } from 'react';
+export const metadata: Metadata = {
+  title: 'Résumé',
+  description: 'Vardhan’s experience in enterprise content platforms, React, TypeScript, Java and Node services. Read an accessible overview or download the original résumé.',
+  alternates: { canonical: '/resume' },
+  openGraph: { title: 'Résumé — Vardhan', description: 'Full stack engineering, enterprise content platforms, and delivery.', url: '/resume', images: [{ url: '/og-image.png', width: 1200, height: 630 }] },
+};
 
-/**
- * Rebuilt in Workstream C. The previous version was off the token system
- * entirely (seven uses of sky-500, a spread of gray-*), used rounded pill
- * buttons with drop shadows and hover scaling, and shipped a developer note to
- * visitors telling them to "make sure public/resume.pdf exists".
- *
- * The paper airplane animation went with it. It was off-token (#0ea5e9) and a
- * flourish of exactly the kind the brief's own error-state rule rejects.
- */
-export default function Resume() {
-  const [showPdf, setShowPdf] = useState(false);
+// Selected owner-maintained facts from public/data/resume.json.
+// Employers remain anonymized as required by src/config/site.ts. The original
+// PDF remains the full owner-provided document; no employment claim is inferred.
+const experience = [
+  { role: 'AEM Full Stack Developer and Dev Lead', organization: 'A national telecom carrier', period: 'Jan 2025 to Present', points: ['AEM pages, reusable content fragments, and TypeScript controllers for dynamic interfaces.', 'Node.js REST services, dispatcher configuration, deployments, and authoring guides.'] },
+  { role: 'Software Engineer', organization: 'A mortgage finance agency', period: 'Jan 2024 to Dec 2024', points: ['React interfaces within AEM templates, custom components, and Spring Boot services.', 'Docker deployments on AWS EC2 and Lambda, with Jenkins and GitLab delivery workflows.'] },
+  { role: 'Full Stack Developer', organization: 'A university', period: 'Oct 2022 to Dec 2023', points: ['React applications consuming AEM Content Fragments and Spring Boot APIs.', 'REST and GraphQL integration, with Jest, Mocha, and JUnit testing.'] },
+  { role: 'Software Engineer', organization: 'A global insurer', period: 'Mar 2021 to Jul 2022', points: ['AEM components and templates connected to Spring Boot through Sling Models.', 'Reusable services for content workflows and IBM ODM decision logic tested with JUnit.'] },
+  { role: 'Software Developer', organization: 'Healthcare software', period: 'Sep 2019 to Feb 2021', points: ['Java modules for pharmacovigilance platforms and PostgreSQL schemas.', 'D3.js data visualizations and deployment testing through GitLab CI/CD.'] },
+];
+const skills = [
+  { label: 'Interfaces', body: 'React · TypeScript · JavaScript · HTML · CSS' },
+  { label: 'Content platforms', body: 'Adobe Experience Manager · Sling Models · Content Fragments · Dispatcher' },
+  { label: 'Services & data', body: 'Java · Spring Boot · Node.js · REST · GraphQL · PostgreSQL' },
+  { label: 'Delivery & testing', body: 'AWS · Docker · Jenkins · GitLab CI/CD · Jest · JUnit' },
+];
 
-  return (
-    <div className="min-h-svh w-full bg-paper py-s7 text-ink">
-      <div className="mx-auto grid w-full max-w-[var(--grid-max)] grid-cols-4 gap-s3 px-[var(--page-margin)] md:grid-cols-12">
-        <div className="col-span-4 md:col-span-10 md:col-start-2">
-          <p className="u-mono mb-s3 text-graphite">Resume</p>
-
-          <h1 className="mb-s4 font-display text-h1 font-black leading-[0.95] tracking-display">
-            Full stack engineer, five years&nbsp;in.
-          </h1>
-
-          <p className="mb-s5 max-w-[52ch] text-body leading-[var(--leading-body)] text-graphite">
-            The PDF is the detailed version, with named employers and dates. Read
-            it here or take a copy.
-          </p>
-
-          <div className="mb-s6 flex flex-wrap items-center gap-s3">
-            <a
-              href="/resume.pdf"
-              download="Vardhan_Resume.pdf"
-              className="u-mono bg-ink px-s4 py-s2 text-paper transition-colors duration-[var(--dur-micro)] hover:bg-signal"
-            >
-              Download PDF
-            </a>
-
-            <button
-              type="button"
-              onClick={() => setShowPdf(!showPdf)}
-              aria-expanded={showPdf}
-              aria-controls="resume-viewer"
-              className="u-mono link text-ink hover:text-signal"
-            >
-              {showPdf ? 'Hide viewer' : 'Read here'}
-            </button>
-          </div>
-
-          {showPdf && (
-            <div
-              id="resume-viewer"
-              className="border border-[color:var(--hairline-light)]"
-            >
-              <div className="flex items-center justify-between border-b border-[color:var(--hairline-light)] px-s3 py-s2">
-                <span className="u-mono text-graphite">resume.pdf</span>
-                <a
-                  href="/resume.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-cursor="&#8599;"
-                  className="u-mono link link-external text-ink hover:text-signal"
-                >
-                  Open in new tab
-                </a>
-              </div>
-              <iframe
-                src="/resume.pdf"
-                title="Vardhan resume, PDF"
-                className="h-[80svh] w-full"
-              />
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+export default function ResumePage() {
+  return <article className={styles.page} aria-labelledby="resume-title"><div className={styles.sheet}>
+    <header className={styles.intro}>
+      <p className={styles.eyebrow}>The experience / Résumé</p>
+      <h1 id="resume-title">Vardhan.</h1>
+      <p className={styles.role}>Full stack engineer.</p>
+      <p className={styles.summary}>Enterprise content platforms, interfaces, and the services behind them. My work connects Adobe Experience Manager, React and TypeScript with Java, Node.js, and delivery infrastructure.</p>
+      <div className={styles.contact}><a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a><span>{siteConfig.location}</span><a href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a><a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer">GitHub</a></div>
+    </header>
+    <ResumeActions />
+    <section className={styles.section} aria-labelledby="experience-heading"><h2 id="experience-heading">Selected experience</h2><div className={styles.roles}>{experience.map(position => <section className={styles.position} key={position.organization}><h3>{position.role}</h3><p className={styles.positionMeta}><span>{position.organization}</span><span>{position.period}</span></p><ul>{position.points.map(point => <li key={point}>{point}</li>)}</ul></section>)}</div></section>
+    <section className={styles.section} aria-labelledby="skills-heading"><h2 id="skills-heading">Areas of practice</h2><div className={styles.skills}>{skills.map(group => <div key={group.label}><h3>{group.label}</h3><p>{group.body}</p></div>)}</div></section>
+    <section className={styles.section} aria-labelledby="education-heading"><h2 id="education-heading">Education</h2><div className={styles.education}><div><h3>Master of Science in Information Technology</h3><p>University of Cincinnati · December 2023</p></div><div><h3>Bachelor of Technology in Information Technology</h3><p>Jawaharlal Nehru Technological University Hyderabad</p></div></div></section>
+    <p className={styles.footnote}>This is a selected overview. The original PDF includes the detailed résumé, named employers, and full career history.</p>
+    <Link className={styles.backLink} href="/#work">← Back to the work</Link>
+  </div></article>;
 }
+

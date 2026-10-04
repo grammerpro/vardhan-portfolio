@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { projects } from '@/content/portfolio';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://vardhansudo.me';
@@ -23,5 +24,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.7,
     },
+    ...projects.map(project => ({ url: `${baseUrl}/work/${project.slug}`, changeFrequency: 'monthly' as const, priority: 0.8 })),
   ];
 }

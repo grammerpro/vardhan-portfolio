@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useTheme } from "./ThemeProvider";
 
 interface ScrollToTopRocketProps {
   size?: number;
@@ -17,20 +16,13 @@ export default function ScrollToTopRocket({
   const [isVisible, setIsVisible] = useState(false);
   const [isLaunching, setIsLaunching] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
-  const { resolvedTheme } = useTheme();
 
   const prefersReducedMotion = typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const containerWidth = size + 36;
-  const containerHeight = size + 60;
   const rocketShellWidth = size;
   const rocketShellHeight = Math.round(size * 1.25);
   const flameHeight = Math.round(size * 0.5);
-  const isDark = resolvedTheme === "dark";
-  const rocketBackground = isDark
-    ? "linear-gradient(180deg, rgba(14,165,233,0.35) 0%, rgba(12,74,110,0.7) 65%, rgba(17,24,39,0.85) 100%)"
-    : "linear-gradient(180deg, rgba(125,211,252,0.55) 0%, rgba(59,130,246,0.7) 55%, rgba(255,255,255,0.9) 100%)";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,7 +61,6 @@ export default function ScrollToTopRocket({
   if (!isVisible) return null;
 
   // Use explicit classnames so Tailwind doesn't purge them
-  const ringClass = resolvedTheme === "dark" ? "focus:ring-fuchsia-400" : "focus:ring-sky-400";
   const animClass = prefersReducedMotion ? "" : (isLaunching ? "animate-launch" : (isShaking ? "animate-shake" : "animate-bob"));
 
   return (

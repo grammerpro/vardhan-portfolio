@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { readRequestObject, RequestInputError } from '@/lib/request-json';
 
 /**
  * Real contact endpoint. The previous form only set a local flag and told the
@@ -17,10 +18,11 @@ const MAX_LENGTHS = { name: 100, email: 200, message: 5000 } as const;
 // substitute for a real WAF.
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const lastSeen = new Map<string, number>();
+const inFlight = new Set<string>();
 
 function rateLimited(ip: string): boolean {
   const previous = lastSeen.get(ip);
-  return previous !== undefined && Date.now() - previous < RATE_LIMIT_WINDOW_MS;
+  return inFlight.has(ip) || (previous !== undefined && Date.now() - previous < RATE_LIMIT_WINDOW_MS);
 }
 
 /**
@@ -37,6 +39,7 @@ function recordSend(ip: string): void {
     for (const [key, seen] of lastSeen) {
       if (now - seen > RATE_LIMIT_WINDOW_MS) lastSeen.delete(key);
     }
+    if (lastSeen.size > 5000) lastSeen.delete(lastSeen.keys().next().value!);
   }
 }
 
@@ -68,14 +71,12 @@ export async function POST(request: Request) {
     );
   }
 
-  let payload: unknown;
+  let body: Record<string, unknown>;
   try {
-    payload = await request.json();
-  } catch {
-    return NextResponse.json({ error: 'Malformed request.' }, { status: 400 });
+    body = await readRequestObject(request);
+  } catch (error) {
+    return NextResponse.json({ error: error instanceof RequestInputError ? error.message : 'Malformed request.' }, { status: error instanceof RequestInputError ? error.status : 400 });
   }
-
-  const body = payload as Record<string, unknown>;
 
   // Honeypot. Real people leave this hidden field empty; bots fill it in.
   // Returning 200 means the bot has no signal that it was rejected.
@@ -107,6 +108,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'That email address does not look right.' }, { status: 400 });
   }
 
+  if (/[\r\n]/.test(name)) {
+    return NextResponse.json({ error: 'Please enter your name on one line.' }, { status: 400 });
+  }
+
+  // Claim after asynchronous body reading so overlapping valid requests cannot
+  // both send. Invalid input never consumes the sender's retry window.
+  if (rateLimited(ip)) {
+    return NextResponse.json({ error: 'A message is already sending. Please wait a minute and try again.' }, { status: 429 });
+  }
+  inFlight.add(ip);
+
   try {
     const resend = new Resend(apiKey);
 
@@ -120,7 +132,7 @@ export async function POST(request: Request) {
     });
 
     if (error) {
-      console.error('Resend rejected the message:', error);
+      console.error('Contact provider rejected the message.');
       return NextResponse.json(
         { error: 'The message could not be sent. Please email me directly.' },
         { status: 502 },
@@ -129,11 +141,13 @@ export async function POST(request: Request) {
 
     recordSend(ip);
     return NextResponse.json({ ok: true });
-  } catch (caught) {
-    console.error('Contact route failed:', caught);
+  } catch {
+    console.error('Contact provider request failed.');
     return NextResponse.json(
       { error: 'The message could not be sent. Please email me directly.' },
       { status: 500 },
     );
+  } finally {
+    inFlight.delete(ip);
   }
 }

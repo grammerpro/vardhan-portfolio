@@ -1,0 +1,33 @@
+{
+  "date": "2026-09-30T01:11:27.435Z",
+  "browser": "151.0.7922.34",
+  "baseUrl": "http://localhost:3200",
+  "buildMode": "development",
+  "conditions": "Headless Chromium, fresh page contexts, reduced motion, DPR 1, no CPU/network throttling, font loading awaited. Print PDF is HTML overview; original public/resume.pdf unchanged.",
+  "results": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900,
+      "status": 200,
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "name": "phone",
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "name": "small-phone",
+      "width": 360,
+      "height": 800,
+      "status": 200,
+      "overflow": false,
+      "errors": []
+    }
+  ]
+}

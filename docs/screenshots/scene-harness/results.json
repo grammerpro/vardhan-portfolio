@@ -1,0 +1,66 @@
+{
+  "mode": "standalone scene; full quality; DPR 1; no throttling; fresh context; no Next bundle",
+  "samples": {
+    "hero-desktop": {
+      "engine": "three.js r178",
+      "quality": "full",
+      "drawCalls": "16",
+      "triangles": "2174",
+      "chapterProgress": "0.000",
+      "renderFrames": "23"
+    },
+    "aperture-approach": {
+      "engine": "three.js r178",
+      "quality": "full",
+      "drawCalls": "30",
+      "triangles": "2284",
+      "chapterProgress": "1.309",
+      "renderFrames": "24"
+    },
+    "gallery": {
+      "engine": "three.js r178",
+      "quality": "full",
+      "drawCalls": "16",
+      "triangles": "192",
+      "chapterProgress": "2.014",
+      "renderFrames": "25"
+    },
+    "reverse-to-hero": {
+      "engine": "three.js r178",
+      "quality": "full",
+      "drawCalls": "16",
+      "triangles": "2174",
+      "chapterProgress": "0.000",
+      "renderFrames": "26"
+    },
+    "hero-mobile": {
+      "engine": "three.js r178",
+      "quality": "full",
+      "drawCalls": "16",
+      "triangles": "2174",
+      "chapterProgress": "0.000",
+      "renderFrames": "28"
+    }
+  },
+  "browser": "151.0.7922.34",
+  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "idleFramesStopped": true,
+  "simulatedHiddenFramesStopped": true,
+  "resumeReconcilesScroll": true,
+  "pathGeometry": {
+    "samplesPerComposition": 401,
+    "desktopIntersections": [],
+    "mobileIntersections": []
+  },
+  "realContextLossReported": true,
+  "repeatedDisposalSafe": true,
+  "balancedDprCap": {
+    "quality": "balanced",
+    "cssWidth": 390,
+    "cssHeight": 844,
+    "bufferWidth": 487,
+    "bufferHeight": 1055,
+    "deviceDpr": 2
+  },
+  "uncaughtErrors": []
+}

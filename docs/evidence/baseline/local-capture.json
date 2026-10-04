@@ -1,0 +1,239 @@
+{
+  "capturedAt": "2026-09-27T12:25:05.138Z",
+  "results": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900,
+      "url": "http://localhost:3100",
+      "status": 200,
+      "browser": "151.0.7922.34",
+      "sections": [
+        {
+          "id": "hero",
+          "text": "Five years building content platforms and services for telecom, fintech, insurance, and healthcare. "
+        },
+        {
+          "id": "positioning",
+          "text": "I build enterprise web platforms during the day, and 3D interfaces, retrieval systems, and browser t"
+        },
+        {
+          "id": "work",
+          "text": "Selected work01Aura LandingA futuristic landing page for Aura - AI frameworks & smart eyewear, built"
+        },
+        {
+          "id": "capability",
+          "text": "CapabilityContent platforms at scaleI work in Adobe Experience Manager most days: components, conten"
+        },
+        {
+          "id": "fit",
+          "text": "Fit checkPaste a job description. This reads it against Vardhan's actual experience and tells you wh"
+        },
+        {
+          "id": "about",
+          "text": "AboutI am a full stack engineer in Cincinnati. Five years in, most of it on enterprise content platf"
+        },
+        {
+          "id": "contact",
+          "text": "ContactEmail is the fastest way to reach me. The form goes to the same place.vardhana1209@gmail.comC"
+        }
+      ],
+      "links": [
+        {
+          "text": "Skip to main content",
+          "href": "#main-content"
+        },
+        {
+          "text": "Selected work",
+          "href": "#work"
+        },
+        {
+          "text": "01Aura LandingA futuristic landing page for Aura - AI frameworks & smart eyewear, built with modern web aesthetics.Next.jsAISmart EyewearTailwind",
+          "href": "https://github.com/grammerpro/aura-landing"
+        },
+        {
+          "text": "02Java Native RAGA native Java Retrieval-Augmented Generation system for fast local LLM document intelligence.JavaRAGVectorDBLLM",
+          "href": "https://github.com/grammerpro/Java-Native-RAG-System"
+        },
+        {
+          "text": "03Chroma LoopAn interactive WebGL experience using Three.js and custom shader ribbons.Three.jsWebGLGSAPShaders",
+          "href": "https://github.com/grammerpro/Chroma-Loop"
+        },
+        {
+          "text": "04ANON DappA decentralized anonymous application using zero-knowledge proof frameworks.SolidityEthereumReactCryptography",
+          "href": "https://github.com/grammerpro/ANON-Dapp"
+        },
+        {
+          "text": "05PDF Editor ToolA client-side PDF document editor featuring secure digital signature integrations.ReactPDF.jsWebCryptoTailwind",
+          "href": "https://github.com/grammerpro/pdf-editor-tool"
+        },
+        {
+          "text": "06Blockchain StorageDecentralized cloud file storage utilizing Ethereum smart contracts and IPFS storage nodes.IPFSSolidityEthereumReact",
+          "href": "https://github.com/grammerpro/BlockchainFileStorage"
+        },
+        {
+          "text": "vardhana1209@gmail.com",
+          "href": "mailto:vardhana1209@gmail.com"
+        },
+        {
+          "text": "LinkedIn",
+          "href": "https://www.linkedin.com/in/sri-vardhan-7b5853184/"
+        },
+        {
+          "text": "GitHub",
+          "href": "https://github.com/grammerpro"
+        },
+        {
+          "text": "LeetCode",
+          "href": "https://leetcode.com/u/sudovardhan/"
+        },
+        {
+          "text": "Index",
+          "href": "#hero"
+        },
+        {
+          "text": "Work",
+          "href": "#work"
+        },
+        {
+          "text": "About",
+          "href": "#about"
+        },
+        {
+          "text": "Resume",
+          "href": "/resume"
+        },
+        {
+          "text": "GitHub",
+          "href": "https://github.com/grammerpro"
+        },
+        {
+          "text": "LinkedIn",
+          "href": "https://www.linkedin.com/in/sri-vardhan-7b5853184/"
+        },
+        {
+          "text": "LeetCode",
+          "href": "https://leetcode.com/u/sudovardhan/"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "url": "http://localhost:3100",
+      "status": 200,
+      "browser": "151.0.7922.34",
+      "sections": [
+        {
+          "id": "hero",
+          "text": "Five years building content platforms and services for telecom, fintech, insurance, and healthcare. "
+        },
+        {
+          "id": "positioning",
+          "text": "I build enterprise web platforms during the day, and 3D interfaces, retrieval systems, and browser t"
+        },
+        {
+          "id": "work",
+          "text": "Selected work01Aura LandingA futuristic landing page for Aura - AI frameworks & smart eyewear, built"
+        },
+        {
+          "id": "capability",
+          "text": "CapabilityContent platforms at scaleI work in Adobe Experience Manager most days: components, conten"
+        },
+        {
+          "id": "fit",
+          "text": "Fit checkPaste a job description. This reads it against Vardhan's actual experience and tells you wh"
+        },
+        {
+          "id": "about",
+          "text": "AboutI am a full stack engineer in Cincinnati. Five years in, most of it on enterprise content platf"
+        },
+        {
+          "id": "contact",
+          "text": "ContactEmail is the fastest way to reach me. The form goes to the same place.vardhana1209@gmail.comC"
+        }
+      ],
+      "links": [
+        {
+          "text": "Skip to main content",
+          "href": "#main-content"
+        },
+        {
+          "text": "Selected work",
+          "href": "#work"
+        },
+        {
+          "text": "01Aura LandingA futuristic landing page for Aura - AI frameworks & smart eyewear, built with modern web aesthetics.Next.jsAISmart EyewearTailwind",
+          "href": "https://github.com/grammerpro/aura-landing"
+        },
+        {
+          "text": "02Java Native RAGA native Java Retrieval-Augmented Generation system for fast local LLM document intelligence.JavaRAGVectorDBLLM",
+          "href": "https://github.com/grammerpro/Java-Native-RAG-System"
+        },
+        {
+          "text": "03Chroma LoopAn interactive WebGL experience using Three.js and custom shader ribbons.Three.jsWebGLGSAPShaders",
+          "href": "https://github.com/grammerpro/Chroma-Loop"
+        },
+        {
+          "text": "04ANON DappA decentralized anonymous application using zero-knowledge proof frameworks.SolidityEthereumReactCryptography",
+          "href": "https://github.com/grammerpro/ANON-Dapp"
+        },
+        {
+          "text": "05PDF Editor ToolA client-side PDF document editor featuring secure digital signature integrations.ReactPDF.jsWebCryptoTailwind",
+          "href": "https://github.com/grammerpro/pdf-editor-tool"
+        },
+        {
+          "text": "06Blockchain StorageDecentralized cloud file storage utilizing Ethereum smart contracts and IPFS storage nodes.IPFSSolidityEthereumReact",
+          "href": "https://github.com/grammerpro/BlockchainFileStorage"
+        },
+        {
+          "text": "vardhana1209@gmail.com",
+          "href": "mailto:vardhana1209@gmail.com"
+        },
+        {
+          "text": "LinkedIn",
+          "href": "https://www.linkedin.com/in/sri-vardhan-7b5853184/"
+        },
+        {
+          "text": "GitHub",
+          "href": "https://github.com/grammerpro"
+        },
+        {
+          "text": "LeetCode",
+          "href": "https://leetcode.com/u/sudovardhan/"
+        },
+        {
+          "text": "Index",
+          "href": "#hero"
+        },
+        {
+          "text": "Work",
+          "href": "#work"
+        },
+        {
+          "text": "About",
+          "href": "#about"
+        },
+        {
+          "text": "Resume",
+          "href": "/resume"
+        },
+        {
+          "text": "GitHub",
+          "href": "https://github.com/grammerpro"
+        },
+        {
+          "text": "LinkedIn",
+          "href": "https://www.linkedin.com/in/sri-vardhan-7b5853184/"
+        },
+        {
+          "text": "LeetCode",
+          "href": "https://leetcode.com/u/sudovardhan/"
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

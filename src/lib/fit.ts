@@ -25,7 +25,15 @@ export type Retrieved = {
   score: number;
 };
 
-const entries = corpus.entries as CorpusEntry[];
+// Public-source review contradicted these legacy body/vector pairs. Exclude
+// them until owner review and an intentional embedding rebuild; see the audit.
+export const withheldCorpusIds = [
+  'project-java-rag', 'project-chroma-loop', 'project-anon-dapp',
+  'project-aura-landing', 'project-pdf-editor', 'project-blockchain-storage',
+  'retrieval-rag', 'webgl-graphics', 'gaps-known', 'education',
+] as const;
+const withheld = new Set<string>(withheldCorpusIds);
+const entries = (corpus.entries as CorpusEntry[]).filter((entry) => !withheld.has(entry.id));
 
 export const EMBEDDING_MODEL = corpus.model;
 export const TOP_K = 6;

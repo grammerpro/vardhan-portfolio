@@ -1,8 +1,10 @@
 ---
 id: gaps-known
 type: capability
-title: What Vardhan has not done
-tags: [gaps, limitations, kubernetes, python, mobile, machine-learning, management, devops, data-science]
-verified: true
+title: Scope and limits of experience
+tags: [gaps, limitations, production, independent]
+verified: false
 ---
-Stated plainly so Fit Check has something honest to draw on. Vardhan's source documents show no Kubernetes, no Terraform, no Python, no Go, no Rust, no C#, no native iOS or Android, no React Native, no machine learning model training, and no data science or analytics engineering beyond database work. He has not held a formal engineering management title, and has not worked at consumer-scale startups. His WebGL and retrieval work is independent rather than production experience at an employer. If a role centres on any of these, that is a genuine gap and should be said.
+The owner-maintained experience content does not establish formal engineering management or native iOS and Android development. Independent graphics, retrieval, Python utility, and blockchain prototypes should not be presented as employer production experience. Earlier gap statements denying all Python or Kubernetes experience conflict with public project code or résumé content and require owner review. Do not infer professional expertise from the existence of a repository.
+
+Evidence review: September 27, 2026. Excluded from Fit Check until the owner confirms this revised wording and the embedding is regenerated. See docs/content-audit.md.

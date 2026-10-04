@@ -1,0 +1,11 @@
+# Architecture decision
+
+Retain Next.js App Router, updated to the patched 15.5.26 release, React 19 and the existing compatible Three.js/R3F stack. Server-render identity, project evidence, navigation, about and contact destinations. Isolate controls and graphics in small client components. Use native document scrolling and measured section offsets; one render loop owns the camera and assembly transforms. Remove the old competing smooth-scroll/entry/FPS/cursor overlays from the active layout.
+
+Keep one deferred persistent WebGL canvas, an original procedural model and an independently usable poster/HTML experience. The quality selector supports system, full, balanced and static modes. System reduced motion takes precedence before graphics initialization; explicit visitor settings persist with safe storage fallback. No new tracking, hosted AI processing, or external media dependencies.
+
+Storyboard: warm typographic surface and silver V → dark construction/exploded assembly → three distinct source-backed exhibits → deliberate capability diagram → warm editorial person/experience and optional fit utility → dark contact and reassembled signature. All chapter links use real anchors. Shorten mobile sequence to content, not empty scroll corridors.
+
+Keep the existing Gemini-backed fit endpoint and Resend contact endpoint. Fit Check sends role text for remote embedding and generation; only similarity scoring against the committed corpus happens locally. Form success requires accepted provider response. Tests mock delivery. `/projects` always renders the six audited local projects. The existing Sanity integration may append additional owner-listed links, with a two-second deadline, URL validation, neutral unaudited labels, and graceful fallback. It cannot override known audited titles or repository destinations. Search and technology filters are a small client component whose initial list is server-rendered; a native GET form also supports filtering without JavaScript.
+
+Reference documentation checked: [Next 15 server/client components](https://nextjs.org/docs/15/app/getting-started/server-and-client-components), [self-hosted fonts](https://nextjs.org/docs/15/app/getting-started/fonts). Graphics documentation/version details are recorded alongside the scene implementation.

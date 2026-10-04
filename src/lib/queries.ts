@@ -1,6 +1,6 @@
 import { sanityClient } from './sanity';
 
-export const getProjects = async () => {
+export const getProjects = async (options: { signal?: AbortSignal } = {}): Promise<unknown> => {
   const query = `*[_type == "project"] | order(_createdAt desc){
     _id,
     title,
@@ -11,6 +11,9 @@ export const getProjects = async () => {
     image
   }`;
 
-  const projects = await sanityClient.fetch(query);
+  const projects = await sanityClient.withConfig({ timeout: 1800, maxRetries: 0 }).fetch<unknown>(query, {}, {
+    signal: options.signal,
+    next: { revalidate: 3600 },
+  });
   return projects;
 };

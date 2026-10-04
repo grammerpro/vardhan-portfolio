@@ -1,0 +1,53 @@
+{
+  "browser": "151.0.7922.34",
+  "date": "2026-10-01T13:14:26.903Z",
+  "evidence": [
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "status": 200,
+      "search": "passed",
+      "technology": "passed",
+      "reset": "passed",
+      "caseNavigation": "passed",
+      "browserBack": "passed",
+      "horizontalOverflow": false,
+      "errors": []
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": 200,
+      "search": "passed",
+      "technology": "passed",
+      "reset": "passed",
+      "caseNavigation": "passed",
+      "browserBack": "passed",
+      "horizontalOverflow": false,
+      "errors": []
+    },
+    {
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "status": 200,
+      "search": "passed",
+      "technology": "passed",
+      "reset": "passed",
+      "caseNavigation": "passed",
+      "browserBack": "passed",
+      "horizontalOverflow": false,
+      "errors": []
+    },
+    {
+      "javaScript": false,
+      "serverRenderedWork": "passed",
+      "nativeSearchSubmit": "passed"
+    }
+  ]
+}

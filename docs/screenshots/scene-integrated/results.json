@@ -1,0 +1,106 @@
+[
+  {
+    "viewport": {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    "errors": [],
+    "hero": {
+      "engine": "three.js r178",
+      "quality": "full",
+      "drawCalls": "16",
+      "triangles": "2174",
+      "chapterProgress": "0.000",
+      "renderFrames": "23"
+    },
+    "overflow": false,
+    "heroBounds": {
+      "x": 0,
+      "y": 0,
+      "width": 1440,
+      "height": 900
+    },
+    "copyBounds": {
+      "x": 64.796875,
+      "y": 192.84375,
+      "width": 720.71875,
+      "height": 504.3125
+    },
+    "heroProgress": "0.000",
+    "unfoldProgress": "1.000",
+    "workProgress": "2.000",
+    "contactProgress": "5.000",
+    "contextLossFallback": true,
+    "retryRecovered": true,
+    "staticRemovedCanvas": true
+  },
+  {
+    "viewport": {
+      "name": "phone",
+      "width": 390,
+      "height": 844,
+      "touch": true
+    },
+    "errors": [],
+    "hero": {
+      "engine": "three.js r178",
+      "quality": "balanced",
+      "drawCalls": "16",
+      "triangles": "2174",
+      "chapterProgress": "0.000",
+      "renderFrames": "23"
+    },
+    "overflow": false,
+    "heroBounds": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 870.71875
+    },
+    "copyBounds": {
+      "x": 22,
+      "y": 142,
+      "width": 346,
+      "height": 358.71875
+    },
+    "heroProgress": "0.000",
+    "unfoldProgress": "1.000",
+    "workProgress": "2.000",
+    "contactProgress": "5.000"
+  },
+  {
+    "viewport": {
+      "name": "tablet",
+      "width": 768,
+      "height": 1024,
+      "touch": true
+    },
+    "errors": [],
+    "hero": {
+      "engine": "three.js r178",
+      "quality": "balanced",
+      "drawCalls": "16",
+      "triangles": "2174",
+      "chapterProgress": "0.000",
+      "renderFrames": "23"
+    },
+    "overflow": false,
+    "heroBounds": {
+      "x": 0,
+      "y": 0,
+      "width": 768,
+      "height": 1063.109375
+    },
+    "copyBounds": {
+      "x": 34.546875,
+      "y": 125,
+      "width": 620,
+      "height": 374.921875
+    },
+    "heroProgress": "0.000",
+    "unfoldProgress": "1.000",
+    "workProgress": "2.000",
+    "contactProgress": "5.000"
+  }
+]

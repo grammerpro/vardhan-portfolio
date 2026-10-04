@@ -1,8 +1,10 @@
 ---
 id: retrieval-rag
 type: capability
-title: Retrieval and local LLM systems
-tags: [rag, retrieval, llm, embeddings, vector, ai, java, semantic-search]
-verified: true
+title: Retrieval systems
+tags: [rag, retrieval, embeddings, spring-ai, pgvector]
+verified: false
 ---
-Vardhan built a Retrieval-Augmented Generation system natively in Java rather than assembling one from Python libraries, running local models against local documents for document intelligence. The Fit Check feature on this site is a second, smaller example: a hand-written corpus, embeddings computed once, cosine similarity at query time, and the retrieved evidence shown on screen rather than hidden. This is self-directed work, not something he has shipped for an employer.
+Vardhan’s independent Java retrieval project uses Spring AI, OpenAI embeddings and chat models, and PostgreSQL with pgvector. This is separate from employer experience. The portfolio Fit Check is another retrieval implementation: an owner-maintained corpus, precomputed embeddings, cosine similarity, and retrieved excerpts exposed to the visitor. Fit Check sends pasted role text to the configured remote model provider; neither project should be described as fully local inference.
+
+Evidence review: September 27, 2026. Excluded from Fit Check until the owner confirms this revised wording and the embedding is regenerated. See docs/content-audit.md.

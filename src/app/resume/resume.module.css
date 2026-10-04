@@ -1,0 +1,71 @@
+.page { min-height: 100svh; padding: 155px clamp(22px, 6vw, 110px) 100px; background: #e9e6df; color: #151719; }
+.sheet { max-width: 1100px; margin: 0 auto; }
+.eyebrow { font-family: var(--font-geist-mono), monospace; font-size: 12px; text-transform: uppercase; letter-spacing: .14em; color: #585d60; }
+.intro { border-bottom: 1px solid #b6b5af; padding-bottom: 35px; }
+.intro h1 { margin: 24px 0 18px; font-size: clamp(70px, 10vw, 132px); font-weight: 650; line-height: .96; letter-spacing: -.065em; }
+.role { font-size: clamp(24px, 4vw, 42px); line-height: 1.2; letter-spacing: -.04em; }
+.summary { max-width: 64ch; font-size: 18px; line-height: 1.7; color: #454c50; margin: 24px 0; }
+.contact { display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; font-size: 14px; }
+.contact a, .backLink, .viewerBar a, .viewerNote a, .interactive noscript a { text-decoration: underline; text-underline-offset: .22em; }
+.contact a:focus-visible, .backLink:focus-visible, .actions a:focus-visible, .actions button:focus-visible, .viewerBar a:focus-visible { outline: 3px solid #8d4f15; outline-offset: 5px; }
+.contact a { overflow-wrap: anywhere; }
+.interactive { margin: 30px 0 46px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.actions a, .actions button { min-height: 48px; display: inline-flex; align-items: center; justify-content: space-between; gap: 32px; border: 1px solid #91958f; padding: 14px 19px; font-size: 14px; font-weight: 550; background: transparent; cursor: pointer; text-decoration: none; }
+.actions .primary { background: #151719; border-color: #151719; color: #f4f1ea; }
+.actions a:hover, .actions button:hover { border-color: #151719; background: #d9d6d0; color: #151719; }
+.viewer { margin-top: 24px; border: 1px solid #91958f; }
+.viewer[hidden] { display: none; }
+.viewerBar { display: flex; justify-content: space-between; gap: 16px; padding: 18px; font-size: 13px; flex-wrap: wrap; border-bottom: 1px solid #91958f; }
+.viewer iframe { border: 0; width: 100%; height: 80svh; display: block; background: white; }
+.viewerNote { padding: 16px 18px; font-size: 14px; line-height: 1.5; }
+.section { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 35px; border-top: 1px solid #b6b5af; padding: 34px 0; }
+.section h2 { font-size: 13px; font-family: var(--font-geist-mono), monospace; font-weight: 450; text-transform: uppercase; letter-spacing: .1em; line-height: 1.5; }
+.roles { display: grid; gap: 30px; }
+.position { break-inside: avoid; }
+.position h3 { font-size: 22px; line-height: 1.35; font-weight: 550; letter-spacing: -.03em; }
+.positionMeta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; margin: 7px 0 12px; color: #555c5f; font-size: 14px; line-height: 1.5; }
+.position ul { padding-left: 20px; font-size: 16px; line-height: 1.65; color: #3d4448; list-style: disc; }
+.position li + li { margin-top: 5px; }
+.skills { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 30px; }
+.skills h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.skills p, .education p { font-size: 16px; line-height: 1.7; color: #3d4448; }
+.education { display: grid; gap: 18px; }
+.education h3 { font-size: 18px; font-weight: 550; line-height: 1.5; }
+.footnote { border-top: 1px solid #b6b5af; padding-top: 22px; font-size: 13px; color: #555c5f; line-height: 1.7; max-width: 75ch; }
+.backLink { display: inline-block; margin-top: 28px; min-height: 44px; font-size: 14px; }
+@media (max-width: 640px) {
+  .page { padding-top: 130px; padding-bottom: 60px; }
+  .intro h1 { font-size: clamp(64px, 19vw, 100px); }
+  .section { grid-template-columns: 1fr; gap: 20px; }
+  .skills { grid-template-columns: 1fr; }
+  .summary { font-size: 16px; }
+  .actions { gap: 9px; }
+  .actions a, .actions button { flex: 1 1 45%; gap: 14px; }
+  .position h3 { font-size: 20px; }
+  .positionMeta { flex-direction: column; }
+}
+@media print {
+  @page { margin: 16mm; size: auto; }
+  :global(html):has(.page), :global(body):has(.page) { background: #fff !important; color: #000 !important; }
+  :global(body):has(.page) :global(.site-header), :global(body):has(.page) :global(.skip-link), :global(body):has(.page) :global(.experience-settings), :global(body):has(.page) :global(.chapter-rail), :global(body):has(.page) :global(.journey-backdrop) { display: none !important; }
+  .page { min-height: 0; padding: 0; color: #000; background: #fff; }
+  .sheet { max-width: none; }
+  .intro { padding-bottom: 16px; }
+  .intro h1 { font-size: 44px; margin: 12px 0 10px; }
+  .role { font-size: 23px; }
+  .summary { font-size: 11pt; margin: 14px 0; max-width: none; line-height: 1.45; }
+  .contact { font-size: 9pt; gap: 7px 20px; }
+  .interactive, .backLink { display: none; }
+  .section { grid-template-columns: 120px minmax(0, 1fr); gap: 22px; padding: 20px 0; break-inside: avoid; }
+  .section h2 { font-size: 9pt; }
+  .roles { gap: 16px; }
+  .position h3 { font-size: 12pt; }
+  .positionMeta { font-size: 9pt; margin: 4px 0 7px; }
+  .position ul, .skills p, .education p { font-size: 10pt; line-height: 1.4; color: #000; }
+  .skills { gap: 15px; }
+  .skills > div, .education > div { break-inside: avoid; }
+  .skills h3 { font-size: 10pt; }
+  .education h3 { font-size: 11pt; }
+  .footnote { font-size: 8pt; padding-top: 12px; }
+}

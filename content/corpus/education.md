@@ -2,7 +2,9 @@
 id: education
 type: education
 title: Education and certifications
-tags: [education, masters, degree, certification, azure, aws, data-engineering]
-verified: true
+tags: [education, masters, degree, certification]
+verified: false
 ---
-Vardhan holds a Master of Science in Information Technology from the University of Cincinnati, completed December 2023 with a 4.0 GPA. His undergraduate degree is a Bachelor of Technology in Information Technology from Jawaharlal Nehru Technological University, Hyderabad, completed in 2013. He is a Microsoft Certified Azure Data Engineer Associate (DP-203). He is working towards the AWS Certified Solutions Architect Associate but has not yet passed it.
+Owner-maintained résumé content lists a Master of Science in Information Technology from the University of Cincinnati, completed December 2023, and a Bachelor of Technology in Information Technology from Jawaharlal Nehru Technological University, Hyderabad. The bachelor completion year and certification status need owner review. The résumé lists DP-203 validity through July 2025 and AWS certification as in progress; current certification status must not be asserted from that source.
+
+Evidence review: September 27, 2026. Excluded from Fit Check until the owner confirms this revised wording and the embedding is regenerated. See docs/content-audit.md.
